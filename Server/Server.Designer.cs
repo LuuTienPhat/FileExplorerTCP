@@ -112,7 +112,7 @@ namespace Server
             this.Controls.Add(this.txtHost);
             this.Controls.Add(this.label1);
             this.Name = "Server";
-            this.Text = "Form1";
+            this.Text = "Server";
             this.ResumeLayout(false);
             this.PerformLayout();
 

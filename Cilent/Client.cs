@@ -27,7 +27,7 @@ namespace Cilent
         public Client()
         {
             InitializeComponent();
-            btnBrowse.Enabled = btnCheck.Enabled = txtDirectory.Enabled = txtResult.Enabled = false;
+            btnCheck.Enabled = txtDirectory.Enabled = txtResult.Enabled = false;
         }
 
         private void sendData(IAsyncResult iar)
@@ -45,42 +45,15 @@ namespace Cilent
                 return;
             }
 
+            client = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+            IPEndPoint iPEnd = new IPEndPoint(IPAddress.Parse(txtHost.Text), int.Parse(txtPort.Text));
+            client.BeginConnect(iPEnd, new AsyncCallback(Connected2), client);
+
             byte[] outStream = Encoding.UTF8.GetBytes(txtDirectory.Text);
             client.BeginSend(outStream, 0, outStream.Length, 0, new AsyncCallback(sendData), client);
 
             //serverStream.Write(outStream, 0, outStream.Length);
             //serverStream.Flush();
-        }
-
-       
-
-        private void getMessage()
-        {
-            string returnData;
-            while (true)
-            {
-                serverStream = clientSocket.GetStream();
-                var buffsize = clientSocket.ReceiveBufferSize;
-                byte[] instream = new byte[buffsize];
-                serverStream.Read(instream, 0, buffsize);
-
-                returnData = System.Text.Encoding.UTF8.GetString(instream);
-
-                readData = returnData;
-                msg();
-            }
-        }
-
-        private void msg()
-        {
-            if (this.InvokeRequired)
-            {
-                this.Invoke(new MethodInvoker(msg));
-            }
-            else
-            {
-                txtDirectory.Text = readData;
-            }
         }
 
         private void btnConnect_Click(object sender, EventArgs e)
@@ -99,25 +72,10 @@ namespace Cilent
                 return;
             }
 
-            txtResult.Items.Add("Connecting...");
+            //txtResult.Items.Add("Connecting...");
             client = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             IPEndPoint iPEnd = new IPEndPoint(IPAddress.Parse(txtHost.Text), int.Parse(txtPort.Text));
             client.BeginConnect(iPEnd, new AsyncCallback(Connected), client);
-
-            //try
-            //{
-            //    clientSocket.Connect(txtHost.Text, Int32.Parse(txtPort.Text));
-            //}
-            //catch (Exception ex)
-            //{
-            //    MessageBox.Show(ex.Message, "Lỗi", MessageBoxButtons.OK);
-            //    return;
-            //}
-
-
-            //Thread thread = new Thread(getMessage);
-            //thread.Start();
-            //btnBrowse.Enabled = btnCheck.Enabled = txtDirectory.Enabled = listFiles.Enabled = true;
 
         }
 
@@ -129,7 +87,24 @@ namespace Cilent
                 txtResult.Items.Add("Connected to: " + client.RemoteEndPoint.ToString());
                 Thread receiver = new Thread(new ThreadStart(ReceiveData));
                 receiver.Start();
-                btnBrowse.Enabled = btnCheck.Enabled = txtDirectory.Enabled = txtResult.Enabled = true;
+                btnCheck.Enabled = txtDirectory.Enabled = txtResult.Enabled = true;
+            }
+            catch (SocketException ex)
+            {
+                txtResult.Items.Add("Connecting error");
+                MessageBox.Show(ex.Message + "\n" + ex.SocketErrorCode);
+            }
+        }
+
+        private void Connected2(IAsyncResult asyncResult)
+        {
+            try
+            {
+                client.EndConnect(asyncResult);
+                //txtResult.Items.Add("Connected to: " + client.RemoteEndPoint.ToString());
+                Thread receiver = new Thread(new ThreadStart(ReceiveData));
+                receiver.Start();
+                btnCheck.Enabled = txtDirectory.Enabled = txtResult.Enabled = true;
             }
             catch (SocketException ex)
             {
@@ -147,7 +122,11 @@ namespace Cilent
                 recv = client.Receive(data);
                 stringData = Encoding.UTF8.GetString(data, 0, recv);
                 if (stringData == "bye") break;
-                txtResult.Items.Add(stringData);
+                String[] array = stringData.Split('\n');
+                for (int i = 0; i < array.Length; i++)
+                {
+                    txtResult.Items.Add(array[i]);
+                }
 
             }
             stringData = "bye";
@@ -157,14 +136,5 @@ namespace Cilent
             txtResult.Items.Add("Connection stop");
             return;
         }
-
-        private void btnBrowse_Click(object sender, EventArgs e)
-        {
-            FolderBrowserDialog folderBrowserDialog = new FolderBrowserDialog();
-            folderBrowserDialog.ShowDialog();
-            txtDirectory.Text = folderBrowserDialog.SelectedPath;
-        }
-
-
     }
 }

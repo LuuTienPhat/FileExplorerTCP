@@ -39,7 +39,6 @@ namespace Cilent
             this.btnConnect = new System.Windows.Forms.Button();
             this.btnCheck = new System.Windows.Forms.Button();
             this.txtResult = new System.Windows.Forms.ListBox();
-            this.btnBrowse = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.separatorControl1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -112,7 +111,7 @@ namespace Cilent
             // 
             // btnCheck
             // 
-            this.btnCheck.Location = new System.Drawing.Point(533, 72);
+            this.btnCheck.Location = new System.Drawing.Point(443, 72);
             this.btnCheck.Name = "btnCheck";
             this.btnCheck.Size = new System.Drawing.Size(75, 23);
             this.btnCheck.TabIndex = 9;
@@ -125,25 +124,14 @@ namespace Cilent
             this.txtResult.FormattingEnabled = true;
             this.txtResult.Location = new System.Drawing.Point(82, 122);
             this.txtResult.Name = "txtResult";
-            this.txtResult.Size = new System.Drawing.Size(350, 173);
+            this.txtResult.Size = new System.Drawing.Size(436, 173);
             this.txtResult.TabIndex = 10;
-            // 
-            // btnBrowse
-            // 
-            this.btnBrowse.Location = new System.Drawing.Point(443, 72);
-            this.btnBrowse.Name = "btnBrowse";
-            this.btnBrowse.Size = new System.Drawing.Size(75, 23);
-            this.btnBrowse.TabIndex = 11;
-            this.btnBrowse.Text = "Browse";
-            this.btnBrowse.UseVisualStyleBackColor = true;
-            this.btnBrowse.Click += new System.EventHandler(this.btnBrowse_Click);
             // 
             // Client
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(620, 303);
-            this.Controls.Add(this.btnBrowse);
+            this.ClientSize = new System.Drawing.Size(552, 303);
             this.Controls.Add(this.txtResult);
             this.Controls.Add(this.btnCheck);
             this.Controls.Add(this.btnConnect);
@@ -174,7 +162,6 @@ namespace Cilent
         private System.Windows.Forms.Button btnConnect;
         private System.Windows.Forms.Button btnCheck;
         private System.Windows.Forms.ListBox txtResult;
-        private System.Windows.Forms.Button btnBrowse;
     }
 }
 

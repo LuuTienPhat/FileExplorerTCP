@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Server", "Server\Server.csp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cilent", "Cilent\Cilent.csproj", "{CA54B4CE-7632-4912-95CD-15D5D5A4A37A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Server2", "Server2\Server2.csproj", "{C5323E1B-FBF8-44ED-B898-77729D4238A2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{CA54B4CE-7632-4912-95CD-15D5D5A4A37A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CA54B4CE-7632-4912-95CD-15D5D5A4A37A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CA54B4CE-7632-4912-95CD-15D5D5A4A37A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C5323E1B-FBF8-44ED-B898-77729D4238A2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C5323E1B-FBF8-44ED-B898-77729D4238A2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C5323E1B-FBF8-44ED-B898-77729D4238A2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C5323E1B-FBF8-44ED-B898-77729D4238A2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
