@@ -48,6 +48,7 @@ namespace Cilent
             client = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             IPEndPoint iPEnd = new IPEndPoint(IPAddress.Parse(txtHost.Text), int.Parse(txtPort.Text));
             client.BeginConnect(iPEnd, new AsyncCallback(Connected2), client);
+            
 
             byte[] outStream = Encoding.UTF8.GetBytes(txtDirectory.Text);
             client.BeginSend(outStream, 0, outStream.Length, 0, new AsyncCallback(sendData), client);
