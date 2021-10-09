@@ -23,7 +23,7 @@ namespace Cilent
         private static TcpClient client;
         private static string directory;
 
-        private const int BUFFER_SIZE = 1024;
+        private const int BUFFER_SIZE = 999999999;
 
         public Client2()
         {
