@@ -33,8 +33,8 @@ namespace Cilent
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Client2));
             this.barManager1 = new DevExpress.XtraBars.BarManager(this.components);
             this.bar1 = new DevExpress.XtraBars.Bar();
-            this.barButtonItem1 = new DevExpress.XtraBars.BarButtonItem();
-            this.barButtonItem2 = new DevExpress.XtraBars.BarButtonItem();
+            this.btnReconnect = new DevExpress.XtraBars.BarButtonItem();
+            this.btnExit = new DevExpress.XtraBars.BarButtonItem();
             this.bar2 = new DevExpress.XtraBars.Bar();
             this.lbDetail = new DevExpress.XtraBars.BarStaticItem();
             this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
@@ -43,30 +43,28 @@ namespace Cilent
             this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
             this.barButtonItem3 = new DevExpress.XtraBars.BarButtonItem();
             this.panelControl1 = new DevExpress.XtraEditors.PanelControl();
-            this.acceptAll = new DevExpress.XtraEditors.CheckEdit();
             this.lbStatus = new DevExpress.XtraEditors.LabelControl();
             this.labelControl3 = new DevExpress.XtraEditors.LabelControl();
-            this.btnStop = new DevExpress.XtraEditors.SimpleButton();
+            this.btnDisconnect = new DevExpress.XtraEditors.SimpleButton();
             this.txtPort = new DevExpress.XtraEditors.TextEdit();
             this.labelControl2 = new DevExpress.XtraEditors.LabelControl();
             this.txtHost = new DevExpress.XtraEditors.TextEdit();
             this.labelControl1 = new DevExpress.XtraEditors.LabelControl();
             this.btnStart = new DevExpress.XtraEditors.SimpleButton();
             this.panelControl2 = new DevExpress.XtraEditors.PanelControl();
-            this.simpleButton1 = new DevExpress.XtraEditors.SimpleButton();
-            this.textEdit1 = new DevExpress.XtraEditors.TextEdit();
+            this.btnShow = new DevExpress.XtraEditors.SimpleButton();
+            this.txtDirectory = new DevExpress.XtraEditors.TextEdit();
             this.labelControl4 = new DevExpress.XtraEditors.LabelControl();
-            this.treeList1 = new DevExpress.XtraTreeList.TreeList();
+            this.directoryView = new DevExpress.XtraTreeList.TreeList();
             ((System.ComponentModel.ISupportInitialize)(this.barManager1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.panelControl1)).BeginInit();
             this.panelControl1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.acceptAll.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtPort.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtHost.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.panelControl2)).BeginInit();
             this.panelControl2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.textEdit1.Properties)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.treeList1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtDirectory.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.directoryView)).BeginInit();
             this.SuspendLayout();
             // 
             // barManager1
@@ -80,8 +78,8 @@ namespace Cilent
             this.barManager1.DockControls.Add(this.barDockControlRight);
             this.barManager1.Form = this;
             this.barManager1.Items.AddRange(new DevExpress.XtraBars.BarItem[] {
-            this.barButtonItem1,
-            this.barButtonItem2,
+            this.btnReconnect,
+            this.btnExit,
             this.barButtonItem3,
             this.lbDetail});
             this.barManager1.MainMenu = this.bar1;
@@ -95,27 +93,27 @@ namespace Cilent
             this.bar1.DockRow = 0;
             this.bar1.DockStyle = DevExpress.XtraBars.BarDockStyle.Top;
             this.bar1.LinksPersistInfo.AddRange(new DevExpress.XtraBars.LinkPersistInfo[] {
-            new DevExpress.XtraBars.LinkPersistInfo(this.barButtonItem1),
-            new DevExpress.XtraBars.LinkPersistInfo(this.barButtonItem2)});
+            new DevExpress.XtraBars.LinkPersistInfo(this.btnReconnect),
+            new DevExpress.XtraBars.LinkPersistInfo(this.btnExit)});
             this.bar1.OptionsBar.MultiLine = true;
             this.bar1.OptionsBar.UseWholeRow = true;
             this.bar1.Text = "Custom 2";
             // 
-            // barButtonItem1
+            // btnReconnect
             // 
-            this.barButtonItem1.Caption = "Reconnect";
-            this.barButtonItem1.Id = 0;
-            this.barButtonItem1.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("barButtonItem1.ImageOptions.SvgImage")));
-            this.barButtonItem1.Name = "barButtonItem1";
-            this.barButtonItem1.PaintStyle = DevExpress.XtraBars.BarItemPaintStyle.CaptionGlyph;
+            this.btnReconnect.Caption = "Reconnect";
+            this.btnReconnect.Id = 0;
+            this.btnReconnect.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("barButtonItem1.ImageOptions.SvgImage")));
+            this.btnReconnect.Name = "btnReconnect";
+            this.btnReconnect.PaintStyle = DevExpress.XtraBars.BarItemPaintStyle.CaptionGlyph;
             // 
-            // barButtonItem2
+            // btnExit
             // 
-            this.barButtonItem2.Caption = "Exit";
-            this.barButtonItem2.Id = 1;
-            this.barButtonItem2.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("barButtonItem2.ImageOptions.SvgImage")));
-            this.barButtonItem2.Name = "barButtonItem2";
-            this.barButtonItem2.PaintStyle = DevExpress.XtraBars.BarItemPaintStyle.CaptionGlyph;
+            this.btnExit.Caption = "Exit";
+            this.btnExit.Id = 1;
+            this.btnExit.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("barButtonItem2.ImageOptions.SvgImage")));
+            this.btnExit.Name = "btnExit";
+            this.btnExit.PaintStyle = DevExpress.XtraBars.BarItemPaintStyle.CaptionGlyph;
             // 
             // bar2
             // 
@@ -178,10 +176,9 @@ namespace Cilent
             // 
             // panelControl1
             // 
-            this.panelControl1.Controls.Add(this.acceptAll);
             this.panelControl1.Controls.Add(this.lbStatus);
             this.panelControl1.Controls.Add(this.labelControl3);
-            this.panelControl1.Controls.Add(this.btnStop);
+            this.panelControl1.Controls.Add(this.btnDisconnect);
             this.panelControl1.Controls.Add(this.txtPort);
             this.panelControl1.Controls.Add(this.labelControl2);
             this.panelControl1.Controls.Add(this.txtHost);
@@ -192,15 +189,6 @@ namespace Cilent
             this.panelControl1.Name = "panelControl1";
             this.panelControl1.Size = new System.Drawing.Size(638, 535);
             this.panelControl1.TabIndex = 5;
-            // 
-            // acceptAll
-            // 
-            this.acceptAll.Location = new System.Drawing.Point(340, 80);
-            this.acceptAll.MenuManager = this.barManager1;
-            this.acceptAll.Name = "acceptAll";
-            this.acceptAll.Properties.Caption = "Accept All";
-            this.acceptAll.Size = new System.Drawing.Size(94, 24);
-            this.acceptAll.TabIndex = 27;
             // 
             // lbStatus
             // 
@@ -225,16 +213,16 @@ namespace Cilent
             this.labelControl3.TabIndex = 25;
             this.labelControl3.Text = "Status";
             // 
-            // btnStop
+            // btnDisconnect
             // 
-            this.btnStop.ImageOptions.ImageToTextAlignment = DevExpress.XtraEditors.ImageAlignToText.LeftCenter;
-            this.btnStop.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("btnStop.ImageOptions.SvgImage")));
-            this.btnStop.ImageOptions.SvgImageSize = new System.Drawing.Size(15, 15);
-            this.btnStop.Location = new System.Drawing.Point(340, 149);
-            this.btnStop.Name = "btnStop";
-            this.btnStop.Size = new System.Drawing.Size(94, 29);
-            this.btnStop.TabIndex = 24;
-            this.btnStop.Text = "Disconnect";
+            this.btnDisconnect.ImageOptions.ImageToTextAlignment = DevExpress.XtraEditors.ImageAlignToText.LeftCenter;
+            this.btnDisconnect.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("btnStop.ImageOptions.SvgImage")));
+            this.btnDisconnect.ImageOptions.SvgImageSize = new System.Drawing.Size(15, 15);
+            this.btnDisconnect.Location = new System.Drawing.Point(340, 149);
+            this.btnDisconnect.Name = "btnDisconnect";
+            this.btnDisconnect.Size = new System.Drawing.Size(94, 29);
+            this.btnDisconnect.TabIndex = 24;
+            this.btnDisconnect.Text = "Disconnect";
             // 
             // txtPort
             // 
@@ -257,7 +245,7 @@ namespace Cilent
             this.txtHost.EditValue = "127.0.0.1";
             this.txtHost.Location = new System.Drawing.Point(224, 81);
             this.txtHost.Name = "txtHost";
-            this.txtHost.Size = new System.Drawing.Size(102, 22);
+            this.txtHost.Size = new System.Drawing.Size(210, 22);
             this.txtHost.TabIndex = 21;
             // 
             // labelControl1
@@ -278,37 +266,38 @@ namespace Cilent
             this.btnStart.Size = new System.Drawing.Size(94, 29);
             this.btnStart.TabIndex = 19;
             this.btnStart.Text = "Connect";
+            this.btnStart.Click += new System.EventHandler(this.btnStart_Click);
             // 
             // panelControl2
             // 
-            this.panelControl2.Controls.Add(this.simpleButton1);
-            this.panelControl2.Controls.Add(this.textEdit1);
+            this.panelControl2.Controls.Add(this.btnShow);
+            this.panelControl2.Controls.Add(this.txtDirectory);
             this.panelControl2.Controls.Add(this.labelControl4);
-            this.panelControl2.Controls.Add(this.treeList1);
+            this.panelControl2.Controls.Add(this.directoryView);
             this.panelControl2.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.panelControl2.Location = new System.Drawing.Point(0, 239);
             this.panelControl2.Name = "panelControl2";
             this.panelControl2.Size = new System.Drawing.Size(638, 326);
             this.panelControl2.TabIndex = 10;
             // 
-            // simpleButton1
+            // btnShow
             // 
-            this.simpleButton1.ImageOptions.ImageToTextAlignment = DevExpress.XtraEditors.ImageAlignToText.LeftCenter;
-            this.simpleButton1.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("simpleButton1.ImageOptions.SvgImage")));
-            this.simpleButton1.ImageOptions.SvgImageSize = new System.Drawing.Size(15, 15);
-            this.simpleButton1.Location = new System.Drawing.Point(467, 21);
-            this.simpleButton1.Name = "simpleButton1";
-            this.simpleButton1.Size = new System.Drawing.Size(94, 29);
-            this.simpleButton1.TabIndex = 34;
-            this.simpleButton1.Text = "Show";
+            this.btnShow.ImageOptions.ImageToTextAlignment = DevExpress.XtraEditors.ImageAlignToText.LeftCenter;
+            this.btnShow.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("simpleButton1.ImageOptions.SvgImage")));
+            this.btnShow.ImageOptions.SvgImageSize = new System.Drawing.Size(15, 15);
+            this.btnShow.Location = new System.Drawing.Point(467, 21);
+            this.btnShow.Name = "btnShow";
+            this.btnShow.Size = new System.Drawing.Size(94, 29);
+            this.btnShow.TabIndex = 34;
+            this.btnShow.Text = "Show";
             // 
-            // textEdit1
+            // txtDirectory
             // 
-            this.textEdit1.EditValue = "C:\\Users\\Phat\\Documents\\Visual Studio 2019\\TCP";
-            this.textEdit1.Location = new System.Drawing.Point(170, 26);
-            this.textEdit1.Name = "textEdit1";
-            this.textEdit1.Size = new System.Drawing.Size(257, 22);
-            this.textEdit1.TabIndex = 33;
+            this.txtDirectory.EditValue = "C:\\Users\\Phat\\Documents\\Visual Studio 2019\\TCP";
+            this.txtDirectory.Location = new System.Drawing.Point(170, 26);
+            this.txtDirectory.Name = "txtDirectory";
+            this.txtDirectory.Size = new System.Drawing.Size(257, 22);
+            this.txtDirectory.TabIndex = 33;
             // 
             // labelControl4
             // 
@@ -318,12 +307,12 @@ namespace Cilent
             this.labelControl4.TabIndex = 32;
             this.labelControl4.Text = "Directory";
             // 
-            // treeList1
+            // directoryView
             // 
-            this.treeList1.Location = new System.Drawing.Point(78, 73);
-            this.treeList1.Name = "treeList1";
-            this.treeList1.Size = new System.Drawing.Size(483, 227);
-            this.treeList1.TabIndex = 31;
+            this.directoryView.Location = new System.Drawing.Point(78, 73);
+            this.directoryView.Name = "directoryView";
+            this.directoryView.Size = new System.Drawing.Size(483, 227);
+            this.directoryView.TabIndex = 31;
             // 
             // Client2
             // 
@@ -342,14 +331,13 @@ namespace Cilent
             ((System.ComponentModel.ISupportInitialize)(this.panelControl1)).EndInit();
             this.panelControl1.ResumeLayout(false);
             this.panelControl1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.acceptAll.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtPort.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtHost.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.panelControl2)).EndInit();
             this.panelControl2.ResumeLayout(false);
             this.panelControl2.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.textEdit1.Properties)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.treeList1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtDirectory.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.directoryView)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -358,8 +346,8 @@ namespace Cilent
         #endregion
         private DevExpress.XtraBars.BarManager barManager1;
         private DevExpress.XtraBars.Bar bar1;
-        private DevExpress.XtraBars.BarButtonItem barButtonItem1;
-        private DevExpress.XtraBars.BarButtonItem barButtonItem2;
+        private DevExpress.XtraBars.BarButtonItem btnReconnect;
+        private DevExpress.XtraBars.BarButtonItem btnExit;
         private DevExpress.XtraBars.BarDockControl barDockControlTop;
         private DevExpress.XtraBars.BarDockControl barDockControlBottom;
         private DevExpress.XtraBars.BarDockControl barDockControlLeft;
@@ -367,10 +355,9 @@ namespace Cilent
         private DevExpress.XtraBars.BarButtonItem barButtonItem3;
         private DevExpress.XtraEditors.PanelControl panelControl1;
         private DevExpress.XtraBars.Bar bar2;
-        private DevExpress.XtraEditors.CheckEdit acceptAll;
         private DevExpress.XtraEditors.LabelControl lbStatus;
         private DevExpress.XtraEditors.LabelControl labelControl3;
-        private DevExpress.XtraEditors.SimpleButton btnStop;
+        private DevExpress.XtraEditors.SimpleButton btnDisconnect;
         private DevExpress.XtraEditors.TextEdit txtPort;
         private DevExpress.XtraEditors.LabelControl labelControl2;
         private DevExpress.XtraEditors.TextEdit txtHost;
@@ -378,9 +365,9 @@ namespace Cilent
         private DevExpress.XtraEditors.SimpleButton btnStart;
         private DevExpress.XtraBars.BarStaticItem lbDetail;
         private DevExpress.XtraEditors.PanelControl panelControl2;
-        private DevExpress.XtraEditors.SimpleButton simpleButton1;
-        private DevExpress.XtraEditors.TextEdit textEdit1;
+        private DevExpress.XtraEditors.SimpleButton btnShow;
+        private DevExpress.XtraEditors.TextEdit txtDirectory;
         private DevExpress.XtraEditors.LabelControl labelControl4;
-        private DevExpress.XtraTreeList.TreeList treeList1;
+        private DevExpress.XtraTreeList.TreeList directoryView;
     }
 }
