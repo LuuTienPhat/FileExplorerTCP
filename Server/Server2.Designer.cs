@@ -277,6 +277,7 @@ namespace Server
             this.Controls.Add(this.barDockControlRight);
             this.Controls.Add(this.barDockControlBottom);
             this.Controls.Add(this.barDockControlTop);
+            this.IconOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("Server2.IconOptions.SvgImage")));
             this.Name = "Server2";
             this.Text = "Server2";
             ((System.ComponentModel.ISupportInitialize)(this.panelControl1)).EndInit();
