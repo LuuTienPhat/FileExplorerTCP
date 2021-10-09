@@ -35,7 +35,7 @@ namespace Cilent
                 host = txtHost.Text;
                 port = int.Parse(txtPort.Text);
 
-                // 1. Kết nối đến Server
+                // 1. Connect to server
                 client = new TcpClient();
                 client.Connect(host, port);
 
@@ -58,7 +58,6 @@ namespace Cilent
 
             catch (Exception ex)
             {
-                
                 MessageBox.Show(ex.Message, this.Name);
             }
         }
@@ -110,6 +109,5 @@ namespace Cilent
         }
 
         public Dir() { }
-
     }
 }
