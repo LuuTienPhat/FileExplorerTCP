@@ -11,9 +11,10 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using SharedClass;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.IO;
+using System.Xml.Serialization;
+using MySharedClass;
 
 namespace Server
 {
@@ -23,7 +24,7 @@ namespace Server
 
         private static int port;
         private static string address;
-        private TcpListener server;
+        private static TcpListener server;
         private const int BUFFER_SIZE = 1024;
 
         public Server2()
@@ -35,6 +36,7 @@ namespace Server
             if (obj == null)
                 return null;
             BinaryFormatter bf = new BinaryFormatter();
+            
             using (MemoryStream ms = new MemoryStream())
             {
                 bf.Serialize(ms, obj);
@@ -48,6 +50,7 @@ namespace Server
             {
                 IPAddress host = IPAddress.Parse(address);
                 server = new TcpListener(host, port);
+
 
                 // 1. listen
                 server.Start();
@@ -63,14 +66,14 @@ namespace Server
                     socket.Receive(data);
 
                     // 3. handle
-                    string directory = Encoding.UTF8.GetString(data);
-                    MessageBox.Show(directory, "Server");
+                    string directory = Encoding.ASCII.GetString(data);
+                    //string dir2 = "C:\\Users\\Phat\\Documents\\Visual Studio 2019\\TCP";
+                    MessageBox.Show(directory,this.Name);
                     Dir directoryCollection = LoadDirectory(directory);
-                    //byte[] sendData = ObjectToByteArray(directoryCollection);
+                    byte[] sendData = ObjectToByteArray(directoryCollection);
 
-                    //// 4. send
-                    //socket.Send(sendData);
-                    //socket.Send(Encoding.UTF8.GetBytes("Hello " + directory));
+                    // 4. send
+                    socket.Send(sendData);
 
                     // 5. close
                     socket.Shutdown(SocketShutdown.Both);
@@ -80,11 +83,11 @@ namespace Server
             catch (Exception ex)
             {
                 
-                MessageBox.Show(ex.Message, "Server");
+                MessageBox.Show(ex.ToString(), "Server2");
             }
         }
 
-        public Dir LoadDirectory(String receiveDirectory)
+        public Dir LoadDirectory(string receiveDirectory)
         {
             DirectoryInfo directoryInfo = new DirectoryInfo(receiveDirectory);
 
@@ -127,11 +130,11 @@ namespace Server
                 FileDir fileDir = new FileDir(fi.Name, fi.FullName);
                 directory.SubFiles.Add(fileDir);
             }
-
         }
 
         private void btnStart_Click(object sender, EventArgs e)
         {
+            
             address = txtAddress.Text;
             port = int.Parse(txtPort.Text);
 

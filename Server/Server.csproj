@@ -63,8 +63,8 @@
     <Reference Include="DevExpress.XtraRichEdit.v21.1, Version=21.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
     <Reference Include="DevExpress.XtraTreeList.v21.1, Version=21.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
     <Reference Include="DevExpress.XtraVerticalGrid.v21.1, Version=21.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
-    <Reference Include="SharedClass">
-      <HintPath>..\SharedClass\bin\Debug\netcoreapp3.1\SharedClass.dll</HintPath>
+    <Reference Include="MySharedClass">
+      <HintPath>..\MySharedClass\bin\Debug\MySharedClass.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
