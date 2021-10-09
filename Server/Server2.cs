@@ -11,6 +11,9 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using SharedClass;
+using System.Runtime.Serialization.Formatters.Binary;
+using System.IO;
 
 namespace Server
 {
@@ -27,6 +30,17 @@ namespace Server
         public Server2()
         {
             InitializeComponent();
+        }
+        private static byte[] ObjectToByteArray(object obj)
+        {
+            if (obj == null)
+                return null;
+            BinaryFormatter bf = new BinaryFormatter();
+            using (MemoryStream ms = new MemoryStream())
+            {
+                bf.Serialize(ms, obj);
+                return ms.ToArray();
+            }
         }
 
         private void StartServer()
@@ -51,10 +65,10 @@ namespace Server
                     byte[] data = new byte[BUFFER_SIZE];
                     socket.Receive(data);
 
-                    string str = encoding.GetString(data);
+                    string directory = encoding.GetString(data);
 
                     // 3. send
-                    socket.Send(encoding.GetBytes("Hello " + str));
+                    //socket.Send(encoding.GetBytes("Hello " + str));
 
                     // 4. close
                     socket.Close();
@@ -81,6 +95,52 @@ namespace Server
             //// 4. close
             //socket.Close();
             //server.Stop();
+        }
+
+        public Dir LoadDirectory(String receiveDirectory)
+        {
+            DirectoryInfo directoryInfo = new DirectoryInfo(receiveDirectory);
+
+            Dir currentDir = new Dir(directoryInfo.Name, directoryInfo.FullName);
+
+            //Load tất cả các file bên trong đường dẫn cha
+            LoadFiles(receiveDirectory, currentDir);
+
+            //Load tất cả các thư mục con bên trong đường dẫn cha
+            LoadSubDirectories(receiveDirectory, currentDir);
+
+            return currentDir;
+        }
+
+        private void LoadSubDirectories(string parentDirectory, Dir directory)
+        {
+            // Lấy tất cả các thư mục con trong đường dẫn cha  
+            string[] subdirectoryEntries = Directory.GetDirectories(parentDirectory);
+
+            // Lặp qua tất cả các đường dẫn đó
+            foreach (string subdirectory in subdirectoryEntries)
+            {
+                DirectoryInfo di = new DirectoryInfo(subdirectory);
+                Dir currentDir = new Dir(di.Name, di.FullName);
+                directory.SubDirectories.Add(currentDir);
+
+                LoadFiles(subdirectory, currentDir);
+                LoadSubDirectories(subdirectory, currentDir);
+            }
+        }
+
+        private void LoadFiles(string parentDirectory, Dir directory)
+        {
+            string[] Files = Directory.GetFiles(parentDirectory);
+
+            // Lặp qua các file trong thư mục 
+            foreach (string file in Files)
+            {
+                FileInfo fi = new FileInfo(file);
+                FileDir fileDir = new FileDir(fi.Name, fi.FullName);
+                directory.SubFiles.Add(fileDir);
+            }
+
         }
 
         private void btnStart_Click(object sender, EventArgs e)
@@ -112,39 +172,5 @@ namespace Server
             server.Start();
             Socket socket = server.AcceptSocket();
         }
-    }
-    [Serializable]
-    public class FileDir
-    {
-        public string Name { get; set; }
-        public string Path { get; set; }
-
-        public FileDir(String name, String path)
-        {
-            this.Name = name;
-            this.Path = path;
-        }
-
-        public FileDir() { }
-    }
-
-    [Serializable]
-    public class Dir
-    {
-        public string Name { get; set; }
-        public string Path { get; set; }
-        public List<Dir> SubDirectories { get; set; }
-        public List<FileDir> SubFiles { get; set; }
-
-        public Dir(String name, String path)
-        {
-            this.Name = name;
-            this.Path = path;
-            SubFiles = new List<FileDir>();
-            SubDirectories = new List<Dir>();
-        }
-
-        public Dir() { }
-
     }
 }

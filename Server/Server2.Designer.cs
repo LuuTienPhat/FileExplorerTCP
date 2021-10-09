@@ -1,4 +1,6 @@
 ﻿
+using System;
+
 namespace Server
 {
     partial class Server2
@@ -19,6 +21,7 @@ namespace Server
                 components.Dispose();
             }
             base.Dispose(disposing);
+            Environment.Exit(Environment.ExitCode);
         }
 
         #region Windows Form Designer generated code
