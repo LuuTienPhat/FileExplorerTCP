@@ -295,6 +295,7 @@ namespace Cilent
             this.btnShow.Size = new System.Drawing.Size(94, 29);
             this.btnShow.TabIndex = 34;
             this.btnShow.Text = "Show";
+            this.btnShow.Click += new System.EventHandler(this.btnShow_Click);
             // 
             // txtDirectory
             // 

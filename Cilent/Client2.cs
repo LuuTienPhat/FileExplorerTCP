@@ -83,7 +83,7 @@ namespace Cilent
         {
             // Lấy tất cả các thư mục con trong đường dẫn cha  
             //string[] subdirectoryEntries = Directory.GetDirectories(parrentDirectory);
-            
+
             // Lặp qua tất cả các đường dẫn đó
             foreach (Dir subdirectory in parrentDirectory.SubDirectories)
             {
@@ -121,6 +121,34 @@ namespace Cilent
             memStream.Seek(0, SeekOrigin.Begin);
             object obj = (object)binForm.Deserialize(memStream);
             return obj;
+        }
+
+        private void btnShow_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                string str = Console.ReadLine();
+
+                // 2. send
+                byte[] data = Encoding.UTF8.GetBytes(str);
+                Stream stream = client.GetStream();
+                stream.Write(data, 0, data.Length);
+
+                // 3. receive
+                data = new byte[BUFFER_SIZE];
+                stream.Read(data, 0, BUFFER_SIZE);
+                Dir directoryCollection = (Dir)ByteArrayToObject(data);
+                LoadDirectory(directoryCollection);
+                
+                // 4. Close
+                stream.Close();
+                //client.Close();
+            }
+
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, this.Name);
+            }
         }
     }
 
