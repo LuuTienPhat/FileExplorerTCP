@@ -8,6 +8,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -15,6 +16,8 @@ namespace Server
 {
     public partial class Server2 : DevExpress.XtraEditors.XtraForm
     {
+        public static ManualResetEvent allDone = new ManualResetEvent(false);
+
         private static int port;
         private static string address;
         private TcpListener server;
@@ -26,24 +29,45 @@ namespace Server
             InitializeComponent();
         }
 
-        private void btnStart_Click(object sender, EventArgs e)
+        private void StartServer()
         {
-            address = txtAddress.Text;
-            port = int.Parse(txtPort.Text);
+            try
+            {
+                IPAddress host = IPAddress.Parse(address);
 
-            IPAddress host = IPAddress.Parse(address);
-
-            server = new TcpListener(host, port);
-
-            
-            // 1. listen
-            server.Start();
-            lbStatus.Text = "Activated";
-            lbDetail.Caption = "Server started on " + server.LocalEndpoint;
+                server = new TcpListener(host, port);
 
 
-            Socket socket = server.AcceptSocket();
-            Console.WriteLine("Connection received from " + socket.RemoteEndPoint);
+                // 1. listen
+                server.Start();
+                lbStatus.Text = "Activated";
+                lbDetail.Caption = "Server started on " + server.LocalEndpoint;
+
+                while (true)
+                {
+                    Socket socket = server.AcceptSocket();
+
+                    // 2. receive
+                    byte[] data = new byte[BUFFER_SIZE];
+                    socket.Receive(data);
+
+                    string str = encoding.GetString(data);
+
+                    // 3. send
+                    socket.Send(encoding.GetBytes("Hello " + str));
+
+                    // 4. close
+                    socket.Close();
+                    //server.Stop();
+                }
+
+            }
+            catch (Exception ex)
+            {
+                
+                MessageBox.Show(ex.Message, "Server");
+            }
+
 
             //// 2. receive
             //byte[] data = new byte[BUFFER_SIZE];
@@ -59,6 +83,16 @@ namespace Server
             //server.Stop();
         }
 
+        private void btnStart_Click(object sender, EventArgs e)
+        {
+            address = txtAddress.Text;
+            port = int.Parse(txtPort.Text);
+            //StartServer();
+
+            Thread theard = new Thread(StartServer);
+            theard.Start();
+        }
+
         private void btnExit_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
         {
             this.Dispose();
@@ -68,6 +102,8 @@ namespace Server
         private void btnStop_Click(object sender, EventArgs e)
         {
             server.Stop();
+            lbStatus.Text = "Not Activated";
+            lbDetail.Caption = "Server stopped";
         }
 
         private void btnRestart_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
