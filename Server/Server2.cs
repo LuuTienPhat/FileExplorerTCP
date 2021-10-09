@@ -69,5 +69,12 @@ namespace Server
         {
             server.Stop();
         }
+
+        private void btnRestart_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
+        {
+            server.Stop();
+            server.Start();
+            Socket socket = server.AcceptSocket();
+        }
     }
 }
