@@ -11,8 +11,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml.Serialization;
-using SharedClass;
 using System.Runtime.Serialization.Formatters.Binary;
+using MySharedClass;
 
 namespace Cilent
 {
@@ -136,9 +136,10 @@ namespace Cilent
 
             try
             {
-                // 2. send
-                byte[] data = Encoding.UTF8.GetBytes(directory);
                 Stream stream = client.GetStream();
+
+                // 2. send
+                byte[] data = Encoding.ASCII.GetBytes(directory);
                 stream.Write(data, 0, data.Length);
 
                 // 3. receive
@@ -148,7 +149,7 @@ namespace Cilent
                 Dir directoryCollection = (Dir)ByteArrayToObject(data);
                 LoadDirectory(directoryCollection);
 
-                //MessageBox.Show(Encoding.UTF8.GetString(data), this.Name);
+                //MessageBox.Show(Encoding.ASCII.GetString(data), this.Name);
                 
                 // 4. Close
                 stream.Close();
@@ -171,5 +172,38 @@ namespace Cilent
         }
     }
 
+    //[Serializable]
+    //public class Dir
+    //{
+    //    public string Name { get; set; }
+    //    public string Path { get; set; }
+    //    public List<Dir> SubDirectories { get; set; }
+    //    public List<FileDir> SubFiles { get; set; }
 
+    //    public Dir(string name, string path)
+    //    {
+    //        this.Name = name;
+    //        this.Path = path;
+    //        SubFiles = new List<FileDir>();
+    //        SubDirectories = new List<Dir>();
+    //    }
+
+    //    public Dir() { }
+
+    //}
+
+    //[Serializable]
+    //public class FileDir
+    //{
+    //    public string Name { get; set; }
+    //    public string Path { get; set; }
+
+    //    public FileDir(string name, string path)
+    //    {
+    //        this.Name = name;
+    //        this.Path = path;
+    //    }
+
+    //    public FileDir() { }
+    //}
 }
