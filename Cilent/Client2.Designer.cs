@@ -223,6 +223,7 @@ namespace Cilent
             this.btnDisconnect.Size = new System.Drawing.Size(94, 29);
             this.btnDisconnect.TabIndex = 24;
             this.btnDisconnect.Text = "Disconnect";
+            this.btnDisconnect.Click += new System.EventHandler(this.btnDisconnect_Click);
             // 
             // txtPort
             // 
@@ -325,6 +326,7 @@ namespace Cilent
             this.Controls.Add(this.barDockControlRight);
             this.Controls.Add(this.barDockControlBottom);
             this.Controls.Add(this.barDockControlTop);
+            this.IconOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("Client2.IconOptions.SvgImage")));
             this.Name = "Client2";
             this.Text = "Client2";
             ((System.ComponentModel.ISupportInitialize)(this.barManager1)).EndInit();
