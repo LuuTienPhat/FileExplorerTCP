@@ -40,11 +40,11 @@ namespace Cilent
                 Stream stream = client.GetStream();
             }
 
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
             }
-            
+
 
             //// 2. send
             //byte[] data = encoding.GetBytes(str);
@@ -69,7 +69,42 @@ namespace Cilent
             {
                 MessageBox.Show(ex.Message);
             }
-            
+
         }
+    }
+
+    [Serializable]
+    public class FileDir
+    {
+        public string Name { get; set; }
+        public string Path { get; set; }
+
+        public FileDir(String name, String path)
+        {
+            this.Name = name;
+            this.Path = path;
+        }
+
+        public FileDir() { }
+    }
+
+    [Serializable]
+    public class Dir
+    {
+        public string Name { get; set; }
+        public string Path { get; set; }
+        public List<Dir> SubDirectories { get; set; }
+        public List<FileDir> SubFiles { get; set; }
+
+        public Dir(String name, String path)
+        {
+            this.Name = name;
+            this.Path = Path;
+            SubFiles = new List<FileDir>();
+            SubDirectories = new List<Dir>();
+        }
+
+        public Dir() { }
+
     }
 }
