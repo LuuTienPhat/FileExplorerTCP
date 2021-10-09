@@ -20,6 +20,9 @@ namespace Cilent
         private TcpClient client;
         private static string directory;
 
+        private const int BUFFER_SIZE = 1024;
+        static ASCIIEncoding encoding = new ASCIIEncoding();
+
         public Client2()
         {
             InitializeComponent();
@@ -33,29 +36,31 @@ namespace Cilent
                 port = int.Parse(txtPort.Text);
 
                 // 1. Kết nối đến Server
-                client = new TcpClient(host, port);
+                client = new TcpClient();
+                client.Connect(host, port);
 
                 lbStatus.Text = "Connected";
                 lbDetail.Caption = "Connected to " + client.Client.RemoteEndPoint;
                 Stream stream = client.GetStream();
+
+                // 2. send
+                string str = "Phat";
+                byte[] data = encoding.GetBytes(str);
+
+                stream.Write(data, 0, data.Length);
+
+                // 3. receive
+                data = new byte[BUFFER_SIZE];
+                stream.Read(data, 0, BUFFER_SIZE);
+
+                MessageBox.Show(encoding.GetString(data), this.Name);
             }
 
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                
+                MessageBox.Show(ex.Message, this.Name);
             }
-
-
-            //// 2. send
-            //byte[] data = encoding.GetBytes(str);
-
-            //stream.Write(data, 0, data.Length);
-
-            //// 3. receive
-            //data = new byte[BUFFER_SIZE];
-            //stream.Read(data, 0, BUFFER_SIZE);
-
-            //Console.WriteLine(encoding.GetString(data));
         }
 
         private void btnDisconnect_Click(object sender, EventArgs e)
