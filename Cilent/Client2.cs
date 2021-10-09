@@ -99,7 +99,7 @@ namespace Cilent
         public Dir(String name, String path)
         {
             this.Name = name;
-            this.Path = Path;
+            this.Path = path;
             SubFiles = new List<FileDir>();
             SubDirectories = new List<Dir>();
         }
