@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace SharedClass
 {
     [Serializable]
-    public class Dir
+    public partial class Dir
     {
         public string Name { get; set; }
         public string Path { get; set; }
@@ -21,5 +21,20 @@ namespace SharedClass
 
         public Dir() { }
 
+    }
+
+    [Serializable]
+    public partial class FileDir
+    {
+        public string Name { get; set; }
+        public string Path { get; set; }
+
+        public FileDir(string name, string path)
+        {
+            this.Name = name;
+            this.Path = path;
+        }
+
+        public FileDir() { }
     }
 }
