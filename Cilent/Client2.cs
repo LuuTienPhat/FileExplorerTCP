@@ -10,6 +10,9 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Xml.Serialization;
+using SharedClass;
+using System.Runtime.Serialization.Formatters.Binary;
 
 namespace Cilent
 {
@@ -17,11 +20,10 @@ namespace Cilent
     {
         private static string host;
         private static int port;
-        private TcpClient client;
+        private static TcpClient client;
         private static string directory;
 
         private const int BUFFER_SIZE = 1024;
-        static ASCIIEncoding encoding = new ASCIIEncoding();
 
         public Client2()
         {
@@ -41,19 +43,6 @@ namespace Cilent
 
                 lbStatus.Text = "Connected";
                 lbDetail.Caption = "Connected to " + client.Client.RemoteEndPoint;
-                Stream stream = client.GetStream();
-
-                // 2. send
-                string str = "Phat";
-                byte[] data = encoding.GetBytes(str);
-
-                stream.Write(data, 0, data.Length);
-
-                // 3. receive
-                data = new byte[BUFFER_SIZE];
-                stream.Read(data, 0, BUFFER_SIZE);
-
-                MessageBox.Show(encoding.GetString(data), this.Name);
             }
 
             catch (Exception ex)
@@ -75,39 +64,65 @@ namespace Cilent
             }
 
         }
-    }
 
-    [Serializable]
-    public class FileDir
-    {
-        public string Name { get; set; }
-        public string Path { get; set; }
-
-        public FileDir(String name, String path)
+        public void LoadDirectory(Dir directoryCollection)
         {
-            this.Name = name;
-            this.Path = path;
+            //DirectoryInfo di = new DirectoryInfo(Dir);
+            TreeNode tds = directoryView.Nodes.Add(directoryCollection.Name);
+            tds.Tag = directoryCollection.Path;
+            //tds.StateImageIndex = 0;
+
+            //Load tất cả các file bên trong đường dẫn cha
+            LoadFiles(directoryCollection, tds);
+
+            //Load tất cả các thư mục con bên trong đường dẫn cha
+            LoadSubDirectories(directoryCollection, tds);
         }
 
-        public FileDir() { }
-    }
-
-    [Serializable]
-    public class Dir
-    {
-        public string Name { get; set; }
-        public string Path { get; set; }
-        public List<Dir> SubDirectories { get; set; }
-        public List<FileDir> SubFiles { get; set; }
-
-        public Dir(String name, String path)
+        private void LoadSubDirectories(Dir parrentDirectory, TreeNode td)
         {
-            this.Name = name;
-            this.Path = path;
-            SubFiles = new List<FileDir>();
-            SubDirectories = new List<Dir>();
+            // Lấy tất cả các thư mục con trong đường dẫn cha  
+            //string[] subdirectoryEntries = Directory.GetDirectories(parrentDirectory);
+            
+            // Lặp qua tất cả các đường dẫn đó
+            foreach (Dir subdirectory in parrentDirectory.SubDirectories)
+            {
+
+                //DirectoryInfo di = new DirectoryInfo(subdirectory);
+                TreeNode tds = td.Nodes.Add(subdirectory.Name);
+                //tds.StateImageIndex = 0;
+                tds.Tag = subdirectory.Path;
+                LoadFiles(subdirectory, tds);
+                LoadSubDirectories(subdirectory, tds);
+            }
         }
 
-        public Dir() { }
+        private void LoadFiles(Dir dir, TreeNode td)
+        {
+            //string[] Files = Directory.GetFiles(dir, "*.*");
+
+            // Lặp qua các file trong thư mục 
+            foreach (FileDir file in dir.SubFiles)
+            {
+                //FileInfo fi = new FileInfo(file);
+                TreeNode tds = td.Nodes.Add(file.Name);
+                tds.Tag = file.Path;
+                //tds.StateImageIndex = 1;
+                //UpdateProgress();
+
+            }
+        }
+
+        private object ByteArrayToObject(byte[] arrBytes)
+        {
+            MemoryStream memStream = new MemoryStream();
+            BinaryFormatter binForm = new BinaryFormatter();
+            memStream.Write(arrBytes, 0, arrBytes.Length);
+            memStream.Seek(0, SeekOrigin.Begin);
+            object obj = (object)binForm.Deserialize(memStream);
+            return obj;
+        }
     }
+
+
 }

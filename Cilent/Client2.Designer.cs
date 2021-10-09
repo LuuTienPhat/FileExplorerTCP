@@ -1,4 +1,6 @@
 ﻿
+using System;
+
 namespace Cilent
 {
     partial class Client2
@@ -19,6 +21,7 @@ namespace Cilent
                 components.Dispose();
             }
             base.Dispose(disposing);
+            Environment.Exit(Environment.ExitCode);
         }
 
         #region Windows Form Designer generated code
@@ -55,7 +58,8 @@ namespace Cilent
             this.btnShow = new DevExpress.XtraEditors.SimpleButton();
             this.txtDirectory = new DevExpress.XtraEditors.TextEdit();
             this.labelControl4 = new DevExpress.XtraEditors.LabelControl();
-            this.directoryView = new DevExpress.XtraTreeList.TreeList();
+            this.treeListLookUpEdit1TreeList = new DevExpress.XtraTreeList.TreeList();
+            this.directoryView = new System.Windows.Forms.TreeView();
             ((System.ComponentModel.ISupportInitialize)(this.barManager1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.panelControl1)).BeginInit();
             this.panelControl1.SuspendLayout();
@@ -64,7 +68,7 @@ namespace Cilent
             ((System.ComponentModel.ISupportInitialize)(this.panelControl2)).BeginInit();
             this.panelControl2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.txtDirectory.Properties)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.directoryView)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.treeListLookUpEdit1TreeList)).BeginInit();
             this.SuspendLayout();
             // 
             // barManager1
@@ -103,7 +107,7 @@ namespace Cilent
             // 
             this.btnReconnect.Caption = "Reconnect";
             this.btnReconnect.Id = 0;
-            this.btnReconnect.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("barButtonItem1.ImageOptions.SvgImage")));
+            this.btnReconnect.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("btnReconnect.ImageOptions.SvgImage")));
             this.btnReconnect.Name = "btnReconnect";
             this.btnReconnect.PaintStyle = DevExpress.XtraBars.BarItemPaintStyle.CaptionGlyph;
             // 
@@ -111,7 +115,7 @@ namespace Cilent
             // 
             this.btnExit.Caption = "Exit";
             this.btnExit.Id = 1;
-            this.btnExit.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("barButtonItem2.ImageOptions.SvgImage")));
+            this.btnExit.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("btnExit.ImageOptions.SvgImage")));
             this.btnExit.Name = "btnExit";
             this.btnExit.PaintStyle = DevExpress.XtraBars.BarItemPaintStyle.CaptionGlyph;
             // 
@@ -216,7 +220,7 @@ namespace Cilent
             // btnDisconnect
             // 
             this.btnDisconnect.ImageOptions.ImageToTextAlignment = DevExpress.XtraEditors.ImageAlignToText.LeftCenter;
-            this.btnDisconnect.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("btnStop.ImageOptions.SvgImage")));
+            this.btnDisconnect.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("btnDisconnect.ImageOptions.SvgImage")));
             this.btnDisconnect.ImageOptions.SvgImageSize = new System.Drawing.Size(15, 15);
             this.btnDisconnect.Location = new System.Drawing.Point(340, 149);
             this.btnDisconnect.Name = "btnDisconnect";
@@ -271,10 +275,10 @@ namespace Cilent
             // 
             // panelControl2
             // 
+            this.panelControl2.Controls.Add(this.directoryView);
             this.panelControl2.Controls.Add(this.btnShow);
             this.panelControl2.Controls.Add(this.txtDirectory);
             this.panelControl2.Controls.Add(this.labelControl4);
-            this.panelControl2.Controls.Add(this.directoryView);
             this.panelControl2.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.panelControl2.Location = new System.Drawing.Point(0, 239);
             this.panelControl2.Name = "panelControl2";
@@ -284,7 +288,7 @@ namespace Cilent
             // btnShow
             // 
             this.btnShow.ImageOptions.ImageToTextAlignment = DevExpress.XtraEditors.ImageAlignToText.LeftCenter;
-            this.btnShow.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("simpleButton1.ImageOptions.SvgImage")));
+            this.btnShow.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("btnShow.ImageOptions.SvgImage")));
             this.btnShow.ImageOptions.SvgImageSize = new System.Drawing.Size(15, 15);
             this.btnShow.Location = new System.Drawing.Point(467, 21);
             this.btnShow.Name = "btnShow";
@@ -308,12 +312,20 @@ namespace Cilent
             this.labelControl4.TabIndex = 32;
             this.labelControl4.Text = "Directory";
             // 
+            // treeListLookUpEdit1TreeList
+            // 
+            this.treeListLookUpEdit1TreeList.Location = new System.Drawing.Point(0, 0);
+            this.treeListLookUpEdit1TreeList.Name = "treeListLookUpEdit1TreeList";
+            this.treeListLookUpEdit1TreeList.OptionsView.ShowIndentAsRowStyle = true;
+            this.treeListLookUpEdit1TreeList.Size = new System.Drawing.Size(400, 200);
+            this.treeListLookUpEdit1TreeList.TabIndex = 0;
+            // 
             // directoryView
             // 
-            this.directoryView.Location = new System.Drawing.Point(78, 73);
+            this.directoryView.Location = new System.Drawing.Point(78, 74);
             this.directoryView.Name = "directoryView";
-            this.directoryView.Size = new System.Drawing.Size(483, 227);
-            this.directoryView.TabIndex = 31;
+            this.directoryView.Size = new System.Drawing.Size(483, 215);
+            this.directoryView.TabIndex = 35;
             // 
             // Client2
             // 
@@ -328,6 +340,7 @@ namespace Cilent
             this.Controls.Add(this.barDockControlTop);
             this.IconOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("Client2.IconOptions.SvgImage")));
             this.Name = "Client2";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Client2";
             ((System.ComponentModel.ISupportInitialize)(this.barManager1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.panelControl1)).EndInit();
@@ -339,7 +352,7 @@ namespace Cilent
             this.panelControl2.ResumeLayout(false);
             this.panelControl2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.txtDirectory.Properties)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.directoryView)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.treeListLookUpEdit1TreeList)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -370,6 +383,7 @@ namespace Cilent
         private DevExpress.XtraEditors.SimpleButton btnShow;
         private DevExpress.XtraEditors.TextEdit txtDirectory;
         private DevExpress.XtraEditors.LabelControl labelControl4;
-        private DevExpress.XtraTreeList.TreeList directoryView;
+        private DevExpress.XtraTreeList.TreeList treeListLookUpEdit1TreeList;
+        private System.Windows.Forms.TreeView directoryView;
     }
 }
