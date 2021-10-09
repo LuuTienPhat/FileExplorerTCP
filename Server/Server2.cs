@@ -65,12 +65,16 @@ namespace Server
                     byte[] data = new byte[BUFFER_SIZE];
                     socket.Receive(data);
 
+                    // 3. handle
                     string directory = encoding.GetString(data);
+                    Dir directoryCollection = LoadDirectory(directory);
+                    byte[] sendData = ObjectToByteArray(directoryCollection);
 
-                    // 3. send
+                    // 4. send
+                    socket.Send(sendData);
                     //socket.Send(encoding.GetBytes("Hello " + str));
 
-                    // 4. close
+                    // 5. close
                     socket.Close();
                     //server.Stop();
                 }
