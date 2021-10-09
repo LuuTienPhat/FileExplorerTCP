@@ -19,12 +19,11 @@ namespace Server
 {
     public partial class Server2 : DevExpress.XtraEditors.XtraForm
     {
-        public static ManualResetEvent allDone = new ManualResetEvent(false);
+        //public static ManualResetEvent allDone = new ManualResetEvent(false);
 
         private static int port;
         private static string address;
         private TcpListener server;
-        static ASCIIEncoding encoding = new ASCIIEncoding();
         private const int BUFFER_SIZE = 1024;
 
         public Server2()
@@ -48,9 +47,7 @@ namespace Server
             try
             {
                 IPAddress host = IPAddress.Parse(address);
-
                 server = new TcpListener(host, port);
-
 
                 // 1. listen
                 server.Start();
@@ -66,39 +63,25 @@ namespace Server
                     socket.Receive(data);
 
                     // 3. handle
-                    string directory = encoding.GetString(data);
+                    string directory = Encoding.UTF8.GetString(data);
+                    MessageBox.Show(directory, "Server");
                     Dir directoryCollection = LoadDirectory(directory);
-                    byte[] sendData = ObjectToByteArray(directoryCollection);
+                    //byte[] sendData = ObjectToByteArray(directoryCollection);
 
-                    // 4. send
-                    socket.Send(sendData);
-                    //socket.Send(encoding.GetBytes("Hello " + str));
+                    //// 4. send
+                    //socket.Send(sendData);
+                    //socket.Send(Encoding.UTF8.GetBytes("Hello " + directory));
 
                     // 5. close
-                    socket.Close();
+                    socket.Shutdown(SocketShutdown.Both);
                     //server.Stop();
                 }
-
             }
             catch (Exception ex)
             {
                 
                 MessageBox.Show(ex.Message, "Server");
             }
-
-
-            //// 2. receive
-            //byte[] data = new byte[BUFFER_SIZE];
-            //socket.Receive(data);
-
-            //string str = encoding.GetString(data);
-
-            //// 3. send
-            //socket.Send(encoding.GetBytes("Hello " + str));
-
-            //// 4. close
-            //socket.Close();
-            //server.Stop();
         }
 
         public Dir LoadDirectory(String receiveDirectory)
@@ -151,7 +134,6 @@ namespace Server
         {
             address = txtAddress.Text;
             port = int.Parse(txtPort.Text);
-            //StartServer();
 
             Thread theard = new Thread(StartServer);
             theard.Start();

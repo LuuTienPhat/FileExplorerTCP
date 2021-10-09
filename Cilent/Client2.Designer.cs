@@ -55,11 +55,11 @@ namespace Cilent
             this.labelControl1 = new DevExpress.XtraEditors.LabelControl();
             this.btnStart = new DevExpress.XtraEditors.SimpleButton();
             this.panelControl2 = new DevExpress.XtraEditors.PanelControl();
+            this.directoryView = new System.Windows.Forms.TreeView();
             this.btnShow = new DevExpress.XtraEditors.SimpleButton();
             this.txtDirectory = new DevExpress.XtraEditors.TextEdit();
             this.labelControl4 = new DevExpress.XtraEditors.LabelControl();
             this.treeListLookUpEdit1TreeList = new DevExpress.XtraTreeList.TreeList();
-            this.directoryView = new System.Windows.Forms.TreeView();
             ((System.ComponentModel.ISupportInitialize)(this.barManager1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.panelControl1)).BeginInit();
             this.panelControl1.SuspendLayout();
@@ -118,6 +118,7 @@ namespace Cilent
             this.btnExit.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("btnExit.ImageOptions.SvgImage")));
             this.btnExit.Name = "btnExit";
             this.btnExit.PaintStyle = DevExpress.XtraBars.BarItemPaintStyle.CaptionGlyph;
+            this.btnExit.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.btnExit_ItemClick);
             // 
             // bar2
             // 
@@ -285,6 +286,13 @@ namespace Cilent
             this.panelControl2.Size = new System.Drawing.Size(638, 326);
             this.panelControl2.TabIndex = 10;
             // 
+            // directoryView
+            // 
+            this.directoryView.Location = new System.Drawing.Point(78, 74);
+            this.directoryView.Name = "directoryView";
+            this.directoryView.Size = new System.Drawing.Size(483, 215);
+            this.directoryView.TabIndex = 35;
+            // 
             // btnShow
             // 
             this.btnShow.ImageOptions.ImageToTextAlignment = DevExpress.XtraEditors.ImageAlignToText.LeftCenter;
@@ -320,13 +328,6 @@ namespace Cilent
             this.treeListLookUpEdit1TreeList.OptionsView.ShowIndentAsRowStyle = true;
             this.treeListLookUpEdit1TreeList.Size = new System.Drawing.Size(400, 200);
             this.treeListLookUpEdit1TreeList.TabIndex = 0;
-            // 
-            // directoryView
-            // 
-            this.directoryView.Location = new System.Drawing.Point(78, 74);
-            this.directoryView.Name = "directoryView";
-            this.directoryView.Size = new System.Drawing.Size(483, 215);
-            this.directoryView.TabIndex = 35;
             // 
             // Client2
             // 

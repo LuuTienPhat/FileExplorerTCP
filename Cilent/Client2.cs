@@ -22,6 +22,7 @@ namespace Cilent
         private static int port;
         private static TcpClient client;
         private static string directory;
+        private static Stream stream;
 
         private const int BUFFER_SIZE = 999999999;
 
@@ -30,25 +31,31 @@ namespace Cilent
             InitializeComponent();
         }
 
-        private void btnStart_Click(object sender, EventArgs e)
+        private void ConnectToServer()
         {
             try
             {
-                host = txtHost.Text;
-                port = int.Parse(txtPort.Text);
-
                 // 1. Connect to server
                 client = new TcpClient();
                 client.Connect(host, port);
-
-                lbStatus.Text = "Connected";
-                lbDetail.Caption = "Connected to " + client.Client.RemoteEndPoint;
             }
 
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, this.Name);
             }
+        }
+
+        private void btnStart_Click(object sender, EventArgs e)
+        {
+
+            host = txtHost.Text;
+            port = int.Parse(txtPort.Text);
+
+            ConnectToServer();
+
+            lbStatus.Text = "Connected";
+            lbDetail.Caption = "Connected to " + client.Client.RemoteEndPoint;
         }
 
         private void btnDisconnect_Click(object sender, EventArgs e)
@@ -125,30 +132,42 @@ namespace Cilent
 
         private void btnShow_Click(object sender, EventArgs e)
         {
+            directory = txtDirectory.Text;
+
             try
             {
-                string str = Console.ReadLine();
-
                 // 2. send
-                byte[] data = Encoding.UTF8.GetBytes(str);
+                byte[] data = Encoding.UTF8.GetBytes(directory);
                 Stream stream = client.GetStream();
                 stream.Write(data, 0, data.Length);
 
                 // 3. receive
                 data = new byte[BUFFER_SIZE];
                 stream.Read(data, 0, BUFFER_SIZE);
+
                 Dir directoryCollection = (Dir)ByteArrayToObject(data);
                 LoadDirectory(directoryCollection);
+
+                //MessageBox.Show(Encoding.UTF8.GetString(data), this.Name);
                 
                 // 4. Close
                 stream.Close();
-                //client.Close();
+                client.Close();
+
+                // 5. Reconnect
+                ConnectToServer();
             }
 
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, this.Name);
             }
+        }
+
+        private void btnExit_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
+        {
+            this.Dispose();
+            Environment.Exit(Environment.ExitCode);
         }
     }
 
