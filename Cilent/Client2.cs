@@ -18,11 +18,10 @@ namespace Cilent
 {
     public partial class Client2 : DevExpress.XtraEditors.XtraForm
     {
-        private static string host;
+        private static String host;
         private static int port;
         private static TcpClient client;
-        private static string directory;
-        private static Stream stream;
+        private static String directory;
 
         private const int BUFFER_SIZE = 999999999;
 
@@ -89,7 +88,7 @@ namespace Cilent
         private void LoadSubDirectories(Dir parrentDirectory, TreeNode td)
         {
             // Lấy tất cả các thư mục con trong đường dẫn cha  
-            //string[] subdirectoryEntries = Directory.GetDirectories(parrentDirectory);
+            //String[] subdirectoryEntries = Directory.GetDirectories(parrentDirectory);
 
             // Lặp qua tất cả các đường dẫn đó
             foreach (Dir subdirectory in parrentDirectory.SubDirectories)
@@ -106,7 +105,7 @@ namespace Cilent
 
         private void LoadFiles(Dir dir, TreeNode td)
         {
-            //string[] Files = Directory.GetFiles(dir, "*.*");
+            //String[] Files = Directory.GetFiles(dir, "*.*");
 
             // Lặp qua các file trong thư mục 
             foreach (FileDir file in dir.SubFiles)
@@ -133,13 +132,19 @@ namespace Cilent
         private void btnShow_Click(object sender, EventArgs e)
         {
             directory = txtDirectory.Text;
-
+            //directory = "@" + "'" + directory + "'";
             try
             {
                 Stream stream = client.GetStream();
 
+                
+
                 // 2. send
-                byte[] data = Encoding.ASCII.GetBytes(directory);
+                String dir = txtDirectory.Text;
+                byte[] dataSize = Encoding.ASCII.GetBytes(dir.Length.ToString());
+                stream.Write(dataSize, 0, dataSize.Length);
+
+                byte[] data = Encoding.ASCII.GetBytes(dir);
                 stream.Write(data, 0, data.Length);
 
                 // 3. receive
@@ -161,7 +166,7 @@ namespace Cilent
 
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message, this.Name);
+                MessageBox.Show(ex.ToString(), this.Name);
             }
         }
 
@@ -171,39 +176,4 @@ namespace Cilent
             Environment.Exit(Environment.ExitCode);
         }
     }
-
-    //[Serializable]
-    //public class Dir
-    //{
-    //    public string Name { get; set; }
-    //    public string Path { get; set; }
-    //    public List<Dir> SubDirectories { get; set; }
-    //    public List<FileDir> SubFiles { get; set; }
-
-    //    public Dir(string name, string path)
-    //    {
-    //        this.Name = name;
-    //        this.Path = path;
-    //        SubFiles = new List<FileDir>();
-    //        SubDirectories = new List<Dir>();
-    //    }
-
-    //    public Dir() { }
-
-    //}
-
-    //[Serializable]
-    //public class FileDir
-    //{
-    //    public string Name { get; set; }
-    //    public string Path { get; set; }
-
-    //    public FileDir(string name, string path)
-    //    {
-    //        this.Name = name;
-    //        this.Path = path;
-    //    }
-
-    //    public FileDir() { }
-    //}
 }

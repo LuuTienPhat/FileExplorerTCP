@@ -307,7 +307,7 @@ namespace Cilent
             // 
             // txtDirectory
             // 
-            this.txtDirectory.EditValue = "C:\\Users\\Phat\\Documents\\Visual Studio 2019\\TCP";
+            this.txtDirectory.EditValue = "C:\\Users\\Phat\\Documents\\NetBeansProjects\\Practice";
             this.txtDirectory.Location = new System.Drawing.Point(170, 26);
             this.txtDirectory.Name = "txtDirectory";
             this.txtDirectory.Size = new System.Drawing.Size(257, 22);
