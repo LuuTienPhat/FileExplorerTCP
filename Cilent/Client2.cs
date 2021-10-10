@@ -28,6 +28,7 @@ namespace Cilent
         public Client2()
         {
             InitializeComponent();
+            btnDisconnect.Enabled = btnReconnect.Enabled = dirPanel.Enabled = false;
         }
 
         private void ConnectToServer()
@@ -37,6 +38,12 @@ namespace Cilent
                 // 1. Connect to server
                 client = new TcpClient();
                 client.Connect(host, port);
+
+                btnDisconnect.Enabled = btnReconnect.Enabled = dirPanel.Enabled = true;
+                txtHost.Enabled = txtPort.Enabled = btnConnect.Enabled = false;
+
+                lbStatus.Text = "Connected";
+                lbDetail.Caption = "Connected to " + client.Client.RemoteEndPoint;
             }
 
             catch (Exception ex)
@@ -45,24 +52,17 @@ namespace Cilent
             }
         }
 
-        private void btnStart_Click(object sender, EventArgs e)
-        {
-
-            host = txtHost.Text;
-            port = int.Parse(txtPort.Text);
-
-            ConnectToServer();
-
-            lbStatus.Text = "Connected";
-            lbDetail.Caption = "Connected to " + client.Client.RemoteEndPoint;
-        }
-
         private void btnDisconnect_Click(object sender, EventArgs e)
         {
             try
             {
                 client.Close();
-                client.Dispose();
+                //client.Dispose();
+
+                lbStatus.Text = "Not Connected";
+                lbDetail.Caption = "Disconnected";
+                btnDisconnect.Enabled = btnReconnect.Enabled = dirPanel.Enabled = false;
+                txtHost.Enabled = txtPort.Enabled = btnConnect.Enabled = true;
             }
             catch (Exception ex)
             {
@@ -129,15 +129,13 @@ namespace Cilent
             return obj;
         }
 
+        //btnShow
         private void btnShow_Click(object sender, EventArgs e)
         {
             directory = txtDirectory.Text;
-            //directory = "@" + "'" + directory + "'";
             try
             {
                 Stream stream = client.GetStream();
-
-                
 
                 // 2. send
                 String dir = txtDirectory.Text;
@@ -155,7 +153,7 @@ namespace Cilent
                 LoadDirectory(directoryCollection);
 
                 //MessageBox.Show(Encoding.ASCII.GetString(data), this.Name);
-                
+
                 // 4. Close
                 stream.Close();
                 client.Close();
@@ -170,10 +168,25 @@ namespace Cilent
             }
         }
 
+        //btnExit
         private void btnExit_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
         {
             this.Dispose();
             Environment.Exit(Environment.ExitCode);
+        }
+
+        //btnReconnect
+        private void btnReconnect_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
+        {
+
+        }
+
+        private void btnConnect_Click(object sender, EventArgs e)
+        {
+            host = txtHost.Text;
+            port = int.Parse(txtPort.Text);
+
+            ConnectToServer();
         }
     }
 }

@@ -53,8 +53,8 @@ namespace Cilent
             this.labelControl2 = new DevExpress.XtraEditors.LabelControl();
             this.txtHost = new DevExpress.XtraEditors.TextEdit();
             this.labelControl1 = new DevExpress.XtraEditors.LabelControl();
-            this.btnStart = new DevExpress.XtraEditors.SimpleButton();
-            this.panelControl2 = new DevExpress.XtraEditors.PanelControl();
+            this.btnConnect = new DevExpress.XtraEditors.SimpleButton();
+            this.dirPanel = new DevExpress.XtraEditors.PanelControl();
             this.directoryView = new System.Windows.Forms.TreeView();
             this.btnShow = new DevExpress.XtraEditors.SimpleButton();
             this.txtDirectory = new DevExpress.XtraEditors.TextEdit();
@@ -65,8 +65,8 @@ namespace Cilent
             this.panelControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.txtPort.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtHost.Properties)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.panelControl2)).BeginInit();
-            this.panelControl2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dirPanel)).BeginInit();
+            this.dirPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.txtDirectory.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.treeListLookUpEdit1TreeList)).BeginInit();
             this.SuspendLayout();
@@ -110,6 +110,7 @@ namespace Cilent
             this.btnReconnect.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("btnReconnect.ImageOptions.SvgImage")));
             this.btnReconnect.Name = "btnReconnect";
             this.btnReconnect.PaintStyle = DevExpress.XtraBars.BarItemPaintStyle.CaptionGlyph;
+            this.btnReconnect.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.btnReconnect_ItemClick);
             // 
             // btnExit
             // 
@@ -188,7 +189,7 @@ namespace Cilent
             this.panelControl1.Controls.Add(this.labelControl2);
             this.panelControl1.Controls.Add(this.txtHost);
             this.panelControl1.Controls.Add(this.labelControl1);
-            this.panelControl1.Controls.Add(this.btnStart);
+            this.panelControl1.Controls.Add(this.btnConnect);
             this.panelControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panelControl1.Location = new System.Drawing.Point(0, 30);
             this.panelControl1.Name = "panelControl1";
@@ -262,29 +263,29 @@ namespace Cilent
             this.labelControl1.TabIndex = 20;
             this.labelControl1.Text = "Host";
             // 
-            // btnStart
+            // btnConnect
             // 
-            this.btnStart.ImageOptions.ImageToTextAlignment = DevExpress.XtraEditors.ImageAlignToText.LeftCenter;
-            this.btnStart.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("btnStart.ImageOptions.SvgImage")));
-            this.btnStart.ImageOptions.SvgImageSize = new System.Drawing.Size(15, 15);
-            this.btnStart.Location = new System.Drawing.Point(224, 149);
-            this.btnStart.Name = "btnStart";
-            this.btnStart.Size = new System.Drawing.Size(94, 29);
-            this.btnStart.TabIndex = 19;
-            this.btnStart.Text = "Connect";
-            this.btnStart.Click += new System.EventHandler(this.btnStart_Click);
+            this.btnConnect.ImageOptions.ImageToTextAlignment = DevExpress.XtraEditors.ImageAlignToText.LeftCenter;
+            this.btnConnect.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("btnStart.ImageOptions.SvgImage")));
+            this.btnConnect.ImageOptions.SvgImageSize = new System.Drawing.Size(15, 15);
+            this.btnConnect.Location = new System.Drawing.Point(224, 149);
+            this.btnConnect.Name = "btnConnect";
+            this.btnConnect.Size = new System.Drawing.Size(94, 29);
+            this.btnConnect.TabIndex = 19;
+            this.btnConnect.Text = "Connect";
+            this.btnConnect.Click += new System.EventHandler(this.btnConnect_Click);
             // 
-            // panelControl2
+            // dirPanel
             // 
-            this.panelControl2.Controls.Add(this.directoryView);
-            this.panelControl2.Controls.Add(this.btnShow);
-            this.panelControl2.Controls.Add(this.txtDirectory);
-            this.panelControl2.Controls.Add(this.labelControl4);
-            this.panelControl2.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panelControl2.Location = new System.Drawing.Point(0, 239);
-            this.panelControl2.Name = "panelControl2";
-            this.panelControl2.Size = new System.Drawing.Size(638, 326);
-            this.panelControl2.TabIndex = 10;
+            this.dirPanel.Controls.Add(this.directoryView);
+            this.dirPanel.Controls.Add(this.btnShow);
+            this.dirPanel.Controls.Add(this.txtDirectory);
+            this.dirPanel.Controls.Add(this.labelControl4);
+            this.dirPanel.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.dirPanel.Location = new System.Drawing.Point(0, 239);
+            this.dirPanel.Name = "dirPanel";
+            this.dirPanel.Size = new System.Drawing.Size(638, 326);
+            this.dirPanel.TabIndex = 10;
             // 
             // directoryView
             // 
@@ -334,7 +335,7 @@ namespace Cilent
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(638, 592);
-            this.Controls.Add(this.panelControl2);
+            this.Controls.Add(this.dirPanel);
             this.Controls.Add(this.panelControl1);
             this.Controls.Add(this.barDockControlLeft);
             this.Controls.Add(this.barDockControlRight);
@@ -350,9 +351,9 @@ namespace Cilent
             this.panelControl1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.txtPort.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtHost.Properties)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.panelControl2)).EndInit();
-            this.panelControl2.ResumeLayout(false);
-            this.panelControl2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dirPanel)).EndInit();
+            this.dirPanel.ResumeLayout(false);
+            this.dirPanel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.txtDirectory.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.treeListLookUpEdit1TreeList)).EndInit();
             this.ResumeLayout(false);
@@ -379,9 +380,9 @@ namespace Cilent
         private DevExpress.XtraEditors.LabelControl labelControl2;
         private DevExpress.XtraEditors.TextEdit txtHost;
         private DevExpress.XtraEditors.LabelControl labelControl1;
-        private DevExpress.XtraEditors.SimpleButton btnStart;
+        private DevExpress.XtraEditors.SimpleButton btnConnect;
         private DevExpress.XtraBars.BarStaticItem lbDetail;
-        private DevExpress.XtraEditors.PanelControl panelControl2;
+        private DevExpress.XtraEditors.PanelControl dirPanel;
         private DevExpress.XtraEditors.SimpleButton btnShow;
         private DevExpress.XtraEditors.TextEdit txtDirectory;
         private DevExpress.XtraEditors.LabelControl labelControl4;
