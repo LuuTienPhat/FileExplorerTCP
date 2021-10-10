@@ -15,6 +15,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 using System.IO;
 using System.Xml.Serialization;
 using MySharedClass;
+using System.Net.NetworkInformation;
 
 namespace Server
 {
@@ -49,9 +50,32 @@ namespace Server
             }
         }
 
+        private byte[] returnResponse(string data)
+        {
+            // 3. handle
+            if (data.Equals("test"))
+            {
+                return Encoding.ASCII.GetBytes("yes");
+            }
+            else
+            {
+                Dir directoryCollection = LoadDirectory(data);
+                byte[] sendData = ObjectToByteArray(directoryCollection);
+                return sendData;
+            }
+
+            //// 4. send
+            //socket.Send(sendData);
+
+            //// 5. close
+            //socket.Close();
+            //socket.Shutdown(SocketShutdown.Both);
+            //server.Stop();
+        }
+
         private void StartServer()
         {
-            Socket socket = server.AcceptSocket();
+            //Socket socket = server.AcceptSocket();
 
             while (_connectionsCount < MAX_CONNECTION || MAX_CONNECTION == 0)
             {
@@ -85,18 +109,16 @@ namespace Server
                 socket.Receive(_buffer);
                 Array.Copy(_buffer, data, size);
 
-                //MessageBox.Show(Encoding.ASCII.GetString(data));
-
                 // 3. handle
-                String dir = Encoding.ASCII.GetString(data);
-                Dir directoryCollection = LoadDirectory(dir);
-                byte[] sendData = ObjectToByteArray(directoryCollection);
+                String receivedData = Encoding.ASCII.GetString(data);
+                byte[] sendData = returnResponse(receivedData);
 
                 // 4. send
                 socket.Send(sendData);
 
                 // 5. close
-                socket.Shutdown(SocketShutdown.Both);
+                socket.Close();
+                //socket.Shutdown(SocketShutdown.Both);
                 //server.Stop();
 
             }
@@ -163,7 +185,6 @@ namespace Server
                 host = IPAddress.Parse(address);
             }
             port = int.Parse(txtPort.Text);
-
 
             try
             {

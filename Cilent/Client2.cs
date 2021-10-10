@@ -31,6 +31,69 @@ namespace Cilent
             btnDisconnect.Enabled = btnReconnect.Enabled = dirPanel.Enabled = false;
         }
 
+        private object returnResponse(String data)
+        {
+            try
+            {
+                //directory = txtDirectory.Text;
+                Stream stream = client.GetStream();
+
+                // 2. send
+                byte[] sendDataSize = Encoding.ASCII.GetBytes(data.Length.ToString());
+                stream.Write(sendDataSize, 0, sendDataSize.Length);
+
+                byte[] sendData = Encoding.ASCII.GetBytes(data);
+                stream.Write(sendData, 0, sendData.Length);
+
+                // 3. receive
+                byte[] receivedData = new byte[BUFFER_SIZE];
+                stream.Read(receivedData, 0, BUFFER_SIZE);
+
+                // 4. Close
+                //stream.Close();
+                //client.Close();
+
+                if (data.Equals("test"))
+                {
+                    String result = Encoding.ASCII.GetString(receivedData);
+                    result = result.Replace("\0", "");
+                    return result.Equals("yes") ? true : false;
+                }
+                else
+                {
+                    Dir directoryCollection = (Dir)ByteArrayToObject(receivedData);
+                    LoadDirectory(directoryCollection);
+                    return directoryCollection;
+                }
+
+                // 5. Reconnect
+                //ConnectToServer();
+
+                // 2. send
+                //String dir = txtDirectory.Text;
+                //byte[] dataSize = Encoding.ASCII.GetBytes(dir.Length.ToString());
+                //stream.Write(dataSize, 0, dataSize.Length);
+
+                //byte[] data = Encoding.ASCII.GetBytes(dir);
+                //stream.Write(data, 0, data.Length);
+
+                //// 3. receive
+                //data = new byte[BUFFER_SIZE];
+                //stream.Read(data, 0, BUFFER_SIZE);
+
+                //Dir directoryCollection = (Dir)ByteArrayToObject(data);
+                //LoadDirectory(directoryCollection);
+
+                //MessageBox.Show(Encoding.ASCII.GetString(data), this.Name);
+            }
+
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString(), this.Name);
+            }
+            return null;
+        }
+
         private void ConnectToServer()
         {
             try
@@ -39,11 +102,18 @@ namespace Cilent
                 client = new TcpClient();
                 client.Connect(host, port);
 
-                btnDisconnect.Enabled = btnReconnect.Enabled = dirPanel.Enabled = true;
-                txtHost.Enabled = txtPort.Enabled = btnConnect.Enabled = false;
+                bool res = (bool)returnResponse("test");
+                
+                if(res)
+                {
+                    btnDisconnect.Enabled = btnReconnect.Enabled = dirPanel.Enabled = true;
+                    txtHost.Enabled = txtPort.Enabled = btnConnect.Enabled = false;
 
-                lbStatus.Text = "Connected";
-                lbDetail.Caption = "Connected to " + client.Client.RemoteEndPoint;
+                    lbStatus.Text = "Connected";
+                    lbDetail.Caption = "Connected to " + client.Client.RemoteEndPoint;
+                }
+
+                client.Close();
             }
 
             catch (Exception ex)
@@ -127,6 +197,35 @@ namespace Cilent
             memStream.Seek(0, SeekOrigin.Begin);
             object obj = (object)binForm.Deserialize(memStream);
             return obj;
+        }
+
+        private bool TestConnection(String data)
+        {
+            try
+            {
+                Stream stream = client.GetStream();
+
+                // 2. send
+                byte[] sendData = Encoding.ASCII.GetBytes(data);
+                stream.Write(sendData, 0, data.Length);
+
+                // 3. receive
+                byte[] receivedData = new byte[1024];
+                stream.Read(receivedData, 0, 1024);
+                String result = Encoding.ASCII.GetString(receivedData);
+
+                // 4. Close
+                stream.Close();
+                //client.Close();
+
+                return result.Equals("yes") ? true : false;
+            }
+
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString(), this.Name);
+            }
+            return false;
         }
 
         //btnShow
