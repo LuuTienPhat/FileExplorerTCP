@@ -6,12 +6,12 @@ namespace MySharedClass
     [Serializable]
     public partial class Dir
     {
-        public string Name { get; set; }
-        public string Path { get; set; }
+        public String Name { get; set; }
+        public String Path { get; set; }
         public List<Dir> SubDirectories { get; set; }
         public List<FileDir> SubFiles { get; set; }
 
-        public Dir(string name, string path)
+        public Dir(String name, String path)
         {
             Name = name;
             Path = path;
@@ -26,10 +26,10 @@ namespace MySharedClass
     [Serializable]
     public partial class FileDir
     {
-        public string Name { get; set; }
-        public string Path { get; set; }
+        public String Name { get; set; }
+        public String Path { get; set; }
 
-        public FileDir(string name, string path)
+        public FileDir(String name, String path)
         {
             Name = name;
             Path = path;
