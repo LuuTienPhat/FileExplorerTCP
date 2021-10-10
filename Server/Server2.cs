@@ -23,7 +23,7 @@ namespace Server
         //public static ManualResetEvent allDone = new ManualResetEvent(false);
 
         private static int port;
-        private static string address;
+        private static String address;
         private static TcpListener server;
         private const int BUFFER_SIZE = 1024;
 
@@ -36,7 +36,7 @@ namespace Server
             if (obj == null)
                 return null;
             BinaryFormatter bf = new BinaryFormatter();
-            
+
             using (MemoryStream ms = new MemoryStream())
             {
                 bf.Serialize(ms, obj);
@@ -48,28 +48,25 @@ namespace Server
         {
             try
             {
-                IPAddress host = IPAddress.Parse(address);
-                server = new TcpListener(host, port);
-
-
-                // 1. listen
-                server.Start();
-                lbStatus.Text = "Activated";
-                lbDetail.Caption = "Server started on " + server.LocalEndpoint;
-
                 while (true)
                 {
                     Socket socket = server.AcceptSocket();
 
                     // 2. receive
-                    byte[] data = new byte[BUFFER_SIZE];
-                    socket.Receive(data);
+                    byte[] receiveDataSizeByte = new byte[BUFFER_SIZE];
+                    socket.Receive(receiveDataSizeByte);
+                    int size = int.Parse(Encoding.ASCII.GetString(receiveDataSizeByte));
+
+                    byte[] buffer = new byte[BUFFER_SIZE];
+                    byte[] data = new byte[size];
+                    socket.Receive(buffer);
+                    Array.Copy(buffer, data, size);
+                    //MessageBox.Show(Encoding.ASCII.GetString(data));
 
                     // 3. handle
-                    string directory = Encoding.ASCII.GetString(data);
-                    //string dir2 = "C:\\Users\\Phat\\Documents\\Visual Studio 2019\\TCP";
-                    MessageBox.Show(directory,this.Name);
-                    Dir directoryCollection = LoadDirectory(directory);
+                    String dir = Encoding.ASCII.GetString(data);
+                    //MessageBox.Show(dir, this.Name);
+                    Dir directoryCollection = LoadDirectory(dir);
                     byte[] sendData = ObjectToByteArray(directoryCollection);
 
                     // 4. send
@@ -82,12 +79,12 @@ namespace Server
             }
             catch (Exception ex)
             {
-                
-                MessageBox.Show(ex.ToString(), "Server2");
+
+                MessageBox.Show(ex.ToString(), this.Name);
             }
         }
 
-        public Dir LoadDirectory(string receiveDirectory)
+        public Dir LoadDirectory(String receiveDirectory)
         {
             DirectoryInfo directoryInfo = new DirectoryInfo(receiveDirectory);
 
@@ -102,13 +99,13 @@ namespace Server
             return currentDir;
         }
 
-        private void LoadSubDirectories(string parentDirectory, Dir directory)
+        private void LoadSubDirectories(String parentDirectory, Dir directory)
         {
             // Lấy tất cả các thư mục con trong đường dẫn cha  
-            string[] subdirectoryEntries = Directory.GetDirectories(parentDirectory);
+            String[] subdirectoryEntries = Directory.GetDirectories(parentDirectory);
 
             // Lặp qua tất cả các đường dẫn đó
-            foreach (string subdirectory in subdirectoryEntries)
+            foreach (String subdirectory in subdirectoryEntries)
             {
                 DirectoryInfo di = new DirectoryInfo(subdirectory);
                 Dir currentDir = new Dir(di.Name, di.FullName);
@@ -119,12 +116,12 @@ namespace Server
             }
         }
 
-        private void LoadFiles(string parentDirectory, Dir directory)
+        private void LoadFiles(String parentDirectory, Dir directory)
         {
-            string[] Files = Directory.GetFiles(parentDirectory);
+            String[] Files = Directory.GetFiles(parentDirectory);
 
             // Lặp qua các file trong thư mục 
-            foreach (string file in Files)
+            foreach (String file in Files)
             {
                 FileInfo fi = new FileInfo(file);
                 FileDir fileDir = new FileDir(fi.Name, fi.FullName);
@@ -134,9 +131,27 @@ namespace Server
 
         private void btnStart_Click(object sender, EventArgs e)
         {
-            
+
             address = txtAddress.Text;
             port = int.Parse(txtPort.Text);
+
+            try
+            {
+                IPAddress host = IPAddress.Parse(address);
+                server = new TcpListener(host, port);
+
+
+                // 1. listen
+                server.Start();
+                lbStatus.Text = "Activated";
+                lbDetail.Caption = "Server started on " + server.LocalEndpoint;
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString(), this.Name);
+            }
+
 
             Thread theard = new Thread(StartServer);
             theard.Start();

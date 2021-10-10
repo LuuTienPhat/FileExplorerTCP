@@ -35,9 +35,7 @@ namespace Server
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Server2));
             this.btnStart = new DevExpress.XtraEditors.SimpleButton();
-            this.panelControl1 = new DevExpress.XtraEditors.PanelControl();
-            this.labelControl4 = new DevExpress.XtraEditors.LabelControl();
-            this.connectedClientList = new DevExpress.XtraEditors.ListBoxControl();
+            this.connectPanel = new DevExpress.XtraEditors.PanelControl();
             this.acceptAll = new DevExpress.XtraEditors.CheckEdit();
             this.barManager1 = new DevExpress.XtraBars.BarManager(this.components);
             this.bar1 = new DevExpress.XtraBars.Bar();
@@ -56,13 +54,18 @@ namespace Server
             this.labelControl2 = new DevExpress.XtraEditors.LabelControl();
             this.txtAddress = new DevExpress.XtraEditors.TextEdit();
             this.labelControl1 = new DevExpress.XtraEditors.LabelControl();
-            ((System.ComponentModel.ISupportInitialize)(this.panelControl1)).BeginInit();
-            this.panelControl1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.connectedClientList)).BeginInit();
+            this.clientPanel = new DevExpress.XtraEditors.PanelControl();
+            this.labelControl4 = new DevExpress.XtraEditors.LabelControl();
+            this.connectedClientList = new DevExpress.XtraEditors.ListBoxControl();
+            ((System.ComponentModel.ISupportInitialize)(this.connectPanel)).BeginInit();
+            this.connectPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.acceptAll.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.barManager1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtPort.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtAddress.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.clientPanel)).BeginInit();
+            this.clientPanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.connectedClientList)).BeginInit();
             this.SuspendLayout();
             // 
             // btnStart
@@ -77,39 +80,22 @@ namespace Server
             this.btnStart.Text = "Start";
             this.btnStart.Click += new System.EventHandler(this.btnStart_Click);
             // 
-            // panelControl1
+            // connectPanel
             // 
-            this.panelControl1.Controls.Add(this.labelControl4);
-            this.panelControl1.Controls.Add(this.connectedClientList);
-            this.panelControl1.Controls.Add(this.acceptAll);
-            this.panelControl1.Controls.Add(this.lbStatus);
-            this.panelControl1.Controls.Add(this.labelControl3);
-            this.panelControl1.Controls.Add(this.btnStop);
-            this.panelControl1.Controls.Add(this.txtPort);
-            this.panelControl1.Controls.Add(this.labelControl2);
-            this.panelControl1.Controls.Add(this.txtAddress);
-            this.panelControl1.Controls.Add(this.labelControl1);
-            this.panelControl1.Controls.Add(this.btnStart);
-            this.panelControl1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panelControl1.Location = new System.Drawing.Point(0, 30);
-            this.panelControl1.Name = "panelControl1";
-            this.panelControl1.Size = new System.Drawing.Size(371, 339);
-            this.panelControl1.TabIndex = 1;
-            // 
-            // labelControl4
-            // 
-            this.labelControl4.Location = new System.Drawing.Point(49, 210);
-            this.labelControl4.Name = "labelControl4";
-            this.labelControl4.Size = new System.Drawing.Size(32, 16);
-            this.labelControl4.TabIndex = 10;
-            this.labelControl4.Text = "Client";
-            // 
-            // connectedClientList
-            // 
-            this.connectedClientList.Location = new System.Drawing.Point(114, 206);
-            this.connectedClientList.Name = "connectedClientList";
-            this.connectedClientList.Size = new System.Drawing.Size(210, 106);
-            this.connectedClientList.TabIndex = 9;
+            this.connectPanel.Controls.Add(this.acceptAll);
+            this.connectPanel.Controls.Add(this.lbStatus);
+            this.connectPanel.Controls.Add(this.labelControl3);
+            this.connectPanel.Controls.Add(this.btnStop);
+            this.connectPanel.Controls.Add(this.txtPort);
+            this.connectPanel.Controls.Add(this.labelControl2);
+            this.connectPanel.Controls.Add(this.txtAddress);
+            this.connectPanel.Controls.Add(this.labelControl1);
+            this.connectPanel.Controls.Add(this.btnStart);
+            this.connectPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.connectPanel.Location = new System.Drawing.Point(0, 30);
+            this.connectPanel.Name = "connectPanel";
+            this.connectPanel.Size = new System.Drawing.Size(371, 339);
+            this.connectPanel.TabIndex = 1;
             // 
             // acceptAll
             // 
@@ -147,6 +133,8 @@ namespace Server
             this.bar1.LinksPersistInfo.AddRange(new DevExpress.XtraBars.LinkPersistInfo[] {
             new DevExpress.XtraBars.LinkPersistInfo(this.btnRestart),
             new DevExpress.XtraBars.LinkPersistInfo(this.btnExit)});
+            this.bar1.OptionsBar.DrawBorder = false;
+            this.bar1.OptionsBar.DrawDragBorder = false;
             this.bar1.OptionsBar.MultiLine = true;
             this.bar1.OptionsBar.UseWholeRow = true;
             this.bar1.Text = "Custom 2";
@@ -290,12 +278,38 @@ namespace Server
             this.labelControl1.TabIndex = 1;
             this.labelControl1.Text = "Address";
             // 
+            // clientPanel
+            // 
+            this.clientPanel.Controls.Add(this.labelControl4);
+            this.clientPanel.Controls.Add(this.connectedClientList);
+            this.clientPanel.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.clientPanel.Location = new System.Drawing.Point(0, 225);
+            this.clientPanel.Name = "clientPanel";
+            this.clientPanel.Size = new System.Drawing.Size(371, 144);
+            this.clientPanel.TabIndex = 6;
+            // 
+            // labelControl4
+            // 
+            this.labelControl4.Location = new System.Drawing.Point(48, 23);
+            this.labelControl4.Name = "labelControl4";
+            this.labelControl4.Size = new System.Drawing.Size(32, 16);
+            this.labelControl4.TabIndex = 12;
+            this.labelControl4.Text = "Client";
+            // 
+            // connectedClientList
+            // 
+            this.connectedClientList.Location = new System.Drawing.Point(113, 19);
+            this.connectedClientList.Name = "connectedClientList";
+            this.connectedClientList.Size = new System.Drawing.Size(210, 106);
+            this.connectedClientList.TabIndex = 11;
+            // 
             // Server2
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(371, 396);
-            this.Controls.Add(this.panelControl1);
+            this.Controls.Add(this.clientPanel);
+            this.Controls.Add(this.connectPanel);
             this.Controls.Add(this.barDockControlLeft);
             this.Controls.Add(this.barDockControlRight);
             this.Controls.Add(this.barDockControlBottom);
@@ -304,14 +318,17 @@ namespace Server
             this.Name = "Server2";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Server2";
-            ((System.ComponentModel.ISupportInitialize)(this.panelControl1)).EndInit();
-            this.panelControl1.ResumeLayout(false);
-            this.panelControl1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.connectedClientList)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.connectPanel)).EndInit();
+            this.connectPanel.ResumeLayout(false);
+            this.connectPanel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.acceptAll.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.barManager1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtPort.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtAddress.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.clientPanel)).EndInit();
+            this.clientPanel.ResumeLayout(false);
+            this.clientPanel.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.connectedClientList)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -320,7 +337,7 @@ namespace Server
         #endregion
 
         private DevExpress.XtraEditors.SimpleButton btnStart;
-        private DevExpress.XtraEditors.PanelControl panelControl1;
+        private DevExpress.XtraEditors.PanelControl connectPanel;
         private DevExpress.XtraEditors.TextEdit txtPort;
         private DevExpress.XtraEditors.LabelControl labelControl2;
         private DevExpress.XtraEditors.TextEdit txtAddress;
@@ -339,7 +356,8 @@ namespace Server
         private DevExpress.XtraBars.Bar bar2;
         private DevExpress.XtraBars.BarStaticItem lbDetail;
         private DevExpress.XtraEditors.CheckEdit acceptAll;
-        private DevExpress.XtraEditors.ListBoxControl connectedClientList;
+        private DevExpress.XtraEditors.PanelControl clientPanel;
         private DevExpress.XtraEditors.LabelControl labelControl4;
+        private DevExpress.XtraEditors.ListBoxControl connectedClientList;
     }
 }
