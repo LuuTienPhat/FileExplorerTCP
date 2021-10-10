@@ -26,10 +26,13 @@ namespace Server
         private static String address;
         private static TcpListener server;
         private const int BUFFER_SIZE = 1024;
+        private static Thread serverTheard;
+        private static IPAddress host;
 
         public Server2()
         {
             InitializeComponent();
+            btnRestart.Enabled = btnStop.Enabled = clientPanel.Enabled = false;
         }
         private static byte[] ObjectToByteArray(object obj)
         {
@@ -51,6 +54,7 @@ namespace Server
                 while (true)
                 {
                     Socket socket = server.AcceptSocket();
+                    clientList.Items.Add(socket.RemoteEndPoint + " connected");
 
                     // 2. receive
                     byte[] receiveDataSizeByte = new byte[BUFFER_SIZE];
@@ -77,9 +81,8 @@ namespace Server
                     //server.Stop();
                 }
             }
-            catch (Exception ex)
+            catch (SocketException ex)
             {
-
                 MessageBox.Show(ex.ToString(), this.Name);
             }
         }
@@ -131,15 +134,73 @@ namespace Server
 
         private void btnStart_Click(object sender, EventArgs e)
         {
-
-            address = txtAddress.Text;
+            if (acceptAll.Checked)
+            {
+                host = IPAddress.Any;
+            }
+            else
+            {
+                address = txtAddress.Text;
+                host = IPAddress.Parse(address);
+            }
             port = int.Parse(txtPort.Text);
+
 
             try
             {
-                IPAddress host = IPAddress.Parse(address);
                 server = new TcpListener(host, port);
 
+                // 1. listen
+                server.Start();
+                lbStatus.Text = "Activated";
+                lbDetail.Caption = "Server started on " + server.LocalEndpoint;
+
+                txtAddress.Enabled = txtPort.Enabled = acceptAll.Enabled = btnStart.Enabled = false;
+                btnRestart.Enabled = btnStop.Enabled = clientPanel.Enabled = true;
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString(), this.Name);
+            }
+
+
+            serverTheard = new Thread(StartServer);
+            serverTheard.Start();
+        }
+
+        private void btnExit_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
+        {
+            this.Dispose();
+            Environment.Exit(Environment.ExitCode);
+        }
+
+        [Obsolete]
+        private void btnStop_Click(object sender, EventArgs e)
+        {
+            serverTheard.Suspend();
+            server.Stop();
+            lbStatus.Text = "Not Activated";
+            lbDetail.Caption = "Server stopped";
+
+            btnRestart.Enabled = btnStop.Enabled = false;
+            acceptAll.Enabled = txtPort.Enabled = btnStart.Enabled = true;
+            if (acceptAll.Checked) txtAddress.Enabled = false;
+            else txtAddress.Enabled = true;
+        }
+
+        [Obsolete]
+        private void btnRestart_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
+        {
+            try
+            {
+                serverTheard.Suspend();
+                server.Stop();
+
+                lbStatus.Text = "Not Activated";
+                lbDetail.Caption = "Server stopped";
+
+                server = new TcpListener(host, port);
 
                 // 1. listen
                 server.Start();
@@ -153,28 +214,21 @@ namespace Server
             }
 
 
-            Thread theard = new Thread(StartServer);
-            theard.Start();
+            serverTheard = new Thread(StartServer);
+            serverTheard.Start();
         }
 
-        private void btnExit_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
+        private void acceptAll_CheckedChanged(object sender, EventArgs e)
         {
-            this.Dispose();
-            Environment.Exit(Environment.ExitCode);
-        }
-
-        private void btnStop_Click(object sender, EventArgs e)
-        {
-            server.Stop();
-            lbStatus.Text = "Not Activated";
-            lbDetail.Caption = "Server stopped";
-        }
-
-        private void btnRestart_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
-        {
-            server.Stop();
-            server.Start();
-            Socket socket = server.AcceptSocket();
+            switch (acceptAll.Checked)
+            {
+                case true:
+                    txtAddress.Enabled = false;
+                    break;
+                case false:
+                    txtAddress.Enabled = true;
+                    break;
+            }
         }
     }
 }

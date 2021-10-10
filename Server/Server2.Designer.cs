@@ -56,7 +56,7 @@ namespace Server
             this.labelControl1 = new DevExpress.XtraEditors.LabelControl();
             this.clientPanel = new DevExpress.XtraEditors.PanelControl();
             this.labelControl4 = new DevExpress.XtraEditors.LabelControl();
-            this.connectedClientList = new DevExpress.XtraEditors.ListBoxControl();
+            this.clientList = new System.Windows.Forms.ListBox();
             ((System.ComponentModel.ISupportInitialize)(this.connectPanel)).BeginInit();
             this.connectPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.acceptAll.Properties)).BeginInit();
@@ -65,7 +65,6 @@ namespace Server
             ((System.ComponentModel.ISupportInitialize)(this.txtAddress.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.clientPanel)).BeginInit();
             this.clientPanel.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.connectedClientList)).BeginInit();
             this.SuspendLayout();
             // 
             // btnStart
@@ -105,6 +104,7 @@ namespace Server
             this.acceptAll.Properties.Caption = "Accept All";
             this.acceptAll.Size = new System.Drawing.Size(94, 24);
             this.acceptAll.TabIndex = 8;
+            this.acceptAll.CheckedChanged += new System.EventHandler(this.acceptAll_CheckedChanged);
             // 
             // barManager1
             // 
@@ -280,8 +280,8 @@ namespace Server
             // 
             // clientPanel
             // 
+            this.clientPanel.Controls.Add(this.clientList);
             this.clientPanel.Controls.Add(this.labelControl4);
-            this.clientPanel.Controls.Add(this.connectedClientList);
             this.clientPanel.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.clientPanel.Location = new System.Drawing.Point(0, 225);
             this.clientPanel.Name = "clientPanel";
@@ -296,12 +296,14 @@ namespace Server
             this.labelControl4.TabIndex = 12;
             this.labelControl4.Text = "Client";
             // 
-            // connectedClientList
+            // clientList
             // 
-            this.connectedClientList.Location = new System.Drawing.Point(113, 19);
-            this.connectedClientList.Name = "connectedClientList";
-            this.connectedClientList.Size = new System.Drawing.Size(210, 106);
-            this.connectedClientList.TabIndex = 11;
+            this.clientList.FormattingEnabled = true;
+            this.clientList.ItemHeight = 16;
+            this.clientList.Location = new System.Drawing.Point(114, 23);
+            this.clientList.Name = "clientList";
+            this.clientList.Size = new System.Drawing.Size(210, 100);
+            this.clientList.TabIndex = 13;
             // 
             // Server2
             // 
@@ -328,7 +330,6 @@ namespace Server
             ((System.ComponentModel.ISupportInitialize)(this.clientPanel)).EndInit();
             this.clientPanel.ResumeLayout(false);
             this.clientPanel.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.connectedClientList)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -358,6 +359,6 @@ namespace Server
         private DevExpress.XtraEditors.CheckEdit acceptAll;
         private DevExpress.XtraEditors.PanelControl clientPanel;
         private DevExpress.XtraEditors.LabelControl labelControl4;
-        private DevExpress.XtraEditors.ListBoxControl connectedClientList;
+        private System.Windows.Forms.ListBox clientList;
     }
 }
