@@ -28,6 +28,8 @@ namespace Server
         private const int BUFFER_SIZE = 1024;
         private static Thread serverTheard;
         private static IPAddress host;
+        private static int _connectionsCount;
+        private static int MAX_CONNECTION = 1000;
 
         public Server2()
         {
@@ -49,37 +51,54 @@ namespace Server
 
         private void StartServer()
         {
+            Socket socket = server.AcceptSocket();
+
+            while (_connectionsCount < MAX_CONNECTION || MAX_CONNECTION == 0)
+            {
+                Socket soc = server.AcceptSocket();
+                _connectionsCount++;
+
+                Thread t = new Thread((obj) =>
+                {
+                    DoWork((Socket)obj);
+                });
+                t.Start(soc);
+            }
+        }
+
+        private void DoWork(Socket socket)
+        {
             try
             {
-                while (true)
+                Invoke(new Action(() =>
                 {
-                    Socket socket = server.AcceptSocket();
                     clientList.Items.Add(socket.RemoteEndPoint + " connected");
+                }));
 
-                    // 2. receive
-                    byte[] receiveDataSizeByte = new byte[BUFFER_SIZE];
-                    socket.Receive(receiveDataSizeByte);
-                    int size = int.Parse(Encoding.ASCII.GetString(receiveDataSizeByte));
+                // 2. receive
+                byte[] receiveDataSizeByte = new byte[BUFFER_SIZE];
+                socket.Receive(receiveDataSizeByte);
+                int size = int.Parse(Encoding.ASCII.GetString(receiveDataSizeByte));
 
-                    byte[] buffer = new byte[BUFFER_SIZE];
-                    byte[] data = new byte[size];
-                    socket.Receive(buffer);
-                    Array.Copy(buffer, data, size);
-                    //MessageBox.Show(Encoding.ASCII.GetString(data));
+                byte[] _buffer = new byte[BUFFER_SIZE];
+                byte[] data = new byte[size];
+                socket.Receive(_buffer);
+                Array.Copy(_buffer, data, size);
 
-                    // 3. handle
-                    String dir = Encoding.ASCII.GetString(data);
-                    //MessageBox.Show(dir, this.Name);
-                    Dir directoryCollection = LoadDirectory(dir);
-                    byte[] sendData = ObjectToByteArray(directoryCollection);
+                //MessageBox.Show(Encoding.ASCII.GetString(data));
 
-                    // 4. send
-                    socket.Send(sendData);
+                // 3. handle
+                String dir = Encoding.ASCII.GetString(data);
+                Dir directoryCollection = LoadDirectory(dir);
+                byte[] sendData = ObjectToByteArray(directoryCollection);
 
-                    // 5. close
-                    socket.Shutdown(SocketShutdown.Both);
-                    //server.Stop();
-                }
+                // 4. send
+                socket.Send(sendData);
+
+                // 5. close
+                socket.Shutdown(SocketShutdown.Both);
+                //server.Stop();
+
             }
             catch (SocketException ex)
             {
