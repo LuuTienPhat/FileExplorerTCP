@@ -27,7 +27,7 @@ namespace Cilent
         public Client()
         {
             InitializeComponent();
-            btnDisconnect.Enabled = btnReconnect.Enabled = resultPanel.Enabled = false;
+            connectFailed();
         }
 
         private void ConnectToServer()
@@ -38,17 +38,14 @@ namespace Cilent
                 client = new TcpClient();
                 client.Connect(host, port);
 
-                btnDisconnect.Enabled = btnReconnect.Enabled = resultPanel.Enabled = true;
-                txtHost.Enabled = txtPort.Enabled = btnConnect.Enabled = false;
-
-                lbStatus.Text = "Connected";
-                lbDetail.Caption = "Connected to " + client.Client.RemoteEndPoint;
+                connectSuccessfully();
 
                 client.Close();
             }
 
             catch (Exception ex)
             {
+                connectFailed();
                 MessageBox.Show(ex.Message, this.Name);
             }
         }
@@ -208,6 +205,7 @@ namespace Cilent
 
         private void connectSuccessfully()
         {
+            btnConnect.Enabled = false;
             btnDisconnect.Enabled = btnReconnect.Enabled = btnShow.Enabled = true;
             txtHost.Enabled = txtPort.Enabled = false;
             txtDirectory.Enabled = directoryView.Enabled = true;
@@ -219,7 +217,7 @@ namespace Cilent
         {
             btnConnect.Enabled = true;
             btnDisconnect.Enabled = btnReconnect.Enabled = btnShow.Enabled = false;
-            txtHost.Enabled = txtPort.Enabled = false;
+            txtHost.Enabled = txtPort.Enabled = true;
             txtDirectory.Enabled = directoryView.Enabled = false;
             lbStatus.Text = "Not Connected";
             lbDetail.Caption = "";
