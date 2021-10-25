@@ -1,141 +1,246 @@
-﻿using System;
+﻿using DevExpress.XtraEditors;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
+using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Net;
-using System.Net.Sockets;
-using System.Threading;
+using System.Xml.Serialization;
+using System.Runtime.Serialization.Formatters.Binary;
+using SharedClass;
 
 namespace Cilent
 {
-
-    public partial class Client : Form
+    public partial class Client : DevExpress.XtraEditors.XtraForm
     {
-        TcpClient clientSocket = new TcpClient();
-        NetworkStream serverStream = default(NetworkStream);
-        String readData = null;
+        private static String host;
+        private static int port;
+        private static TcpClient client;
+        private const int BUFFER_SIZE = 999999999;
 
-        private static Socket client;
-        private static byte[] data = new byte[1024];
-
-        public static String messageCurrent = "hello";
         public Client()
         {
             InitializeComponent();
-            btnCheck.Enabled = txtDirectory.Enabled = txtResult.Enabled = false;
+            btnDisconnect.Enabled = btnReconnect.Enabled = dirPanel.Enabled = false;
         }
 
-        private void sendData(IAsyncResult iar)
+        private void ConnectToServer()
         {
-            Socket remote = (Socket)iar.AsyncState;
-            int sent = remote.EndSend(iar);
-        }
-
-        private void btnCheck_Click(object sender, EventArgs e)
-        {
-            if (txtDirectory.Text == "")
+            try
             {
-                MessageBox.Show("Please choose directory", "Warning", MessageBoxButtons.OK);
-                txtDirectory.Focus();
-                return;
+                // 1. Connect to server
+                client = new TcpClient();
+                client.Connect(host, port);
+
+                btnDisconnect.Enabled = btnReconnect.Enabled = dirPanel.Enabled = true;
+                txtHost.Enabled = txtPort.Enabled = btnConnect.Enabled = false;
+
+                lbStatus.Text = "Connected";
+                lbDetail.Caption = "Connected to " + client.Client.RemoteEndPoint;
+
+                client.Close();
             }
 
-            client = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-            IPEndPoint iPEnd = new IPEndPoint(IPAddress.Parse(txtHost.Text), int.Parse(txtPort.Text));
-            client.BeginConnect(iPEnd, new AsyncCallback(Connected2), client);
-            
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, this.Name);
+            }
+        }
 
-            byte[] outStream = Encoding.UTF8.GetBytes(txtDirectory.Text);
-            client.BeginSend(outStream, 0, outStream.Length, 0, new AsyncCallback(sendData), client);
+        private void btnDisconnect_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                client.Close();
+                //client.Dispose();
 
-            //serverStream.Write(outStream, 0, outStream.Length);
-            //serverStream.Flush();
+                lbStatus.Text = "Not Connected";
+                lbDetail.Caption = "Disconnected";
+                btnDisconnect.Enabled = btnReconnect.Enabled = dirPanel.Enabled = false;
+                txtHost.Enabled = txtPort.Enabled = btnConnect.Enabled = true;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+
+        }
+
+        public void LoadDirectory(Dir directoryCollection)
+        {
+            //DirectoryInfo di = new DirectoryInfo(Dir);
+            TreeNode tds = this.directoryView.Nodes.Add(directoryCollection.Name);
+            Directory.CreateDirectory("C:\\Test\\" + directoryCollection.Name);
+            tds.Tag = directoryCollection.Path;
+            //tds.StateImageIndex = 0;
+
+            //Load tất cả các file bên trong đường dẫn cha
+            LoadFiles(directoryCollection, tds);
+
+            //Load tất cả các thư mục con bên trong đường dẫn cha
+            LoadSubDirectories(directoryCollection, tds);
+        }
+
+        private void LoadSubDirectories(Dir parrentDirectory, TreeNode td)
+        {
+            // Lấy tất cả các thư mục con trong đường dẫn cha  
+            //String[] subdirectoryEntries = Directory.GetDirectories(parrentDirectory);
+
+            // Lặp qua tất cả các đường dẫn đó
+            foreach (Dir subdirectory in parrentDirectory.SubDirectories)
+            {
+
+                //DirectoryInfo di = new DirectoryInfo(subdirectory);
+                TreeNode tds = td.Nodes.Add(subdirectory.Name);
+                //tds.StateImageIndex = 0;
+                tds.Tag = subdirectory.Path;
+                LoadFiles(subdirectory, tds);
+                LoadSubDirectories(subdirectory, tds);
+            }
+        }
+
+        private void LoadFiles(Dir dir, TreeNode td)
+        {
+            //String[] Files = Directory.GetFiles(dir, "*.*");
+
+            // Lặp qua các file trong thư mục 
+            foreach (FileDir file in dir.SubFiles)
+            {
+                //FileInfo fi = new FileInfo(file);
+                TreeNode tds = td.Nodes.Add(file.Name);
+                tds.Tag = file.Path;
+                //Byte[] bytes = Convert.FromBase64String(file.Data);
+                //ToString("C:\\Test\\" + file.Name, file.Data);
+                //tds.StateImageIndex = 1;
+                //UpdateProgress();
+
+            }
+        }
+
+        private object ByteArrayToObject(byte[] arrBytes)
+        {
+            MemoryStream memStream = new MemoryStream();
+            BinaryFormatter binForm = new BinaryFormatter();
+            memStream.Write(arrBytes, 0, arrBytes.Length);
+            memStream.Seek(0, SeekOrigin.Begin);
+            object obj = (object)binForm.Deserialize(memStream);
+            return obj;
+        }
+
+        //btnShow
+        private void btnShow_Click(object sender, EventArgs e)
+        {
+            String directory = txtDirectory.Text;
+            if(directory.Length == 0)
+            {
+                MessageBox.Show("Please type directory", this.Name);
+                return;
+            }
+            try
+            {
+                //1.Connect to server
+                client = new TcpClient();
+                client.Connect(host, port);
+                Stream stream = client.GetStream();
+
+                // 2. send
+                //byte[] dataSize = Encoding.ASCII.GetBytes(directory.Length.ToString());
+                //stream.Write(dataSize, 0, dataSize.Length);
+                
+                byte[] data = Encoding.ASCII.GetBytes(directory);
+                stream.Write(data, 0, data.Length);
+
+                // 3. receive
+                //byte[] receiveDataByteSize = new byte[BUFFER_SIZE];
+                byte[] receiveDataByte = new byte[BUFFER_SIZE];
+               // stream.Read(receiveDataByteSize, 0, BUFFER_SIZE);
+                stream.Read(receiveDataByte, 0, BUFFER_SIZE);
+
+                // Show Directory
+                //int dataSize = int.Parse(Encoding.ASCII.GetString(receiveDataByteSize));
+                //byte[] directoryCollectionByte = new byte[dataSize];
+                //Array.Copy(receiveDataByte, directoryCollectionByte, dataSize);
+
+                Dir directoryCollection = (Dir)ByteArrayToObject(receiveDataByte);
+                if (isCollectionEmpty(directoryCollection)) this.directoryView.Nodes.Add("Not Found");
+                else LoadDirectory(directoryCollection);
+
+                // 4. Close
+                //stream.Close();
+                client.Close();
+
+                // 5. Reconnect
+                //ConnectToServer();
+            }
+
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString(), this.Name);
+            }
+        }
+
+        //btnExit
+        private void btnExit_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
+        {
+            this.Dispose();
+            Environment.Exit(Environment.ExitCode);
+        }
+
+        //btnReconnect
+        private void btnReconnect_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
+        {
+
         }
 
         private void btnConnect_Click(object sender, EventArgs e)
         {
-            if (txtHost.Text == "")
-            {
-                MessageBox.Show("Please enter host", "Warning", MessageBoxButtons.OK);
-                txtHost.Focus();
-                return;
-            }
+            host = txtHost.Text;
+            port = int.Parse(txtPort.Text);
 
-            if (txtPort.Text == "")
-            {
-                MessageBox.Show("Please enter port", "Warning", MessageBoxButtons.OK);
-                txtPort.Focus();
-                return;
-            }
-
-            //txtResult.Items.Add("Connecting...");
-            client = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-            IPEndPoint iPEnd = new IPEndPoint(IPAddress.Parse(txtHost.Text), int.Parse(txtPort.Text));
-            client.BeginConnect(iPEnd, new AsyncCallback(Connected), client);
-
+            ConnectToServer();
         }
 
-        private void Connected(IAsyncResult asyncResult)
+        private bool isCollectionEmpty(Dir directoryCollection)
         {
-            try
+            if (directoryCollection.Name == null) return true;
+            if (directoryCollection.Path == null) return true;
+            return false;
+        }
+
+        private void directoryView_MouseMove(object sender, MouseEventArgs e)
+        {
+            // Get the node at the current mouse pointer location.  
+            TreeNode theNode = this.directoryView.GetNodeAt(e.X, e.Y);
+
+            // Set a ToolTip only if the mouse pointer is actually paused on a node.  
+            if (theNode != null && theNode.Tag != null)
             {
-                client.EndConnect(asyncResult);
-                txtResult.Items.Add("Connected to: " + client.RemoteEndPoint.ToString());
-                Thread receiver = new Thread(new ThreadStart(ReceiveData));
-                receiver.Start();
-                btnCheck.Enabled = txtDirectory.Enabled = txtResult.Enabled = true;
+                // Change the ToolTip only if the pointer moved to a new node.  
+                if (theNode.Tag.ToString() != toolTip.GetToolTip(this.directoryView))
+                    toolTip.SetToolTip(this.directoryView, theNode.Tag.ToString());
+
             }
-            catch (SocketException ex)
+            else     // Pointer is not over a node so clear the ToolTip.  
             {
-                txtResult.Items.Add("Connecting error");
-                MessageBox.Show(ex.Message + "\n" + ex.SocketErrorCode);
+                toolTip.SetToolTip(this.directoryView, "");
             }
         }
 
-        private void Connected2(IAsyncResult asyncResult)
+        private void directoryView_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
         {
-            try
+            if (e.Button == MouseButtons.Right)
             {
-                client.EndConnect(asyncResult);
-                //txtResult.Items.Add("Connected to: " + client.RemoteEndPoint.ToString());
-                Thread receiver = new Thread(new ThreadStart(ReceiveData));
-                receiver.Start();
-                btnCheck.Enabled = txtDirectory.Enabled = txtResult.Enabled = true;
-            }
-            catch (SocketException ex)
-            {
-                txtResult.Items.Add("Connecting error");
-                MessageBox.Show(ex.Message + "\n" + ex.SocketErrorCode);
-            }
-        }
+                TreeNode theNode = this.directoryView.GetNodeAt(e.X, e.Y);
+                popupMenu.ShowPopup(Cursor.Position);
 
-        private void ReceiveData()
-        {
-            int recv;
-            String stringData;
-            while (true)
-            {
-                recv = client.Receive(data);
-                stringData = Encoding.UTF8.GetString(data, 0, recv);
-                if (stringData == "bye") break;
-                String[] array = stringData.Split('\n');
-                for (int i = 0; i < array.Length; i++)
-                {
-                    txtResult.Items.Add(array[i]);
-                }
 
             }
-            stringData = "bye";
-            byte[] message = Encoding.UTF8.GetBytes(stringData);
-            client.Send(message);
-            client.Close();
-            txtResult.Items.Add("Connection stop");
-            return;
+            
         }
     }
 }

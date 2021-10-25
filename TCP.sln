@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Server", "Server\Server.csp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cilent", "Cilent\Cilent.csproj", "{CA54B4CE-7632-4912-95CD-15D5D5A4A37A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MySharedClass", "MySharedClass\MySharedClass.csproj", "{CB1B43C3-80AD-4B7D-A921-6755FF890523}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharedClass", "SharedClass\SharedClass.csproj", "{CB1B43C3-80AD-4B7D-A921-6755FF890523}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -16,7 +16,7 @@ namespace Cilent
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Client2());
+            Application.Run(new Client());
         }
     }
 }

@@ -7,8 +7,8 @@
     <ProjectGuid>{CB1B43C3-80AD-4B7D-A921-6755FF890523}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>MySharedClass</RootNamespace>
-    <AssemblyName>MySharedClass</AssemblyName>
+    <RootNamespace>SharedClass</RootNamespace>
+    <AssemblyName>SharedClass</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>

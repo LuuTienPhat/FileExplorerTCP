@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace MySharedClass
+namespace SharedClass
 {
     [Serializable]
     public partial class Dir
@@ -10,7 +10,6 @@ namespace MySharedClass
         public String Path { get; set; }
         public List<Dir> SubDirectories { get; set; }
         public List<FileDir> SubFiles { get; set; }
-
         public Dir(String name, String path)
         {
             Name = name;
@@ -28,13 +27,18 @@ namespace MySharedClass
     {
         public String Name { get; set; }
         public String Path { get; set; }
-
+        public string Data { get; set; }
+        public FileDir(String name, String path, string data)
+        {
+            Name = name;
+            Path = path;
+            Data = data;
+        }
         public FileDir(String name, String path)
         {
             Name = name;
             Path = path;
         }
-
         public FileDir() { }
     }
 }
