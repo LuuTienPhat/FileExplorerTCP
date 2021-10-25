@@ -68,7 +68,7 @@ namespace Server
             {
                 // 1. accept
                 TcpClient client = server.AcceptTcpClient();
-                //clientList.Items.Add(client.Client.RemoteEndPoint);
+                clientList.Items.Add(client.Client.RemoteEndPoint);
 
                 Stream stream = client.GetStream();
 

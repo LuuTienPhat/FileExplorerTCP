@@ -75,7 +75,7 @@ namespace Cilent
         {
             //DirectoryInfo di = new DirectoryInfo(Dir);
             TreeNode tds = this.directoryView.Nodes.Add(directoryCollection.Name);
-            Directory.CreateDirectory("C:\\Test\\" + directoryCollection.Name);
+            //Directory.CreateDirectory("C:\\Test\\" + directoryCollection.Name);
             tds.Tag = directoryCollection.Path;
             //tds.StateImageIndex = 0;
 
