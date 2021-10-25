@@ -13,6 +13,7 @@ using System.Windows.Forms;
 using System.Xml.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using SharedClass;
+using System.Threading;
 
 namespace Cilent
 {
@@ -26,7 +27,7 @@ namespace Cilent
         public Client()
         {
             InitializeComponent();
-            btnDisconnect.Enabled = btnReconnect.Enabled = dirPanel.Enabled = false;
+            btnDisconnect.Enabled = btnReconnect.Enabled = resultPanel.Enabled = false;
         }
 
         private void ConnectToServer()
@@ -37,7 +38,7 @@ namespace Cilent
                 client = new TcpClient();
                 client.Connect(host, port);
 
-                btnDisconnect.Enabled = btnReconnect.Enabled = dirPanel.Enabled = true;
+                btnDisconnect.Enabled = btnReconnect.Enabled = resultPanel.Enabled = true;
                 txtHost.Enabled = txtPort.Enabled = btnConnect.Enabled = false;
 
                 lbStatus.Text = "Connected";
@@ -57,16 +58,12 @@ namespace Cilent
             try
             {
                 client.Close();
-                //client.Dispose();
-
-                lbStatus.Text = "Not Connected";
-                lbDetail.Caption = "Disconnected";
-                btnDisconnect.Enabled = btnReconnect.Enabled = dirPanel.Enabled = false;
-                txtHost.Enabled = txtPort.Enabled = btnConnect.Enabled = true;
+                connectFailed();
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
+                connectSuccessfully();
             }
 
         }
@@ -136,7 +133,7 @@ namespace Cilent
         private void btnShow_Click(object sender, EventArgs e)
         {
             String directory = txtDirectory.Text;
-            if(directory.Length == 0)
+            if (directory.Length == 0)
             {
                 MessageBox.Show("Please type directory", this.Name);
                 return;
@@ -151,14 +148,14 @@ namespace Cilent
                 // 2. send
                 //byte[] dataSize = Encoding.ASCII.GetBytes(directory.Length.ToString());
                 //stream.Write(dataSize, 0, dataSize.Length);
-                
+
                 byte[] data = Encoding.ASCII.GetBytes(directory);
                 stream.Write(data, 0, data.Length);
 
                 // 3. receive
                 //byte[] receiveDataByteSize = new byte[BUFFER_SIZE];
                 byte[] receiveDataByte = new byte[BUFFER_SIZE];
-               // stream.Read(receiveDataByteSize, 0, BUFFER_SIZE);
+                // stream.Read(receiveDataByteSize, 0, BUFFER_SIZE);
                 stream.Read(receiveDataByte, 0, BUFFER_SIZE);
 
                 // Show Directory
@@ -194,8 +191,41 @@ namespace Cilent
         //btnReconnect
         private void btnReconnect_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
         {
+            try
+            {
+                client.Close();
+                client = new TcpClient();
+                client.Connect(host, port);
 
+                Thread t = new Thread(connectSuccessfully);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString(), this.Name);
+                connectFailed();
+            }
         }
+
+        private void connectSuccessfully()
+        {
+            btnDisconnect.Enabled = btnReconnect.Enabled = btnShow.Enabled = true;
+            txtHost.Enabled = txtPort.Enabled = false;
+            txtDirectory.Enabled = directoryView.Enabled = true;
+            lbStatus.Text = "Connected";
+            lbDetail.Caption = "Connected to " + client.Client.RemoteEndPoint;
+        }
+
+        private void connectFailed()
+        {
+            btnConnect.Enabled = true;
+            btnDisconnect.Enabled = btnReconnect.Enabled = btnShow.Enabled = false;
+            txtHost.Enabled = txtPort.Enabled = false;
+            txtDirectory.Enabled = directoryView.Enabled = false;
+            lbStatus.Text = "Not Connected";
+            lbDetail.Caption = "";
+        }
+
+
 
         private void btnConnect_Click(object sender, EventArgs e)
         {
@@ -240,7 +270,7 @@ namespace Cilent
 
 
             }
-            
+
         }
     }
 }

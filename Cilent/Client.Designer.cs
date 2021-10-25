@@ -46,7 +46,7 @@ namespace Cilent
             this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
             this.barButtonItem3 = new DevExpress.XtraBars.BarButtonItem();
             this.barButtonItem1 = new DevExpress.XtraBars.BarButtonItem();
-            this.panelControl1 = new DevExpress.XtraEditors.PanelControl();
+            this.controlPanel = new DevExpress.XtraEditors.PanelControl();
             this.lbStatus = new DevExpress.XtraEditors.LabelControl();
             this.labelControl3 = new DevExpress.XtraEditors.LabelControl();
             this.btnDisconnect = new DevExpress.XtraEditors.SimpleButton();
@@ -55,7 +55,7 @@ namespace Cilent
             this.txtHost = new DevExpress.XtraEditors.TextEdit();
             this.labelControl1 = new DevExpress.XtraEditors.LabelControl();
             this.btnConnect = new DevExpress.XtraEditors.SimpleButton();
-            this.dirPanel = new DevExpress.XtraEditors.PanelControl();
+            this.resultPanel = new DevExpress.XtraEditors.PanelControl();
             this.directoryView = new System.Windows.Forms.TreeView();
             this.btnShow = new DevExpress.XtraEditors.SimpleButton();
             this.txtDirectory = new DevExpress.XtraEditors.TextEdit();
@@ -64,12 +64,12 @@ namespace Cilent
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
             this.popupMenu = new DevExpress.XtraBars.PopupMenu(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.barManager1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.panelControl1)).BeginInit();
-            this.panelControl1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.controlPanel)).BeginInit();
+            this.controlPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.txtPort.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtHost.Properties)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dirPanel)).BeginInit();
-            this.dirPanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.resultPanel)).BeginInit();
+            this.resultPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.txtDirectory.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.treeListLookUpEdit1TreeList)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.popupMenu)).BeginInit();
@@ -194,21 +194,21 @@ namespace Cilent
             this.barButtonItem1.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("barButtonItem1.ImageOptions.SvgImage")));
             this.barButtonItem1.Name = "barButtonItem1";
             // 
-            // panelControl1
+            // controlPanel
             // 
-            this.panelControl1.Controls.Add(this.lbStatus);
-            this.panelControl1.Controls.Add(this.labelControl3);
-            this.panelControl1.Controls.Add(this.btnDisconnect);
-            this.panelControl1.Controls.Add(this.txtPort);
-            this.panelControl1.Controls.Add(this.labelControl2);
-            this.panelControl1.Controls.Add(this.txtHost);
-            this.panelControl1.Controls.Add(this.labelControl1);
-            this.panelControl1.Controls.Add(this.btnConnect);
-            this.panelControl1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panelControl1.Location = new System.Drawing.Point(0, 30);
-            this.panelControl1.Name = "panelControl1";
-            this.panelControl1.Size = new System.Drawing.Size(638, 535);
-            this.panelControl1.TabIndex = 5;
+            this.controlPanel.Controls.Add(this.lbStatus);
+            this.controlPanel.Controls.Add(this.labelControl3);
+            this.controlPanel.Controls.Add(this.btnDisconnect);
+            this.controlPanel.Controls.Add(this.txtPort);
+            this.controlPanel.Controls.Add(this.labelControl2);
+            this.controlPanel.Controls.Add(this.txtHost);
+            this.controlPanel.Controls.Add(this.labelControl1);
+            this.controlPanel.Controls.Add(this.btnConnect);
+            this.controlPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.controlPanel.Location = new System.Drawing.Point(0, 30);
+            this.controlPanel.Name = "controlPanel";
+            this.controlPanel.Size = new System.Drawing.Size(638, 535);
+            this.controlPanel.TabIndex = 5;
             // 
             // lbStatus
             // 
@@ -289,17 +289,17 @@ namespace Cilent
             this.btnConnect.Text = "Connect";
             this.btnConnect.Click += new System.EventHandler(this.btnConnect_Click);
             // 
-            // dirPanel
+            // resultPanel
             // 
-            this.dirPanel.Controls.Add(this.directoryView);
-            this.dirPanel.Controls.Add(this.btnShow);
-            this.dirPanel.Controls.Add(this.txtDirectory);
-            this.dirPanel.Controls.Add(this.labelControl4);
-            this.dirPanel.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.dirPanel.Location = new System.Drawing.Point(0, 239);
-            this.dirPanel.Name = "dirPanel";
-            this.dirPanel.Size = new System.Drawing.Size(638, 326);
-            this.dirPanel.TabIndex = 10;
+            this.resultPanel.Controls.Add(this.directoryView);
+            this.resultPanel.Controls.Add(this.btnShow);
+            this.resultPanel.Controls.Add(this.txtDirectory);
+            this.resultPanel.Controls.Add(this.labelControl4);
+            this.resultPanel.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.resultPanel.Location = new System.Drawing.Point(0, 239);
+            this.resultPanel.Name = "resultPanel";
+            this.resultPanel.Size = new System.Drawing.Size(638, 326);
+            this.resultPanel.TabIndex = 10;
             // 
             // directoryView
             // 
@@ -353,30 +353,30 @@ namespace Cilent
             this.popupMenu.Manager = this.barManager1;
             this.popupMenu.Name = "popupMenu";
             // 
-            // Client2
+            // Client
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(638, 592);
-            this.Controls.Add(this.dirPanel);
-            this.Controls.Add(this.panelControl1);
+            this.Controls.Add(this.resultPanel);
+            this.Controls.Add(this.controlPanel);
             this.Controls.Add(this.barDockControlLeft);
             this.Controls.Add(this.barDockControlRight);
             this.Controls.Add(this.barDockControlBottom);
             this.Controls.Add(this.barDockControlTop);
-            this.IconOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("Client2.IconOptions.SvgImage")));
-            this.Name = "Client2";
+            this.IconOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("Client.IconOptions.SvgImage")));
+            this.Name = "Client";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Client2";
             ((System.ComponentModel.ISupportInitialize)(this.barManager1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.panelControl1)).EndInit();
-            this.panelControl1.ResumeLayout(false);
-            this.panelControl1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.controlPanel)).EndInit();
+            this.controlPanel.ResumeLayout(false);
+            this.controlPanel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.txtPort.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtHost.Properties)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dirPanel)).EndInit();
-            this.dirPanel.ResumeLayout(false);
-            this.dirPanel.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.resultPanel)).EndInit();
+            this.resultPanel.ResumeLayout(false);
+            this.resultPanel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.txtDirectory.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.treeListLookUpEdit1TreeList)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.popupMenu)).EndInit();
@@ -395,7 +395,7 @@ namespace Cilent
         private DevExpress.XtraBars.BarDockControl barDockControlLeft;
         private DevExpress.XtraBars.BarDockControl barDockControlRight;
         private DevExpress.XtraBars.BarButtonItem barButtonItem3;
-        private DevExpress.XtraEditors.PanelControl panelControl1;
+        private DevExpress.XtraEditors.PanelControl controlPanel;
         private DevExpress.XtraBars.Bar bar2;
         private DevExpress.XtraEditors.LabelControl lbStatus;
         private DevExpress.XtraEditors.LabelControl labelControl3;
@@ -406,7 +406,7 @@ namespace Cilent
         private DevExpress.XtraEditors.LabelControl labelControl1;
         private DevExpress.XtraEditors.SimpleButton btnConnect;
         private DevExpress.XtraBars.BarStaticItem lbDetail;
-        private DevExpress.XtraEditors.PanelControl dirPanel;
+        private DevExpress.XtraEditors.PanelControl resultPanel;
         private DevExpress.XtraEditors.SimpleButton btnShow;
         private DevExpress.XtraEditors.TextEdit txtDirectory;
         private DevExpress.XtraEditors.LabelControl labelControl4;
