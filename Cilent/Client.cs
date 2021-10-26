@@ -23,6 +23,7 @@ namespace Cilent
         private static int port;
         private static TcpClient client;
         private const int BUFFER_SIZE = 999999999;
+        public static Dir directoryCollection = new Dir();
 
         public Client()
         {
@@ -160,8 +161,12 @@ namespace Cilent
                 //byte[] directoryCollectionByte = new byte[dataSize];
                 //Array.Copy(receiveDataByte, directoryCollectionByte, dataSize);
 
-                Dir directoryCollection = (Dir)ByteArrayToObject(receiveDataByte);
-                if (isCollectionEmpty(directoryCollection)) this.directoryView.Nodes.Add("Not Found");
+                directoryCollection = (Dir)ByteArrayToObject(receiveDataByte);
+                
+                if (isCollectionEmpty(directoryCollection))
+                {
+                    this.directoryView.Nodes.Add("Not Found");
+                }
                 else LoadDirectory(directoryCollection);
 
                 // 4. Close
@@ -267,6 +272,17 @@ namespace Cilent
 
 
             }
+        }
+
+        private void btnClearConsole_Click(object sender, EventArgs e)
+        {
+            this.directoryView.Nodes.Clear();
+        }
+
+        private void refreshConsole_Click(object sender, EventArgs e)
+        {
+            this.directoryView.Nodes.Clear();
+            LoadDirectory(directoryCollection);
         }
     }
 }

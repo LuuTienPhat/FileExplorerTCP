@@ -56,6 +56,10 @@ namespace Cilent
             this.labelControl1 = new DevExpress.XtraEditors.LabelControl();
             this.btnConnect = new DevExpress.XtraEditors.SimpleButton();
             this.resultPanel = new DevExpress.XtraEditors.PanelControl();
+            this.labelControl5 = new DevExpress.XtraEditors.LabelControl();
+            this.checkedComboBoxEdit1 = new DevExpress.XtraEditors.CheckedComboBoxEdit();
+            this.refreshConsole = new DevExpress.XtraEditors.SimpleButton();
+            this.btnClearConsole = new DevExpress.XtraEditors.SimpleButton();
             this.directoryView = new System.Windows.Forms.TreeView();
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
             this.btnShow = new DevExpress.XtraEditors.SimpleButton();
@@ -71,6 +75,7 @@ namespace Cilent
             ((System.ComponentModel.ISupportInitialize)(this.txtHost.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.resultPanel)).BeginInit();
             this.resultPanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.checkedComboBoxEdit1.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtDirectory.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.treeListLookUpEdit1TreeList)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.popupMenu)).BeginInit();
@@ -305,6 +310,10 @@ namespace Cilent
             // 
             // resultPanel
             // 
+            this.resultPanel.Controls.Add(this.labelControl5);
+            this.resultPanel.Controls.Add(this.checkedComboBoxEdit1);
+            this.resultPanel.Controls.Add(this.refreshConsole);
+            this.resultPanel.Controls.Add(this.btnClearConsole);
             this.resultPanel.Controls.Add(this.directoryView);
             this.resultPanel.Controls.Add(this.btnShow);
             this.resultPanel.Controls.Add(this.txtDirectory);
@@ -316,15 +325,68 @@ namespace Cilent
             this.resultPanel.Size = new System.Drawing.Size(547, 265);
             this.resultPanel.TabIndex = 10;
             // 
+            // labelControl5
+            // 
+            this.labelControl5.Location = new System.Drawing.Point(67, 49);
+            this.labelControl5.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.labelControl5.Name = "labelControl5";
+            this.labelControl5.Size = new System.Drawing.Size(24, 13);
+            this.labelControl5.TabIndex = 39;
+            this.labelControl5.Text = "Filter";
+            // 
+            // checkedComboBoxEdit1
+            // 
+            this.checkedComboBoxEdit1.EditValue = "all";
+            this.checkedComboBoxEdit1.Location = new System.Drawing.Point(146, 46);
+            this.checkedComboBoxEdit1.MenuManager = this.barManager1;
+            this.checkedComboBoxEdit1.Name = "checkedComboBoxEdit1";
+            this.checkedComboBoxEdit1.Properties.AllowMultiSelect = true;
+            this.checkedComboBoxEdit1.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.checkedComboBoxEdit1.Properties.Items.AddRange(new DevExpress.XtraEditors.Controls.CheckedListBoxItem[] {
+            new DevExpress.XtraEditors.Controls.CheckedListBoxItem("hello"),
+            new DevExpress.XtraEditors.Controls.CheckedListBoxItem("other")});
+            this.checkedComboBoxEdit1.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
+            this.checkedComboBoxEdit1.Size = new System.Drawing.Size(220, 20);
+            this.checkedComboBoxEdit1.TabIndex = 38;
+            // 
+            // refreshConsole
+            // 
+            this.refreshConsole.ImageOptions.ImageToTextAlignment = DevExpress.XtraEditors.ImageAlignToText.LeftCenter;
+            this.refreshConsole.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("refreshConsole.ImageOptions.SvgImage")));
+            this.refreshConsole.ImageOptions.SvgImageSize = new System.Drawing.Size(16, 16);
+            this.refreshConsole.Location = new System.Drawing.Point(487, 113);
+            this.refreshConsole.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.refreshConsole.Name = "refreshConsole";
+            this.refreshConsole.PaintStyle = DevExpress.XtraEditors.Controls.PaintStyles.Light;
+            this.refreshConsole.Size = new System.Drawing.Size(36, 24);
+            this.refreshConsole.TabIndex = 37;
+            this.refreshConsole.ToolTip = "Refresh Console";
+            this.refreshConsole.Click += new System.EventHandler(this.refreshConsole_Click);
+            // 
+            // btnClearConsole
+            // 
+            this.btnClearConsole.ImageOptions.ImageToTextAlignment = DevExpress.XtraEditors.ImageAlignToText.LeftCenter;
+            this.btnClearConsole.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("btnClearConsole.ImageOptions.SvgImage")));
+            this.btnClearConsole.ImageOptions.SvgImageSize = new System.Drawing.Size(16, 16);
+            this.btnClearConsole.Location = new System.Drawing.Point(487, 85);
+            this.btnClearConsole.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.btnClearConsole.Name = "btnClearConsole";
+            this.btnClearConsole.PaintStyle = DevExpress.XtraEditors.Controls.PaintStyles.Light;
+            this.btnClearConsole.Size = new System.Drawing.Size(36, 24);
+            this.btnClearConsole.TabIndex = 36;
+            this.btnClearConsole.ToolTip = "Clear Console";
+            this.btnClearConsole.Click += new System.EventHandler(this.btnClearConsole_Click);
+            // 
             // directoryView
             // 
             this.directoryView.BackColor = System.Drawing.Color.White;
             this.directoryView.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.directoryView.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(72)))), ((int)(((byte)(70)))), ((int)(((byte)(68)))));
-            this.directoryView.Location = new System.Drawing.Point(67, 60);
+            this.directoryView.Location = new System.Drawing.Point(67, 85);
             this.directoryView.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.directoryView.Name = "directoryView";
-            this.directoryView.Size = new System.Drawing.Size(414, 175);
+            this.directoryView.Size = new System.Drawing.Size(414, 156);
             this.directoryView.StateImageList = this.imageList1;
             this.directoryView.TabIndex = 35;
             this.directoryView.NodeMouseClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.directoryView_NodeMouseClick);
@@ -342,7 +404,7 @@ namespace Cilent
             this.btnShow.ImageOptions.ImageToTextAlignment = DevExpress.XtraEditors.ImageAlignToText.LeftCenter;
             this.btnShow.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("btnShow.ImageOptions.SvgImage")));
             this.btnShow.ImageOptions.SvgImageSize = new System.Drawing.Size(15, 15);
-            this.btnShow.Location = new System.Drawing.Point(400, 17);
+            this.btnShow.Location = new System.Drawing.Point(400, 42);
             this.btnShow.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnShow.Name = "btnShow";
             this.btnShow.Size = new System.Drawing.Size(81, 24);
@@ -408,6 +470,7 @@ namespace Cilent
             ((System.ComponentModel.ISupportInitialize)(this.resultPanel)).EndInit();
             this.resultPanel.ResumeLayout(false);
             this.resultPanel.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.checkedComboBoxEdit1.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtDirectory.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.treeListLookUpEdit1TreeList)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.popupMenu)).EndInit();
@@ -447,5 +510,9 @@ namespace Cilent
         private DevExpress.XtraBars.BarButtonItem barButtonItem1;
         private DevExpress.XtraBars.PopupMenu popupMenu;
         private System.Windows.Forms.ImageList imageList1;
+        private DevExpress.XtraEditors.SimpleButton btnClearConsole;
+        private DevExpress.XtraEditors.SimpleButton refreshConsole;
+        private DevExpress.XtraEditors.CheckedComboBoxEdit checkedComboBoxEdit1;
+        private DevExpress.XtraEditors.LabelControl labelControl5;
     }
 }
