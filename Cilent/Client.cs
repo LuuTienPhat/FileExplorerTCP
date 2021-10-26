@@ -71,7 +71,7 @@ namespace Cilent
             TreeNode tds = this.directoryView.Nodes.Add(directoryCollection.Name);
             //Directory.CreateDirectory("C:\\Test\\" + directoryCollection.Name);
             tds.Tag = directoryCollection.Path;
-            //tds.StateImageIndex = 0;
+            tds.StateImageIndex = 0;
 
             //Load tất cả các file bên trong đường dẫn cha
             LoadFiles(directoryCollection, tds);
@@ -91,7 +91,7 @@ namespace Cilent
 
                 //DirectoryInfo di = new DirectoryInfo(subdirectory);
                 TreeNode tds = td.Nodes.Add(subdirectory.Name);
-                //tds.StateImageIndex = 0;
+                tds.StateImageIndex = 0;
                 tds.Tag = subdirectory.Path;
                 LoadFiles(subdirectory, tds);
                 LoadSubDirectories(subdirectory, tds);
@@ -110,7 +110,7 @@ namespace Cilent
                 tds.Tag = file.Path;
                 //Byte[] bytes = Convert.FromBase64String(file.Data);
                 //ToString("C:\\Test\\" + file.Name, file.Data);
-                //tds.StateImageIndex = 1;
+                tds.StateImageIndex = 1;
                 //UpdateProgress();
 
             }
@@ -268,7 +268,6 @@ namespace Cilent
 
 
             }
-
         }
     }
 }
