@@ -157,34 +157,34 @@ namespace Cilent
             this.barDockControlTop.Location = new System.Drawing.Point(0, 0);
             this.barDockControlTop.Manager = this.barManager1;
             this.barDockControlTop.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.barDockControlTop.Size = new System.Drawing.Size(638, 33);
+            this.barDockControlTop.Size = new System.Drawing.Size(547, 27);
             // 
             // barDockControlBottom
             // 
             this.barDockControlBottom.CausesValidation = false;
             this.barDockControlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.barDockControlBottom.Location = new System.Drawing.Point(0, 566);
+            this.barDockControlBottom.Location = new System.Drawing.Point(0, 460);
             this.barDockControlBottom.Manager = this.barManager1;
             this.barDockControlBottom.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.barDockControlBottom.Size = new System.Drawing.Size(638, 26);
+            this.barDockControlBottom.Size = new System.Drawing.Size(547, 21);
             // 
             // barDockControlLeft
             // 
             this.barDockControlLeft.CausesValidation = false;
             this.barDockControlLeft.Dock = System.Windows.Forms.DockStyle.Left;
-            this.barDockControlLeft.Location = new System.Drawing.Point(0, 33);
+            this.barDockControlLeft.Location = new System.Drawing.Point(0, 27);
             this.barDockControlLeft.Manager = this.barManager1;
             this.barDockControlLeft.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.barDockControlLeft.Size = new System.Drawing.Size(0, 533);
+            this.barDockControlLeft.Size = new System.Drawing.Size(0, 433);
             // 
             // barDockControlRight
             // 
             this.barDockControlRight.CausesValidation = false;
             this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
-            this.barDockControlRight.Location = new System.Drawing.Point(638, 33);
+            this.barDockControlRight.Location = new System.Drawing.Point(547, 27);
             this.barDockControlRight.Manager = this.barManager1;
             this.barDockControlRight.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.barDockControlRight.Size = new System.Drawing.Size(0, 533);
+            this.barDockControlRight.Size = new System.Drawing.Size(0, 433);
             // 
             // barButtonItem3
             // 
@@ -210,10 +210,10 @@ namespace Cilent
             this.controlPanel.Controls.Add(this.labelControl1);
             this.controlPanel.Controls.Add(this.btnConnect);
             this.controlPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.controlPanel.Location = new System.Drawing.Point(0, 33);
+            this.controlPanel.Location = new System.Drawing.Point(0, 27);
             this.controlPanel.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.controlPanel.Name = "controlPanel";
-            this.controlPanel.Size = new System.Drawing.Size(638, 533);
+            this.controlPanel.Size = new System.Drawing.Size(547, 433);
             this.controlPanel.TabIndex = 5;
             // 
             // lbStatus
@@ -223,10 +223,10 @@ namespace Cilent
             this.lbStatus.Appearance.Options.UseTextOptions = true;
             this.lbStatus.Appearance.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
             this.lbStatus.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
-            this.lbStatus.Location = new System.Drawing.Point(224, 25);
+            this.lbStatus.Location = new System.Drawing.Point(192, 20);
             this.lbStatus.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.lbStatus.Name = "lbStatus";
-            this.lbStatus.Size = new System.Drawing.Size(210, 21);
+            this.lbStatus.Size = new System.Drawing.Size(180, 17);
             this.lbStatus.TabIndex = 26;
             this.lbStatus.Text = "Not Connected";
             // 
@@ -234,10 +234,10 @@ namespace Cilent
             // 
             this.labelControl3.Appearance.Font = new System.Drawing.Font("Tahoma", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelControl3.Appearance.Options.UseFont = true;
-            this.labelControl3.Location = new System.Drawing.Point(157, 25);
+            this.labelControl3.Location = new System.Drawing.Point(135, 20);
             this.labelControl3.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.labelControl3.Name = "labelControl3";
-            this.labelControl3.Size = new System.Drawing.Size(47, 21);
+            this.labelControl3.Size = new System.Drawing.Size(39, 17);
             this.labelControl3.TabIndex = 25;
             this.labelControl3.Text = "Status";
             // 
@@ -246,10 +246,10 @@ namespace Cilent
             this.btnDisconnect.ImageOptions.ImageToTextAlignment = DevExpress.XtraEditors.ImageAlignToText.LeftCenter;
             this.btnDisconnect.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("btnDisconnect.ImageOptions.SvgImage")));
             this.btnDisconnect.ImageOptions.SvgImageSize = new System.Drawing.Size(15, 15);
-            this.btnDisconnect.Location = new System.Drawing.Point(339, 149);
+            this.btnDisconnect.Location = new System.Drawing.Point(291, 121);
             this.btnDisconnect.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnDisconnect.Name = "btnDisconnect";
-            this.btnDisconnect.Size = new System.Drawing.Size(94, 30);
+            this.btnDisconnect.Size = new System.Drawing.Size(81, 24);
             this.btnDisconnect.TabIndex = 24;
             this.btnDisconnect.Text = "Disconnect";
             this.btnDisconnect.Click += new System.EventHandler(this.btnDisconnect_Click);
@@ -257,36 +257,36 @@ namespace Cilent
             // txtPort
             // 
             this.txtPort.EditValue = "5555";
-            this.txtPort.Location = new System.Drawing.Point(224, 110);
+            this.txtPort.Location = new System.Drawing.Point(192, 89);
             this.txtPort.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.txtPort.Name = "txtPort";
-            this.txtPort.Size = new System.Drawing.Size(210, 22);
+            this.txtPort.Size = new System.Drawing.Size(180, 20);
             this.txtPort.TabIndex = 23;
             // 
             // labelControl2
             // 
-            this.labelControl2.Location = new System.Drawing.Point(157, 110);
+            this.labelControl2.Location = new System.Drawing.Point(135, 89);
             this.labelControl2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.labelControl2.Name = "labelControl2";
-            this.labelControl2.Size = new System.Drawing.Size(23, 16);
+            this.labelControl2.Size = new System.Drawing.Size(20, 13);
             this.labelControl2.TabIndex = 22;
             this.labelControl2.Text = "Port";
             // 
             // txtHost
             // 
             this.txtHost.EditValue = "127.0.0.1";
-            this.txtHost.Location = new System.Drawing.Point(224, 81);
+            this.txtHost.Location = new System.Drawing.Point(192, 66);
             this.txtHost.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.txtHost.Name = "txtHost";
-            this.txtHost.Size = new System.Drawing.Size(210, 22);
+            this.txtHost.Size = new System.Drawing.Size(180, 20);
             this.txtHost.TabIndex = 21;
             // 
             // labelControl1
             // 
-            this.labelControl1.Location = new System.Drawing.Point(157, 81);
+            this.labelControl1.Location = new System.Drawing.Point(135, 66);
             this.labelControl1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.labelControl1.Name = "labelControl1";
-            this.labelControl1.Size = new System.Drawing.Size(25, 16);
+            this.labelControl1.Size = new System.Drawing.Size(22, 13);
             this.labelControl1.TabIndex = 20;
             this.labelControl1.Text = "Host";
             // 
@@ -295,10 +295,10 @@ namespace Cilent
             this.btnConnect.ImageOptions.ImageToTextAlignment = DevExpress.XtraEditors.ImageAlignToText.LeftCenter;
             this.btnConnect.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("btnConnect.ImageOptions.SvgImage")));
             this.btnConnect.ImageOptions.SvgImageSize = new System.Drawing.Size(15, 15);
-            this.btnConnect.Location = new System.Drawing.Point(224, 149);
+            this.btnConnect.Location = new System.Drawing.Point(192, 121);
             this.btnConnect.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnConnect.Name = "btnConnect";
-            this.btnConnect.Size = new System.Drawing.Size(94, 30);
+            this.btnConnect.Size = new System.Drawing.Size(81, 24);
             this.btnConnect.TabIndex = 19;
             this.btnConnect.Text = "Connect";
             this.btnConnect.Click += new System.EventHandler(this.btnConnect_Click);
@@ -310,21 +310,21 @@ namespace Cilent
             this.resultPanel.Controls.Add(this.txtDirectory);
             this.resultPanel.Controls.Add(this.labelControl4);
             this.resultPanel.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.resultPanel.Location = new System.Drawing.Point(0, 240);
+            this.resultPanel.Location = new System.Drawing.Point(0, 195);
             this.resultPanel.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.resultPanel.Name = "resultPanel";
-            this.resultPanel.Size = new System.Drawing.Size(638, 326);
+            this.resultPanel.Size = new System.Drawing.Size(547, 265);
             this.resultPanel.TabIndex = 10;
             // 
             // directoryView
             // 
-            this.directoryView.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
+            this.directoryView.BackColor = System.Drawing.Color.White;
             this.directoryView.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.directoryView.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(241)))), ((int)(((byte)(241)))), ((int)(((byte)(241)))));
-            this.directoryView.Location = new System.Drawing.Point(78, 74);
+            this.directoryView.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(72)))), ((int)(((byte)(70)))), ((int)(((byte)(68)))));
+            this.directoryView.Location = new System.Drawing.Point(67, 60);
             this.directoryView.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.directoryView.Name = "directoryView";
-            this.directoryView.Size = new System.Drawing.Size(483, 215);
+            this.directoryView.Size = new System.Drawing.Size(414, 175);
             this.directoryView.StateImageList = this.imageList1;
             this.directoryView.TabIndex = 35;
             this.directoryView.NodeMouseClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.directoryView_NodeMouseClick);
@@ -342,10 +342,10 @@ namespace Cilent
             this.btnShow.ImageOptions.ImageToTextAlignment = DevExpress.XtraEditors.ImageAlignToText.LeftCenter;
             this.btnShow.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("btnShow.ImageOptions.SvgImage")));
             this.btnShow.ImageOptions.SvgImageSize = new System.Drawing.Size(15, 15);
-            this.btnShow.Location = new System.Drawing.Point(467, 21);
+            this.btnShow.Location = new System.Drawing.Point(400, 17);
             this.btnShow.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnShow.Name = "btnShow";
-            this.btnShow.Size = new System.Drawing.Size(94, 30);
+            this.btnShow.Size = new System.Drawing.Size(81, 24);
             this.btnShow.TabIndex = 34;
             this.btnShow.Text = "Show";
             this.btnShow.Click += new System.EventHandler(this.btnShow_Click);
@@ -353,18 +353,18 @@ namespace Cilent
             // txtDirectory
             // 
             this.txtDirectory.EditValue = "C:\\Users\\Phat\\Documents\\NetBeansProjects\\LTM2";
-            this.txtDirectory.Location = new System.Drawing.Point(170, 26);
+            this.txtDirectory.Location = new System.Drawing.Point(146, 21);
             this.txtDirectory.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.txtDirectory.Name = "txtDirectory";
-            this.txtDirectory.Size = new System.Drawing.Size(257, 22);
+            this.txtDirectory.Size = new System.Drawing.Size(220, 20);
             this.txtDirectory.TabIndex = 33;
             // 
             // labelControl4
             // 
-            this.labelControl4.Location = new System.Drawing.Point(78, 30);
+            this.labelControl4.Location = new System.Drawing.Point(67, 24);
             this.labelControl4.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.labelControl4.Name = "labelControl4";
-            this.labelControl4.Size = new System.Drawing.Size(51, 16);
+            this.labelControl4.Size = new System.Drawing.Size(44, 13);
             this.labelControl4.TabIndex = 32;
             this.labelControl4.Text = "Directory";
             // 
@@ -385,9 +385,9 @@ namespace Cilent
             // 
             // Client
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(638, 592);
+            this.ClientSize = new System.Drawing.Size(547, 481);
             this.Controls.Add(this.resultPanel);
             this.Controls.Add(this.controlPanel);
             this.Controls.Add(this.barDockControlLeft);

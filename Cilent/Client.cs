@@ -251,7 +251,6 @@ namespace Cilent
                 // Change the ToolTip only if the pointer moved to a new node.  
                 if (theNode.Tag.ToString() != toolTip.GetToolTip(this.directoryView))
                     toolTip.SetToolTip(this.directoryView, theNode.Tag.ToString());
-
             }
             else     // Pointer is not over a node so clear the ToolTip.  
             {
