@@ -23,14 +23,12 @@ namespace Cilent
         private static int port;
         private static TcpClient client;
         private const int BUFFER_SIZE = 999999999;
-        public static Dir directoryCollection = new Dir();
+        public static DirectoryView directoryCollection = new DirectoryView();
 
         public Client()
         {
             InitializeComponent();
-            getFilter();
             connectFailed();
-            
         }
 
         private void ConnectToServer()
@@ -40,9 +38,7 @@ namespace Cilent
                 // 1. Connect to server
                 client = new TcpClient();
                 client.Connect(host, port);
-
                 connectSuccessfully();
-
                 client.Close();
             }
 
@@ -68,54 +64,34 @@ namespace Cilent
 
         }
 
-        public void LoadDirectory(Dir directoryCollection)
+        public void LoadDirectory(DirectoryView directoryCollection)
         {
-            //DirectoryInfo di = new DirectoryInfo(Dir);
-            TreeNode tds = this.directoryView.Nodes.Add(directoryCollection.Name);
-            //Directory.CreateDirectory("C:\\Test\\" + directoryCollection.Name);
-            tds.Tag = directoryCollection.Path;
+            TreeNode tds = this.directoryView.Nodes.Add(directoryCollection.directoryInfo.Name);
+            tds.Tag = directoryCollection.directoryInfo.FullName;
             tds.StateImageIndex = 0;
-
-            //Load tất cả các file bên trong đường dẫn cha
             LoadFiles(directoryCollection, tds);
-
-            //Load tất cả các thư mục con bên trong đường dẫn cha
             LoadSubDirectories(directoryCollection, tds);
         }
 
-        private void LoadSubDirectories(Dir parrentDirectory, TreeNode td)
+        private void LoadSubDirectories(DirectoryView parrentDirectory, TreeNode td)
         {
-            // Lấy tất cả các thư mục con trong đường dẫn cha  
-            //String[] subdirectoryEntries = Directory.GetDirectories(parrentDirectory);
-
-            // Lặp qua tất cả các đường dẫn đó
-            foreach (Dir subdirectory in parrentDirectory.SubDirectories)
+            foreach (DirectoryView subdirectory in parrentDirectory.subDirectories)
             {
-
-                //DirectoryInfo di = new DirectoryInfo(subdirectory);
-                TreeNode tds = td.Nodes.Add(subdirectory.Name);
+                TreeNode tds = td.Nodes.Add(subdirectory.directoryInfo.Name);
                 tds.StateImageIndex = 0;
-                tds.Tag = subdirectory.Path;
+                tds.Tag = subdirectory.directoryInfo.FullName;
                 LoadFiles(subdirectory, tds);
                 LoadSubDirectories(subdirectory, tds);
             }
         }
 
-        private void LoadFiles(Dir dir, TreeNode td)
+        private void LoadFiles(DirectoryView dir, TreeNode td)
         {
-            //String[] Files = Directory.GetFiles(dir, "*.*");
-
-            // Lặp qua các file trong thư mục 
-            foreach (FileDir file in dir.SubFiles)
+            foreach (FileView file in dir.subFiles)
             {
-                //FileInfo fi = new FileInfo(file);
-                TreeNode tds = td.Nodes.Add(file.Name);
-                tds.Tag = file.Path;
-                //Byte[] bytes = Convert.FromBase64String(file.Data);
-                //ToString("C:\\Test\\" + file.Name, file.Data);
+                TreeNode tds = td.Nodes.Add(file.fileInfo.Name);
+                tds.Tag = file.fileInfo.FullName;
                 tds.StateImageIndex = 1;
-                //UpdateProgress();
-
             }
         }
 
@@ -132,10 +108,17 @@ namespace Cilent
         //btnShow
         private void btnShow_Click(object sender, EventArgs e)
         {
-            String directory = txtDirectory.Text;
+            this.directoryView.Nodes.Clear();
+
+            string directory = txtDirectory.Text;
             if (directory.Length == 0)
             {
-                MessageBox.Show("Please type directory", this.Name);
+                MessageBox.Show("Please enter directory!", this.Name);
+                return;
+            }
+            else if(!isDirectory(directory))
+            {
+                MessageBox.Show("The path is not directory!", this.Name);
                 return;
             }
             try
@@ -146,25 +129,15 @@ namespace Cilent
                 Stream stream = client.GetStream();
 
                 // 2. send
-                //byte[] dataSize = Encoding.ASCII.GetBytes(directory.Length.ToString());
-                //stream.Write(dataSize, 0, dataSize.Length);
-
-                byte[] data = Encoding.ASCII.GetBytes(directory);
+                byte[] data = Encoding.ASCII.GetBytes(getFilter() + directory);
                 stream.Write(data, 0, data.Length);
 
                 // 3. receive
-                //byte[] receiveDataByteSize = new byte[BUFFER_SIZE];
                 byte[] receiveDataByte = new byte[BUFFER_SIZE];
-                // stream.Read(receiveDataByteSize, 0, BUFFER_SIZE);
-                stream.Read(receiveDataByte, 0, BUFFER_SIZE);
+                int length = stream.Read(receiveDataByte, 0, BUFFER_SIZE);
+                Array.Copy(receiveDataByte, receiveDataByte, length);
+                directoryCollection = (DirectoryView)ByteArrayToObject(receiveDataByte);
 
-                // Show Directory
-                //int dataSize = int.Parse(Encoding.ASCII.GetString(receiveDataByteSize));
-                //byte[] directoryCollectionByte = new byte[dataSize];
-                //Array.Copy(receiveDataByte, directoryCollectionByte, dataSize);
-
-                directoryCollection = (Dir)ByteArrayToObject(receiveDataByte);
-                
                 if (isCollectionEmpty(directoryCollection))
                 {
                     this.directoryView.Nodes.Add("Not Found");
@@ -172,7 +145,7 @@ namespace Cilent
                 else LoadDirectory(directoryCollection);
 
                 // 4. Close
-                //stream.Close();
+                stream.Close();
                 client.Close();
 
                 // 5. Reconnect
@@ -230,37 +203,28 @@ namespace Cilent
             lbDetail.Caption = "";
         }
 
-
-
         private void btnConnect_Click(object sender, EventArgs e)
         {
             host = txtHost.Text;
             port = int.Parse(txtPort.Text);
-            getFilter();
-
             ConnectToServer();
         }
 
-        private bool isCollectionEmpty(Dir directoryCollection)
+        private bool isCollectionEmpty(DirectoryView directoryCollection)
         {
-            if (directoryCollection.Name == null) return true;
-            if (directoryCollection.Path == null) return true;
+            if (directoryCollection.directoryInfo == null) return true;
             return false;
         }
 
         private void directoryView_MouseMove(object sender, MouseEventArgs e)
         {
-            // Get the node at the current mouse pointer location.  
-            TreeNode theNode = this.directoryView.GetNodeAt(e.X, e.Y);
-
-            // Set a ToolTip only if the mouse pointer is actually paused on a node.  
+            TreeNode theNode = this.directoryView.GetNodeAt(e.X, e.Y); 
             if (theNode != null && theNode.Tag != null)
             {
-                // Change the ToolTip only if the pointer moved to a new node.  
                 if (theNode.Tag.ToString() != toolTip.GetToolTip(this.directoryView))
                     toolTip.SetToolTip(this.directoryView, theNode.Tag.ToString());
             }
-            else     // Pointer is not over a node so clear the ToolTip.  
+            else 
             {
                 toolTip.SetToolTip(this.directoryView, "");
             }
@@ -279,54 +243,46 @@ namespace Cilent
 
         private string getFilter()
         {
-            String[] filter = cbxFilter.Text.Split(',');
-            Object[] hello = cbxFilter.Properties.GetItems().GetCheckedValues().ToArray();
+            List<object> filters = cbxFilter.Properties.GetItems().GetCheckedValues();
             string requestWithFileTypeFilter = "filtered";
-            if (filter.Contains("All Files and Folders"))
-            {
-                requestWithFileTypeFilter = requestWithFileTypeFilter + "*" + "all";
-            }
-            else
-            {
-                //if (textBoxExtensions.Text.Trim() != "")
-                //{
-                //    //requestWithFileTypeFilter = "exFiltered";
-                //    string[] split = textBoxExtensions.Text.Trim().Split(';');
-                //    //Lọc theo định dạng nhập tay
-                //    for (int i = 0; i < split.Length; i++)
-                //    {
-                //        requestWithFileTypeFilter += "*" + split[i];
-                //    }
-                //}
 
-                if (filter.Contains("Only Folders"))
+            foreach (string filter in filters)
+            {
+                if (filter.Contains("all"))
                 {
-                    requestWithFileTypeFilter = requestWithFileTypeFilter + "*" + "folder";
+                    requestWithFileTypeFilter = requestWithFileTypeFilter + "*" + "all";
+                    break;
                 }
+                else
+                {
+                    if (filter.Contains("folder"))
+                    {
+                        requestWithFileTypeFilter = requestWithFileTypeFilter + "*" + "folder";
+                        break;
+                    }
 
-                if (filter.Contains("Sound Files"))
-                {
-                    requestWithFileTypeFilter = requestWithFileTypeFilter + "*" + "sound";
-                }
-                if (filter.Contains("Video Files"))
-                {
-                    requestWithFileTypeFilter = requestWithFileTypeFilter + "*" + "video";
-                }
-                if (filter.Contains("Text Files"))
-                {
-                    requestWithFileTypeFilter = requestWithFileTypeFilter + "*" + "text";
-                }
-                if (filter.Contains("Image Files"))
-                {
-                    requestWithFileTypeFilter = requestWithFileTypeFilter + "*" + "image";
-                }
-                if (filter.Contains("Compressed Files"))
-                {
-                    requestWithFileTypeFilter = requestWithFileTypeFilter + "*" + "compressed";
+                    if (filter.Contains("sound"))
+                    {
+                        requestWithFileTypeFilter = requestWithFileTypeFilter + "*" + "sound";
+                    }
+                    if (filter.Contains("video"))
+                    {
+                        requestWithFileTypeFilter = requestWithFileTypeFilter + "*" + "video";
+                    }
+                    if (filter.Contains("text"))
+                    {
+                        requestWithFileTypeFilter = requestWithFileTypeFilter + "*" + "text";
+                    }
+                    if (filter.Contains("image"))
+                    {
+                        requestWithFileTypeFilter = requestWithFileTypeFilter + "*" + "image";
+                    }
+                    if (filter.Contains("compressed"))
+                    {
+                        requestWithFileTypeFilter = requestWithFileTypeFilter + "*" + "compressed";
+                    }
                 }
             }
-            //}
-
             return requestWithFileTypeFilter + "*";
         }
 
@@ -339,6 +295,18 @@ namespace Cilent
         {
             this.directoryView.Nodes.Clear();
             LoadDirectory(directoryCollection);
+        }
+
+        private bool isDirectory(string path)
+        {
+            if (Path.HasExtension(path)) return false;
+            return true;
+        }
+
+        private void btnViewInfo_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
+        {
+            TreeNode node = this.directoryView.SelectedNode;
+            new FormDetail(new FileInfo(node.Tag.ToString())).Show();
         }
     }
 }

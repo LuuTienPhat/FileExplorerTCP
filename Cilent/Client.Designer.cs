@@ -45,7 +45,9 @@ namespace Cilent
             this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
             this.barButtonItem3 = new DevExpress.XtraBars.BarButtonItem();
-            this.barButtonItem1 = new DevExpress.XtraBars.BarButtonItem();
+            this.btnDownload = new DevExpress.XtraBars.BarButtonItem();
+            this.barButtonItem2 = new DevExpress.XtraBars.BarButtonItem();
+            this.btnViewInfo = new DevExpress.XtraBars.BarButtonItem();
             this.controlPanel = new DevExpress.XtraEditors.PanelControl();
             this.lbStatus = new DevExpress.XtraEditors.LabelControl();
             this.labelControl3 = new DevExpress.XtraEditors.LabelControl();
@@ -96,9 +98,11 @@ namespace Cilent
             this.btnExit,
             this.barButtonItem3,
             this.lbDetail,
-            this.barButtonItem1});
+            this.btnDownload,
+            this.barButtonItem2,
+            this.btnViewInfo});
             this.barManager1.MainMenu = this.bar1;
-            this.barManager1.MaxItemId = 5;
+            this.barManager1.MaxItemId = 7;
             this.barManager1.StatusBar = this.bar2;
             // 
             // bar1
@@ -162,34 +166,34 @@ namespace Cilent
             this.barDockControlTop.Location = new System.Drawing.Point(0, 0);
             this.barDockControlTop.Manager = this.barManager1;
             this.barDockControlTop.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.barDockControlTop.Size = new System.Drawing.Size(547, 27);
+            this.barDockControlTop.Size = new System.Drawing.Size(638, 33);
             // 
             // barDockControlBottom
             // 
             this.barDockControlBottom.CausesValidation = false;
             this.barDockControlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.barDockControlBottom.Location = new System.Drawing.Point(0, 460);
+            this.barDockControlBottom.Location = new System.Drawing.Point(0, 613);
             this.barDockControlBottom.Manager = this.barManager1;
             this.barDockControlBottom.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.barDockControlBottom.Size = new System.Drawing.Size(547, 21);
+            this.barDockControlBottom.Size = new System.Drawing.Size(638, 26);
             // 
             // barDockControlLeft
             // 
             this.barDockControlLeft.CausesValidation = false;
             this.barDockControlLeft.Dock = System.Windows.Forms.DockStyle.Left;
-            this.barDockControlLeft.Location = new System.Drawing.Point(0, 27);
+            this.barDockControlLeft.Location = new System.Drawing.Point(0, 33);
             this.barDockControlLeft.Manager = this.barManager1;
             this.barDockControlLeft.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.barDockControlLeft.Size = new System.Drawing.Size(0, 433);
+            this.barDockControlLeft.Size = new System.Drawing.Size(0, 580);
             // 
             // barDockControlRight
             // 
             this.barDockControlRight.CausesValidation = false;
             this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
-            this.barDockControlRight.Location = new System.Drawing.Point(547, 27);
+            this.barDockControlRight.Location = new System.Drawing.Point(638, 33);
             this.barDockControlRight.Manager = this.barManager1;
             this.barDockControlRight.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.barDockControlRight.Size = new System.Drawing.Size(0, 433);
+            this.barDockControlRight.Size = new System.Drawing.Size(0, 580);
             // 
             // barButtonItem3
             // 
@@ -197,12 +201,26 @@ namespace Cilent
             this.barButtonItem3.Id = 2;
             this.barButtonItem3.Name = "barButtonItem3";
             // 
-            // barButtonItem1
+            // btnDownload
             // 
-            this.barButtonItem1.Caption = "Download";
-            this.barButtonItem1.Id = 4;
-            this.barButtonItem1.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("barButtonItem1.ImageOptions.SvgImage")));
-            this.barButtonItem1.Name = "barButtonItem1";
+            this.btnDownload.Caption = "Download";
+            this.btnDownload.Id = 4;
+            this.btnDownload.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("barButtonItem1.ImageOptions.SvgImage")));
+            this.btnDownload.Name = "btnDownload";
+            // 
+            // barButtonItem2
+            // 
+            this.barButtonItem2.Caption = "Info";
+            this.barButtonItem2.Id = 5;
+            this.barButtonItem2.Name = "barButtonItem2";
+            // 
+            // btnViewInfo
+            // 
+            this.btnViewInfo.Caption = "Info";
+            this.btnViewInfo.Id = 6;
+            this.btnViewInfo.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("barButtonItem4.ImageOptions.SvgImage")));
+            this.btnViewInfo.Name = "btnViewInfo";
+            this.btnViewInfo.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.btnViewInfo_ItemClick);
             // 
             // controlPanel
             // 
@@ -215,10 +233,10 @@ namespace Cilent
             this.controlPanel.Controls.Add(this.labelControl1);
             this.controlPanel.Controls.Add(this.btnConnect);
             this.controlPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.controlPanel.Location = new System.Drawing.Point(0, 27);
+            this.controlPanel.Location = new System.Drawing.Point(0, 33);
             this.controlPanel.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.controlPanel.Name = "controlPanel";
-            this.controlPanel.Size = new System.Drawing.Size(547, 433);
+            this.controlPanel.Size = new System.Drawing.Size(638, 580);
             this.controlPanel.TabIndex = 5;
             // 
             // lbStatus
@@ -228,10 +246,10 @@ namespace Cilent
             this.lbStatus.Appearance.Options.UseTextOptions = true;
             this.lbStatus.Appearance.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
             this.lbStatus.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
-            this.lbStatus.Location = new System.Drawing.Point(192, 20);
+            this.lbStatus.Location = new System.Drawing.Point(224, 25);
             this.lbStatus.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.lbStatus.Name = "lbStatus";
-            this.lbStatus.Size = new System.Drawing.Size(180, 17);
+            this.lbStatus.Size = new System.Drawing.Size(210, 21);
             this.lbStatus.TabIndex = 26;
             this.lbStatus.Text = "Not Connected";
             // 
@@ -239,10 +257,10 @@ namespace Cilent
             // 
             this.labelControl3.Appearance.Font = new System.Drawing.Font("Tahoma", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelControl3.Appearance.Options.UseFont = true;
-            this.labelControl3.Location = new System.Drawing.Point(135, 20);
+            this.labelControl3.Location = new System.Drawing.Point(157, 25);
             this.labelControl3.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.labelControl3.Name = "labelControl3";
-            this.labelControl3.Size = new System.Drawing.Size(39, 17);
+            this.labelControl3.Size = new System.Drawing.Size(47, 21);
             this.labelControl3.TabIndex = 25;
             this.labelControl3.Text = "Status";
             // 
@@ -251,10 +269,10 @@ namespace Cilent
             this.btnDisconnect.ImageOptions.ImageToTextAlignment = DevExpress.XtraEditors.ImageAlignToText.LeftCenter;
             this.btnDisconnect.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("btnDisconnect.ImageOptions.SvgImage")));
             this.btnDisconnect.ImageOptions.SvgImageSize = new System.Drawing.Size(15, 15);
-            this.btnDisconnect.Location = new System.Drawing.Point(291, 121);
+            this.btnDisconnect.Location = new System.Drawing.Point(339, 149);
             this.btnDisconnect.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnDisconnect.Name = "btnDisconnect";
-            this.btnDisconnect.Size = new System.Drawing.Size(81, 24);
+            this.btnDisconnect.Size = new System.Drawing.Size(94, 30);
             this.btnDisconnect.TabIndex = 24;
             this.btnDisconnect.Text = "Disconnect";
             this.btnDisconnect.Click += new System.EventHandler(this.btnDisconnect_Click);
@@ -262,36 +280,36 @@ namespace Cilent
             // txtPort
             // 
             this.txtPort.EditValue = "5555";
-            this.txtPort.Location = new System.Drawing.Point(192, 89);
+            this.txtPort.Location = new System.Drawing.Point(224, 110);
             this.txtPort.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.txtPort.Name = "txtPort";
-            this.txtPort.Size = new System.Drawing.Size(180, 20);
+            this.txtPort.Size = new System.Drawing.Size(210, 22);
             this.txtPort.TabIndex = 23;
             // 
             // labelControl2
             // 
-            this.labelControl2.Location = new System.Drawing.Point(135, 89);
+            this.labelControl2.Location = new System.Drawing.Point(157, 110);
             this.labelControl2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.labelControl2.Name = "labelControl2";
-            this.labelControl2.Size = new System.Drawing.Size(20, 13);
+            this.labelControl2.Size = new System.Drawing.Size(23, 16);
             this.labelControl2.TabIndex = 22;
             this.labelControl2.Text = "Port";
             // 
             // txtHost
             // 
             this.txtHost.EditValue = "127.0.0.1";
-            this.txtHost.Location = new System.Drawing.Point(192, 66);
+            this.txtHost.Location = new System.Drawing.Point(224, 81);
             this.txtHost.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.txtHost.Name = "txtHost";
-            this.txtHost.Size = new System.Drawing.Size(180, 20);
+            this.txtHost.Size = new System.Drawing.Size(210, 22);
             this.txtHost.TabIndex = 21;
             // 
             // labelControl1
             // 
-            this.labelControl1.Location = new System.Drawing.Point(135, 66);
+            this.labelControl1.Location = new System.Drawing.Point(157, 81);
             this.labelControl1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.labelControl1.Name = "labelControl1";
-            this.labelControl1.Size = new System.Drawing.Size(22, 13);
+            this.labelControl1.Size = new System.Drawing.Size(25, 16);
             this.labelControl1.TabIndex = 20;
             this.labelControl1.Text = "Host";
             // 
@@ -300,10 +318,10 @@ namespace Cilent
             this.btnConnect.ImageOptions.ImageToTextAlignment = DevExpress.XtraEditors.ImageAlignToText.LeftCenter;
             this.btnConnect.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("btnConnect.ImageOptions.SvgImage")));
             this.btnConnect.ImageOptions.SvgImageSize = new System.Drawing.Size(15, 15);
-            this.btnConnect.Location = new System.Drawing.Point(192, 121);
+            this.btnConnect.Location = new System.Drawing.Point(224, 149);
             this.btnConnect.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnConnect.Name = "btnConnect";
-            this.btnConnect.Size = new System.Drawing.Size(81, 24);
+            this.btnConnect.Size = new System.Drawing.Size(94, 30);
             this.btnConnect.TabIndex = 19;
             this.btnConnect.Text = "Connect";
             this.btnConnect.Click += new System.EventHandler(this.btnConnect_Click);
@@ -319,25 +337,26 @@ namespace Cilent
             this.resultPanel.Controls.Add(this.txtDirectory);
             this.resultPanel.Controls.Add(this.labelControl4);
             this.resultPanel.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.resultPanel.Location = new System.Drawing.Point(0, 195);
+            this.resultPanel.Location = new System.Drawing.Point(0, 240);
             this.resultPanel.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.resultPanel.Name = "resultPanel";
-            this.resultPanel.Size = new System.Drawing.Size(547, 265);
+            this.resultPanel.Size = new System.Drawing.Size(638, 373);
             this.resultPanel.TabIndex = 10;
             // 
             // labelControl5
             // 
-            this.labelControl5.Location = new System.Drawing.Point(67, 49);
+            this.labelControl5.Location = new System.Drawing.Point(78, 60);
             this.labelControl5.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.labelControl5.Name = "labelControl5";
-            this.labelControl5.Size = new System.Drawing.Size(24, 13);
+            this.labelControl5.Size = new System.Drawing.Size(29, 16);
             this.labelControl5.TabIndex = 39;
             this.labelControl5.Text = "Filter";
             // 
             // cbxFilter
             // 
             this.cbxFilter.EditValue = "all";
-            this.cbxFilter.Location = new System.Drawing.Point(146, 46);
+            this.cbxFilter.Location = new System.Drawing.Point(170, 57);
+            this.cbxFilter.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.cbxFilter.MenuManager = this.barManager1;
             this.cbxFilter.Name = "cbxFilter";
             this.cbxFilter.Properties.AllowMultiSelect = true;
@@ -345,14 +364,15 @@ namespace Cilent
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.cbxFilter.Properties.Items.AddRange(new DevExpress.XtraEditors.Controls.CheckedListBoxItem[] {
             new DevExpress.XtraEditors.Controls.CheckedListBoxItem("all", "All Files and Folders", System.Windows.Forms.CheckState.Checked),
-            new DevExpress.XtraEditors.Controls.CheckedListBoxItem("Compressed", "Compressed Files"),
+            new DevExpress.XtraEditors.Controls.CheckedListBoxItem("folder", "Only Folders"),
             new DevExpress.XtraEditors.Controls.CheckedListBoxItem("sound", "Sound Files"),
             new DevExpress.XtraEditors.Controls.CheckedListBoxItem("video", "Video Files"),
             new DevExpress.XtraEditors.Controls.CheckedListBoxItem("text", "Text Files"),
             new DevExpress.XtraEditors.Controls.CheckedListBoxItem("image", "Image Files"),
-            new DevExpress.XtraEditors.Controls.CheckedListBoxItem("folder", "Only Folders")});
+            new DevExpress.XtraEditors.Controls.CheckedListBoxItem("Compressed", "Compressed Files")});
+            this.cbxFilter.Properties.SelectAllItemVisible = false;
             this.cbxFilter.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
-            this.cbxFilter.Size = new System.Drawing.Size(220, 20);
+            this.cbxFilter.Size = new System.Drawing.Size(257, 22);
             this.cbxFilter.TabIndex = 38;
             // 
             // htnRefreshConsole
@@ -360,11 +380,11 @@ namespace Cilent
             this.htnRefreshConsole.ImageOptions.ImageToTextAlignment = DevExpress.XtraEditors.ImageAlignToText.LeftCenter;
             this.htnRefreshConsole.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("htnRefreshConsole.ImageOptions.SvgImage")));
             this.htnRefreshConsole.ImageOptions.SvgImageSize = new System.Drawing.Size(16, 16);
-            this.htnRefreshConsole.Location = new System.Drawing.Point(487, 113);
+            this.htnRefreshConsole.Location = new System.Drawing.Point(568, 139);
             this.htnRefreshConsole.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.htnRefreshConsole.Name = "htnRefreshConsole";
             this.htnRefreshConsole.PaintStyle = DevExpress.XtraEditors.Controls.PaintStyles.Light;
-            this.htnRefreshConsole.Size = new System.Drawing.Size(36, 24);
+            this.htnRefreshConsole.Size = new System.Drawing.Size(42, 30);
             this.htnRefreshConsole.TabIndex = 37;
             this.htnRefreshConsole.ToolTip = "Refresh Console";
             this.htnRefreshConsole.Click += new System.EventHandler(this.btnRefreshConsole_Click);
@@ -374,11 +394,11 @@ namespace Cilent
             this.btnClearConsole.ImageOptions.ImageToTextAlignment = DevExpress.XtraEditors.ImageAlignToText.LeftCenter;
             this.btnClearConsole.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("btnClearConsole.ImageOptions.SvgImage")));
             this.btnClearConsole.ImageOptions.SvgImageSize = new System.Drawing.Size(16, 16);
-            this.btnClearConsole.Location = new System.Drawing.Point(487, 85);
+            this.btnClearConsole.Location = new System.Drawing.Point(568, 105);
             this.btnClearConsole.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnClearConsole.Name = "btnClearConsole";
             this.btnClearConsole.PaintStyle = DevExpress.XtraEditors.Controls.PaintStyles.Light;
-            this.btnClearConsole.Size = new System.Drawing.Size(36, 24);
+            this.btnClearConsole.Size = new System.Drawing.Size(42, 30);
             this.btnClearConsole.TabIndex = 36;
             this.btnClearConsole.ToolTip = "Clear Console";
             this.btnClearConsole.Click += new System.EventHandler(this.btnClearConsole_Click);
@@ -388,10 +408,10 @@ namespace Cilent
             this.directoryView.BackColor = System.Drawing.Color.White;
             this.directoryView.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.directoryView.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(72)))), ((int)(((byte)(70)))), ((int)(((byte)(68)))));
-            this.directoryView.Location = new System.Drawing.Point(67, 85);
+            this.directoryView.Location = new System.Drawing.Point(78, 105);
             this.directoryView.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.directoryView.Name = "directoryView";
-            this.directoryView.Size = new System.Drawing.Size(414, 156);
+            this.directoryView.Size = new System.Drawing.Size(483, 244);
             this.directoryView.StateImageList = this.imageList1;
             this.directoryView.TabIndex = 35;
             this.directoryView.NodeMouseClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.directoryView_NodeMouseClick);
@@ -403,35 +423,43 @@ namespace Cilent
             this.imageList1.TransparentColor = System.Drawing.Color.Transparent;
             this.imageList1.Images.SetKeyName(0, "folder.png");
             this.imageList1.Images.SetKeyName(1, "file.png");
+            this.imageList1.Images.SetKeyName(2, "document.png");
+            this.imageList1.Images.SetKeyName(3, "documents.png");
+            this.imageList1.Images.SetKeyName(4, "image.png");
+            this.imageList1.Images.SetKeyName(5, "sound.png");
+            this.imageList1.Images.SetKeyName(6, "sound-waves.png");
+            this.imageList1.Images.SetKeyName(7, "video.png");
+            this.imageList1.Images.SetKeyName(8, "calendar.png");
+            this.imageList1.Images.SetKeyName(9, "clock.png");
             // 
             // btnShow
             // 
             this.btnShow.ImageOptions.ImageToTextAlignment = DevExpress.XtraEditors.ImageAlignToText.LeftCenter;
             this.btnShow.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("btnShow.ImageOptions.SvgImage")));
             this.btnShow.ImageOptions.SvgImageSize = new System.Drawing.Size(15, 15);
-            this.btnShow.Location = new System.Drawing.Point(400, 42);
+            this.btnShow.Location = new System.Drawing.Point(467, 52);
             this.btnShow.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnShow.Name = "btnShow";
-            this.btnShow.Size = new System.Drawing.Size(81, 24);
+            this.btnShow.Size = new System.Drawing.Size(94, 30);
             this.btnShow.TabIndex = 34;
             this.btnShow.Text = "Show";
             this.btnShow.Click += new System.EventHandler(this.btnShow_Click);
             // 
             // txtDirectory
             // 
-            this.txtDirectory.EditValue = "C:\\Users\\Phat\\Documents\\NetBeansProjects\\LTM2";
-            this.txtDirectory.Location = new System.Drawing.Point(146, 21);
+            this.txtDirectory.EditValue = "C:\\test";
+            this.txtDirectory.Location = new System.Drawing.Point(170, 26);
             this.txtDirectory.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.txtDirectory.Name = "txtDirectory";
-            this.txtDirectory.Size = new System.Drawing.Size(220, 20);
+            this.txtDirectory.Size = new System.Drawing.Size(257, 22);
             this.txtDirectory.TabIndex = 33;
             // 
             // labelControl4
             // 
-            this.labelControl4.Location = new System.Drawing.Point(67, 24);
+            this.labelControl4.Location = new System.Drawing.Point(78, 30);
             this.labelControl4.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.labelControl4.Name = "labelControl4";
-            this.labelControl4.Size = new System.Drawing.Size(44, 13);
+            this.labelControl4.Size = new System.Drawing.Size(51, 16);
             this.labelControl4.TabIndex = 32;
             this.labelControl4.Text = "Directory";
             // 
@@ -446,15 +474,16 @@ namespace Cilent
             // popupMenu
             // 
             this.popupMenu.LinksPersistInfo.AddRange(new DevExpress.XtraBars.LinkPersistInfo[] {
-            new DevExpress.XtraBars.LinkPersistInfo(this.barButtonItem1)});
+            new DevExpress.XtraBars.LinkPersistInfo(this.btnDownload),
+            new DevExpress.XtraBars.LinkPersistInfo(this.btnViewInfo)});
             this.popupMenu.Manager = this.barManager1;
             this.popupMenu.Name = "popupMenu";
             // 
             // Client
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(547, 481);
+            this.ClientSize = new System.Drawing.Size(638, 639);
             this.Controls.Add(this.resultPanel);
             this.Controls.Add(this.controlPanel);
             this.Controls.Add(this.barDockControlLeft);
@@ -512,12 +541,14 @@ namespace Cilent
         private DevExpress.XtraTreeList.TreeList treeListLookUpEdit1TreeList;
         private System.Windows.Forms.TreeView directoryView;
         private System.Windows.Forms.ToolTip toolTip;
-        private DevExpress.XtraBars.BarButtonItem barButtonItem1;
+        private DevExpress.XtraBars.BarButtonItem btnDownload;
         private DevExpress.XtraBars.PopupMenu popupMenu;
         private System.Windows.Forms.ImageList imageList1;
         private DevExpress.XtraEditors.SimpleButton btnClearConsole;
         private DevExpress.XtraEditors.SimpleButton htnRefreshConsole;
         private DevExpress.XtraEditors.LabelControl labelControl5;
         private DevExpress.XtraEditors.CheckedComboBoxEdit cbxFilter;
+        private DevExpress.XtraBars.BarButtonItem barButtonItem2;
+        private DevExpress.XtraBars.BarButtonItem btnViewInfo;
     }
 }
