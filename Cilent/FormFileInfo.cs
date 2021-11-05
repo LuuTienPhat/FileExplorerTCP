@@ -23,7 +23,7 @@ namespace Cilent
             txtName.Text = fileView.fileInfo.Name;
             txtPath.Text = fileView.fileInfo.FullName;
             txtSize.Text = fileView.fileInfo.Length.ToString();
-            txtType.Text = fileView.fileInfo.Extension;
+            //txtType.Text = fileView.fileInfo.Extension;
             txtDateModified.Text = fileView.fileInfo.LastWriteTime.ToString();
             txtDateCreated.Text = fileView.fileInfo.CreationTime.ToString();
         }
@@ -33,7 +33,7 @@ namespace Cilent
             InitializeComponent();
             txtName.Text = directoryView.directoryInfo.Name;
             txtPath.Text = directoryView.directoryInfo.FullName;
-            txtType.Text = directoryView.directoryInfo.Extension;
+            //txtType.Text = directoryView.directoryInfo.Extension;
             txtDateModified.Text = directoryView.directoryInfo.LastWriteTime.ToString();
             txtDateCreated.Text = directoryView.directoryInfo.CreationTime.ToString();
         }

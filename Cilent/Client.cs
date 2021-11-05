@@ -306,7 +306,7 @@ namespace Cilent
         private void btnViewInfo_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
         {
             TreeNode node = this.directoryView.SelectedNode;
-            new FormDetail(new FileInfo(node.Tag.ToString())).Show();
+            //new FormDetail(new FileInfo(node.Tag.ToString())).Show();
         }
     }
 }

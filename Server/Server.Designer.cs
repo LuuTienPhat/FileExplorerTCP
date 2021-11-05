@@ -72,7 +72,7 @@ namespace Server
             this.btnStart.ImageOptions.ImageToTextAlignment = DevExpress.XtraEditors.ImageAlignToText.LeftCenter;
             this.btnStart.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("btnStart.ImageOptions.SvgImage")));
             this.btnStart.ImageOptions.SvgImageSize = new System.Drawing.Size(15, 15);
-            this.btnStart.Location = new System.Drawing.Point(114, 148);
+            this.btnStart.Location = new System.Drawing.Point(114, 143);
             this.btnStart.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnStart.Name = "btnStart";
             this.btnStart.Size = new System.Drawing.Size(94, 30);
@@ -95,12 +95,12 @@ namespace Server
             this.connectPanel.Location = new System.Drawing.Point(0, 33);
             this.connectPanel.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.connectPanel.Name = "connectPanel";
-            this.connectPanel.Size = new System.Drawing.Size(385, 337);
+            this.connectPanel.Size = new System.Drawing.Size(372, 337);
             this.connectPanel.TabIndex = 1;
             // 
             // acceptAll
             // 
-            this.acceptAll.Location = new System.Drawing.Point(230, 76);
+            this.acceptAll.Location = new System.Drawing.Point(230, 78);
             this.acceptAll.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.acceptAll.MenuManager = this.barManager1;
             this.acceptAll.Name = "acceptAll";
@@ -189,7 +189,7 @@ namespace Server
             this.barDockControlTop.Location = new System.Drawing.Point(0, 0);
             this.barDockControlTop.Manager = this.barManager1;
             this.barDockControlTop.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.barDockControlTop.Size = new System.Drawing.Size(385, 33);
+            this.barDockControlTop.Size = new System.Drawing.Size(372, 33);
             // 
             // barDockControlBottom
             // 
@@ -198,7 +198,7 @@ namespace Server
             this.barDockControlBottom.Location = new System.Drawing.Point(0, 370);
             this.barDockControlBottom.Manager = this.barManager1;
             this.barDockControlBottom.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.barDockControlBottom.Size = new System.Drawing.Size(385, 26);
+            this.barDockControlBottom.Size = new System.Drawing.Size(372, 26);
             // 
             // barDockControlLeft
             // 
@@ -213,7 +213,7 @@ namespace Server
             // 
             this.barDockControlRight.CausesValidation = false;
             this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
-            this.barDockControlRight.Location = new System.Drawing.Point(385, 33);
+            this.barDockControlRight.Location = new System.Drawing.Point(372, 33);
             this.barDockControlRight.Manager = this.barManager1;
             this.barDockControlRight.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.barDockControlRight.Size = new System.Drawing.Size(0, 337);
@@ -248,7 +248,7 @@ namespace Server
             this.btnStop.ImageOptions.ImageToTextAlignment = DevExpress.XtraEditors.ImageAlignToText.LeftCenter;
             this.btnStop.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("btnStop.ImageOptions.SvgImage")));
             this.btnStop.ImageOptions.SvgImageSize = new System.Drawing.Size(15, 15);
-            this.btnStop.Location = new System.Drawing.Point(230, 148);
+            this.btnStop.Location = new System.Drawing.Point(230, 143);
             this.btnStop.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnStop.Name = "btnStop";
             this.btnStop.Size = new System.Drawing.Size(94, 30);
@@ -259,7 +259,7 @@ namespace Server
             // txtPort
             // 
             this.txtPort.EditValue = "5555";
-            this.txtPort.Location = new System.Drawing.Point(114, 105);
+            this.txtPort.Location = new System.Drawing.Point(114, 104);
             this.txtPort.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.txtPort.Name = "txtPort";
             this.txtPort.Size = new System.Drawing.Size(210, 22);
@@ -267,7 +267,7 @@ namespace Server
             // 
             // labelControl2
             // 
-            this.labelControl2.Location = new System.Drawing.Point(34, 108);
+            this.labelControl2.Location = new System.Drawing.Point(34, 107);
             this.labelControl2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.labelControl2.Name = "labelControl2";
             this.labelControl2.Size = new System.Drawing.Size(23, 16);
@@ -300,7 +300,7 @@ namespace Server
             this.clientPanel.Location = new System.Drawing.Point(0, 226);
             this.clientPanel.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.clientPanel.Name = "clientPanel";
-            this.clientPanel.Size = new System.Drawing.Size(385, 144);
+            this.clientPanel.Size = new System.Drawing.Size(372, 144);
             this.clientPanel.TabIndex = 6;
             // 
             // clientList
@@ -329,7 +329,7 @@ namespace Server
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(385, 396);
+            this.ClientSize = new System.Drawing.Size(372, 396);
             this.Controls.Add(this.clientPanel);
             this.Controls.Add(this.connectPanel);
             this.Controls.Add(this.barDockControlLeft);
