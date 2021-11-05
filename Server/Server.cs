@@ -35,12 +35,11 @@ namespace Server
             InitializeComponent();
             btnRestart.Enabled = btnStop.Enabled = clientPanel.Enabled = false;
         }
+
         private static byte[] ObjectToByteArray(object obj)
         {
-            if (obj == null)
-                return null;
+            if (obj == null) return null;
             BinaryFormatter bf = new BinaryFormatter();
-
             using (MemoryStream ms = new MemoryStream())
             {
                 bf.Serialize(ms, obj);
@@ -50,101 +49,114 @@ namespace Server
 
         private void StartServer()
         {
-            //Socket socket = server.AcceptSocket();
-
-            //while (_connectionsCount < MAX_CONNECTION || MAX_CONNECTION == 0)
-            //{
-            //    Socket soc = server.AcceptSocket();
-            //    _connectionsCount++;
-
-            //    Thread t = new Thread((obj) =>
-            //    {
-            //        DoWork((Socket)obj);
-            //    });
-            //    t.Start(soc);
-            //}
-
             while (true)
             {
                 // 1. accept
                 TcpClient client = server.AcceptTcpClient();
-                clientList.Items.Add(client.Client.RemoteEndPoint);
+                this.Invoke((MethodInvoker)delegate
+                {
+                    clientList.Items.Add(client.Client.RemoteEndPoint);
+                });
 
                 Stream stream = client.GetStream();
 
                 // 2. receive
-                byte[] receivedDataByte = new byte[client.ReceiveBufferSize];
-                stream.Read(receivedDataByte, 0, client.ReceiveBufferSize);
-                String receivedData = Encoding.ASCII.GetString(receivedDataByte);
-                receivedData = receivedData.Trim('\0');
+                byte[] receivedDataByte = new byte[BUFFER_SIZE];
+                int length = stream.Read(receivedDataByte, 0, BUFFER_SIZE);
 
                 // 3. handle
-                Dir directoryCollection = LoadDirectory(receivedData);
-                byte[] sendData = ObjectToByteArray(directoryCollection);
-                //byte[] sendDataLength = Encoding.ASCII.GetBytes(sendData.Length.ToString());
+                if (length != 0)
+                {
+                    string receivedData = Encoding.ASCII.GetString(receivedDataByte, 0, length);
+                    
+                    string[] requestSplit = receivedData.Split('*');
 
-                // 4. send
-                //stream.Write(sendDataLength, 0, sendDataLength.Length);
-                stream.Write(sendData, 0, sendData.Length);
+                    List<string> filters = new List<string>();
 
-                // 5. close
-                //socket.Close();
+                    for (int i = 1; i < requestSplit.Length - 1; i++)
+                    {
+                        filters.Add(requestSplit[i]);
+                    }
+                    
+                    DirectoryView directoryCollection = LoadDirectory(requestSplit[requestSplit.Length - 1], filters);
+                    byte[] sendData = ObjectToByteArray(directoryCollection);
+
+                    // 4. send
+                    stream.Write(sendData, 0, sendData.Length);
+
+                    // 5. close
+                    stream.Close();
+                    client.Close();
+                }
             }
         }
 
-        public Dir LoadDirectory(String receiveDirectory)
+        public DirectoryView LoadDirectory(String receiveDirectory, List<string> filters)
         {
             try
             {
                 DirectoryInfo directoryInfo = new DirectoryInfo(receiveDirectory);
-                Dir currentDir = new Dir(directoryInfo.Name, directoryInfo.FullName);
+                DirectoryView directoryCollection = new DirectoryView(directoryInfo);
 
-                //Load tất cả các file bên trong đường dẫn cha
-                LoadFiles(receiveDirectory, currentDir);
-
-                //Load tất cả các thư mục con bên trong đường dẫn cha
-                LoadSubDirectories(receiveDirectory, currentDir);
-
-                return currentDir;
+                if (!filters.Contains("folder"))
+                {
+                    LoadFiles(receiveDirectory, directoryCollection, filters);
+                }  
+                LoadSubDirectories(receiveDirectory, directoryCollection, filters);
+                return directoryCollection;
             }
             catch (Exception ex)
             {
-                //MessageBox.Show(ex.ToString(), this.Name);
-                return new Dir();
+                return new DirectoryView();
             }
         }
 
-        private void LoadSubDirectories(String parentDirectory, Dir directory)
+        private void LoadSubDirectories(String parentDirectory, DirectoryView directoryCollection, List<string> filters)
         {
-            // Lấy tất cả các thư mục con trong đường dẫn cha  
             String[] subdirectoryEntries = Directory.GetDirectories(parentDirectory);
-
-            // Lặp qua tất cả các đường dẫn đó
             foreach (String subdirectory in subdirectoryEntries)
             {
                 DirectoryInfo di = new DirectoryInfo(subdirectory);
-                Dir currentDir = new Dir(di.Name, di.FullName);
-                directory.SubDirectories.Add(currentDir);
+                DirectoryView currentDir = new DirectoryView(di);
+                directoryCollection.subDirectories.Add(currentDir);
 
-                LoadFiles(subdirectory, currentDir);
-                LoadSubDirectories(subdirectory, currentDir);
+                if (!filters.Contains("folder"))
+                {
+                    LoadFiles(subdirectory, currentDir, filters);
+                }
+                LoadSubDirectories(subdirectory, currentDir, filters);
             }
         }
 
-        private void LoadFiles(String parentDirectory, Dir directory)
+        private void LoadFiles(String parentDirectory, DirectoryView directoryCollection, List<string> filters)
         {
             String[] Files = Directory.GetFiles(parentDirectory);
-
-            // Lặp qua các file trong thư mục 
             foreach (String file in Files)
             {
                 FileInfo fi = new FileInfo(file);
-                FileDir fileDir = new FileDir(fi.Name, fi.FullName);
-                directory.SubFiles.Add(fileDir);
+                if (filters.Contains("all"))
+                {
+                    FileView fileDir = new FileView(fi, "");
+                    directoryCollection.subFiles.Add(fileDir);
+                }
+                else
+                {
+                    for (int i = 0; i < filters.Count; i++)
+                    {
+                        if (isEndWith(filters[i], fi.Extension))
+                        {
+                            FileView fileDir = new FileView(fi, "");
+                            directoryCollection.subFiles.Add(fileDir);
+                        }
+                            
+                    }
+                }
             }
         }
 
-        private static byte[] FileToByteArray(String path) {
+
+        private static byte[] FileToByteArray(String path)
+        {
             MemoryStream ms = new MemoryStream();
             using (FileStream file = new FileStream(path, FileMode.Open, FileAccess.Read))
             {
@@ -249,6 +261,66 @@ namespace Server
                     txtAddress.Enabled = true;
                     break;
             }
+        }
+
+        private static List<string> soundExtensions = new List<string>(new string[] { ".mp3", ".m4p", ".m4a", ".flac" });
+        private static List<string> videoExtensions = new List<string>(new string[] { ".mp4", ".mkv", ".webm", ".flv" });
+        private static List<string> textExtensions = new List<string>(new string[] { ".txt", ".doc", ".docx" });
+        private static List<string> imageExtensions = new List<string>(new string[] { ".jpg", ".jpeg", ".png", ".bmp" });
+        private static List<string> compressedExtensions = new List<string>(new string[] { ".7z", ".rar", ".zip" });
+        private static List<string> programExtensions = new List<string>(new string[] { ".exe", ".msi" });
+
+        public bool isEndWith(string fileType, string fileExtension)
+        {
+            switch (fileType)
+            {
+                case "sound":
+                    if (soundExtensions.Contains(fileExtension.ToLower()))
+                    {
+                        return true;
+                    }
+                    break;
+                case "video":
+                    if (videoExtensions.Contains(fileExtension.ToLower()))
+                    {
+                        return true;
+                    }
+                    break;
+                case "text":
+                    if (textExtensions.Contains(fileExtension.ToLower()))
+                    {
+                        return true;
+                    }
+                    break;
+                case "image":
+                    if (imageExtensions.Contains(fileExtension.ToLower()))
+                    {
+                        return true;
+                    }
+                    break;
+                case "compressed":
+                    if (compressedExtensions.Contains(fileExtension.ToLower()))
+                    {
+                        return true;
+                    }
+                    break;
+                case "program":
+                    if (programExtensions.Contains(fileExtension.ToLower()))
+                    {
+                        return true;
+                    }
+                    break;
+                case "all":
+                    return true;
+                default:
+                    if (fileExtension.Substring(fileExtension.LastIndexOf(".") + 1).ToLower().Equals(fileType.ToLower()))
+                    {
+                        return true;
+                    }
+                    break;
+            }
+
+            return false;
         }
     }
 }
