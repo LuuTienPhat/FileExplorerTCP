@@ -28,7 +28,9 @@ namespace Cilent
         public Client()
         {
             InitializeComponent();
+            getFilter();
             connectFailed();
+            
         }
 
         private void ConnectToServer()
@@ -234,6 +236,7 @@ namespace Cilent
         {
             host = txtHost.Text;
             port = int.Parse(txtPort.Text);
+            getFilter();
 
             ConnectToServer();
         }
@@ -274,12 +277,65 @@ namespace Cilent
             }
         }
 
+        private string getFilter()
+        {
+            String[] filter = cbxFilter.Text.Split(',');
+            Object[] hello = cbxFilter.Properties.GetItems().GetCheckedValues().ToArray();
+            string requestWithFileTypeFilter = "filtered";
+            if (filter.Contains("All Files and Folders"))
+            {
+                requestWithFileTypeFilter = requestWithFileTypeFilter + "*" + "all";
+            }
+            else
+            {
+                //if (textBoxExtensions.Text.Trim() != "")
+                //{
+                //    //requestWithFileTypeFilter = "exFiltered";
+                //    string[] split = textBoxExtensions.Text.Trim().Split(';');
+                //    //Lọc theo định dạng nhập tay
+                //    for (int i = 0; i < split.Length; i++)
+                //    {
+                //        requestWithFileTypeFilter += "*" + split[i];
+                //    }
+                //}
+
+                if (filter.Contains("Only Folders"))
+                {
+                    requestWithFileTypeFilter = requestWithFileTypeFilter + "*" + "folder";
+                }
+
+                if (filter.Contains("Sound Files"))
+                {
+                    requestWithFileTypeFilter = requestWithFileTypeFilter + "*" + "sound";
+                }
+                if (filter.Contains("Video Files"))
+                {
+                    requestWithFileTypeFilter = requestWithFileTypeFilter + "*" + "video";
+                }
+                if (filter.Contains("Text Files"))
+                {
+                    requestWithFileTypeFilter = requestWithFileTypeFilter + "*" + "text";
+                }
+                if (filter.Contains("Image Files"))
+                {
+                    requestWithFileTypeFilter = requestWithFileTypeFilter + "*" + "image";
+                }
+                if (filter.Contains("Compressed Files"))
+                {
+                    requestWithFileTypeFilter = requestWithFileTypeFilter + "*" + "compressed";
+                }
+            }
+            //}
+
+            return requestWithFileTypeFilter + "*";
+        }
+
         private void btnClearConsole_Click(object sender, EventArgs e)
         {
             this.directoryView.Nodes.Clear();
         }
 
-        private void refreshConsole_Click(object sender, EventArgs e)
+        private void btnRefreshConsole_Click(object sender, EventArgs e)
         {
             this.directoryView.Nodes.Clear();
             LoadDirectory(directoryCollection);

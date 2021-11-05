@@ -57,8 +57,8 @@ namespace Cilent
             this.btnConnect = new DevExpress.XtraEditors.SimpleButton();
             this.resultPanel = new DevExpress.XtraEditors.PanelControl();
             this.labelControl5 = new DevExpress.XtraEditors.LabelControl();
-            this.checkedComboBoxEdit1 = new DevExpress.XtraEditors.CheckedComboBoxEdit();
-            this.refreshConsole = new DevExpress.XtraEditors.SimpleButton();
+            this.cbxFilter = new DevExpress.XtraEditors.CheckedComboBoxEdit();
+            this.htnRefreshConsole = new DevExpress.XtraEditors.SimpleButton();
             this.btnClearConsole = new DevExpress.XtraEditors.SimpleButton();
             this.directoryView = new System.Windows.Forms.TreeView();
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
@@ -75,7 +75,7 @@ namespace Cilent
             ((System.ComponentModel.ISupportInitialize)(this.txtHost.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.resultPanel)).BeginInit();
             this.resultPanel.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.checkedComboBoxEdit1.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cbxFilter.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtDirectory.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.treeListLookUpEdit1TreeList)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.popupMenu)).BeginInit();
@@ -311,8 +311,8 @@ namespace Cilent
             // resultPanel
             // 
             this.resultPanel.Controls.Add(this.labelControl5);
-            this.resultPanel.Controls.Add(this.checkedComboBoxEdit1);
-            this.resultPanel.Controls.Add(this.refreshConsole);
+            this.resultPanel.Controls.Add(this.cbxFilter);
+            this.resultPanel.Controls.Add(this.htnRefreshConsole);
             this.resultPanel.Controls.Add(this.btnClearConsole);
             this.resultPanel.Controls.Add(this.directoryView);
             this.resultPanel.Controls.Add(this.btnShow);
@@ -334,35 +334,40 @@ namespace Cilent
             this.labelControl5.TabIndex = 39;
             this.labelControl5.Text = "Filter";
             // 
-            // checkedComboBoxEdit1
+            // cbxFilter
             // 
-            this.checkedComboBoxEdit1.EditValue = "all";
-            this.checkedComboBoxEdit1.Location = new System.Drawing.Point(146, 46);
-            this.checkedComboBoxEdit1.MenuManager = this.barManager1;
-            this.checkedComboBoxEdit1.Name = "checkedComboBoxEdit1";
-            this.checkedComboBoxEdit1.Properties.AllowMultiSelect = true;
-            this.checkedComboBoxEdit1.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            this.cbxFilter.EditValue = "all";
+            this.cbxFilter.Location = new System.Drawing.Point(146, 46);
+            this.cbxFilter.MenuManager = this.barManager1;
+            this.cbxFilter.Name = "cbxFilter";
+            this.cbxFilter.Properties.AllowMultiSelect = true;
+            this.cbxFilter.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
-            this.checkedComboBoxEdit1.Properties.Items.AddRange(new DevExpress.XtraEditors.Controls.CheckedListBoxItem[] {
-            new DevExpress.XtraEditors.Controls.CheckedListBoxItem("hello"),
-            new DevExpress.XtraEditors.Controls.CheckedListBoxItem("other")});
-            this.checkedComboBoxEdit1.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
-            this.checkedComboBoxEdit1.Size = new System.Drawing.Size(220, 20);
-            this.checkedComboBoxEdit1.TabIndex = 38;
+            this.cbxFilter.Properties.Items.AddRange(new DevExpress.XtraEditors.Controls.CheckedListBoxItem[] {
+            new DevExpress.XtraEditors.Controls.CheckedListBoxItem("all", "All Files and Folders", System.Windows.Forms.CheckState.Checked),
+            new DevExpress.XtraEditors.Controls.CheckedListBoxItem("Compressed", "Compressed Files"),
+            new DevExpress.XtraEditors.Controls.CheckedListBoxItem("sound", "Sound Files"),
+            new DevExpress.XtraEditors.Controls.CheckedListBoxItem("video", "Video Files"),
+            new DevExpress.XtraEditors.Controls.CheckedListBoxItem("text", "Text Files"),
+            new DevExpress.XtraEditors.Controls.CheckedListBoxItem("image", "Image Files"),
+            new DevExpress.XtraEditors.Controls.CheckedListBoxItem("folder", "Only Folders")});
+            this.cbxFilter.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
+            this.cbxFilter.Size = new System.Drawing.Size(220, 20);
+            this.cbxFilter.TabIndex = 38;
             // 
-            // refreshConsole
+            // htnRefreshConsole
             // 
-            this.refreshConsole.ImageOptions.ImageToTextAlignment = DevExpress.XtraEditors.ImageAlignToText.LeftCenter;
-            this.refreshConsole.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("refreshConsole.ImageOptions.SvgImage")));
-            this.refreshConsole.ImageOptions.SvgImageSize = new System.Drawing.Size(16, 16);
-            this.refreshConsole.Location = new System.Drawing.Point(487, 113);
-            this.refreshConsole.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.refreshConsole.Name = "refreshConsole";
-            this.refreshConsole.PaintStyle = DevExpress.XtraEditors.Controls.PaintStyles.Light;
-            this.refreshConsole.Size = new System.Drawing.Size(36, 24);
-            this.refreshConsole.TabIndex = 37;
-            this.refreshConsole.ToolTip = "Refresh Console";
-            this.refreshConsole.Click += new System.EventHandler(this.refreshConsole_Click);
+            this.htnRefreshConsole.ImageOptions.ImageToTextAlignment = DevExpress.XtraEditors.ImageAlignToText.LeftCenter;
+            this.htnRefreshConsole.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("htnRefreshConsole.ImageOptions.SvgImage")));
+            this.htnRefreshConsole.ImageOptions.SvgImageSize = new System.Drawing.Size(16, 16);
+            this.htnRefreshConsole.Location = new System.Drawing.Point(487, 113);
+            this.htnRefreshConsole.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.htnRefreshConsole.Name = "htnRefreshConsole";
+            this.htnRefreshConsole.PaintStyle = DevExpress.XtraEditors.Controls.PaintStyles.Light;
+            this.htnRefreshConsole.Size = new System.Drawing.Size(36, 24);
+            this.htnRefreshConsole.TabIndex = 37;
+            this.htnRefreshConsole.ToolTip = "Refresh Console";
+            this.htnRefreshConsole.Click += new System.EventHandler(this.btnRefreshConsole_Click);
             // 
             // btnClearConsole
             // 
@@ -470,7 +475,7 @@ namespace Cilent
             ((System.ComponentModel.ISupportInitialize)(this.resultPanel)).EndInit();
             this.resultPanel.ResumeLayout(false);
             this.resultPanel.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.checkedComboBoxEdit1.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cbxFilter.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtDirectory.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.treeListLookUpEdit1TreeList)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.popupMenu)).EndInit();
@@ -511,8 +516,8 @@ namespace Cilent
         private DevExpress.XtraBars.PopupMenu popupMenu;
         private System.Windows.Forms.ImageList imageList1;
         private DevExpress.XtraEditors.SimpleButton btnClearConsole;
-        private DevExpress.XtraEditors.SimpleButton refreshConsole;
-        private DevExpress.XtraEditors.CheckedComboBoxEdit checkedComboBoxEdit1;
+        private DevExpress.XtraEditors.SimpleButton htnRefreshConsole;
         private DevExpress.XtraEditors.LabelControl labelControl5;
+        private DevExpress.XtraEditors.CheckedComboBoxEdit cbxFilter;
     }
 }
