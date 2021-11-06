@@ -129,7 +129,7 @@ namespace Server
             this.lbDetail,
             this.progressBar});
             this.barManager1.MainMenu = this.bar1;
-            this.barManager1.MaxItemId = 13;
+            this.barManager1.MaxItemId = 16;
             this.barManager1.RepositoryItems.AddRange(new DevExpress.XtraEditors.Repository.RepositoryItem[] {
             this.repositoryItemProgressBar1});
             this.barManager1.StatusBar = this.bar2;
@@ -176,7 +176,7 @@ namespace Server
             this.bar2.DockStyle = DevExpress.XtraBars.BarDockStyle.Bottom;
             this.bar2.LinksPersistInfo.AddRange(new DevExpress.XtraBars.LinkPersistInfo[] {
             new DevExpress.XtraBars.LinkPersistInfo(this.lbDetail),
-            new DevExpress.XtraBars.LinkPersistInfo(DevExpress.XtraBars.BarLinkUserDefines.Width, this.progressBar, "", false, true, true, 76)});
+            new DevExpress.XtraBars.LinkPersistInfo(DevExpress.XtraBars.BarLinkUserDefines.Width, this.progressBar, "", false, true, true, 57)});
             this.bar2.OptionsBar.AllowQuickCustomization = false;
             this.bar2.OptionsBar.DrawDragBorder = false;
             this.bar2.OptionsBar.UseWholeRow = true;
@@ -187,13 +187,14 @@ namespace Server
             this.lbDetail.AccessibleDescription = "";
             this.lbDetail.Id = 3;
             this.lbDetail.Name = "lbDetail";
-            this.lbDetail.Size = new System.Drawing.Size(180, 0);
+            this.lbDetail.Size = new System.Drawing.Size(200, 0);
+            this.lbDetail.Width = 200;
             // 
             // progressBar
             // 
             this.progressBar.Caption = "barEditItem1";
             this.progressBar.Edit = this.repositoryItemProgressBar1;
-            this.progressBar.Id = 12;
+            this.progressBar.Id = 15;
             this.progressBar.Name = "progressBar";
             // 
             // repositoryItemProgressBar1
@@ -323,18 +324,18 @@ namespace Server
             // 
             // clientList
             // 
-            this.clientList.Location = new System.Drawing.Point(114, 23);
+            this.clientList.Location = new System.Drawing.Point(117, 23);
             this.clientList.Name = "clientList";
-            this.clientList.Size = new System.Drawing.Size(210, 98);
-            this.clientList.TabIndex = 14;
+            this.clientList.Size = new System.Drawing.Size(207, 98);
+            this.clientList.TabIndex = 16;
             // 
             // labelControl4
             // 
-            this.labelControl4.Location = new System.Drawing.Point(48, 23);
+            this.labelControl4.Location = new System.Drawing.Point(51, 23);
             this.labelControl4.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.labelControl4.Name = "labelControl4";
             this.labelControl4.Size = new System.Drawing.Size(32, 16);
-            this.labelControl4.TabIndex = 12;
+            this.labelControl4.TabIndex = 15;
             this.labelControl4.Text = "Client";
             // 
             // Server
@@ -393,8 +394,8 @@ namespace Server
         private DevExpress.XtraBars.BarStaticItem lbDetail;
         private DevExpress.XtraEditors.CheckEdit acceptAll;
         private DevExpress.XtraEditors.PanelControl clientPanel;
-        private DevExpress.XtraEditors.LabelControl labelControl4;
         private DevExpress.XtraEditors.ListBoxControl clientList;
+        private DevExpress.XtraEditors.LabelControl labelControl4;
         private DevExpress.XtraBars.BarEditItem progressBar;
         private DevExpress.XtraEditors.Repository.RepositoryItemProgressBar repositoryItemProgressBar1;
     }

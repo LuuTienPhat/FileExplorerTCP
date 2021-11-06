@@ -107,6 +107,31 @@ namespace Server
             }
         }
 
+        public void ServerStopped()
+        {
+            lbStatus.Text = "Not Activated";
+            lbDetail.Caption = "Server stopped!";
+            txtAddress.Enabled = txtPort.Enabled = acceptAll.Enabled = btnStart.Enabled = true;
+            btnRestart.Enabled = btnStop.Enabled = clientPanel.Enabled = false;
+
+            progressBar.EditValue = 0;
+            clientPanel.Enabled = false;
+
+            if (acceptAll.Checked) txtAddress.Enabled = false;
+            else txtAddress.Enabled = true;
+        }
+
+        public void ServerStarted()
+        {
+            lbStatus.Text = "Activated";
+            lbDetail.Caption = "Listening on " + server.LocalEndpoint;
+            txtAddress.Enabled = txtPort.Enabled = acceptAll.Enabled = btnStart.Enabled = false;
+            btnRestart.Enabled = btnStop.Enabled = clientPanel.Enabled = true;
+
+            progressBar.EditValue = 0;
+            clientPanel.Enabled = true;
+        }
+
         public DirectoryView LoadDirectory(String receiveDirectory, List<string> filters)
         {
             try
@@ -190,16 +215,13 @@ namespace Server
 
                 // 1. listen
                 server.Start();
-                lbStatus.Text = "Activated";
-                lbDetail.Caption = "Server started on " + server.LocalEndpoint;
-
-                txtAddress.Enabled = txtPort.Enabled = acceptAll.Enabled = btnStart.Enabled = false;
-                btnRestart.Enabled = btnStop.Enabled = clientPanel.Enabled = true;
+                ServerStarted();
 
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.ToString(), this.Name);
+                ServerStopped();
             }
 
 
@@ -218,13 +240,7 @@ namespace Server
         {
             serverTheard.Suspend();
             server.Stop();
-            lbStatus.Text = "Not Activated";
-            lbDetail.Caption = "Server stopped";
-
-            btnRestart.Enabled = btnStop.Enabled = false;
-            acceptAll.Enabled = txtPort.Enabled = btnStart.Enabled = true;
-            if (acceptAll.Checked) txtAddress.Enabled = false;
-            else txtAddress.Enabled = true;
+            ServerStopped();
         }
 
         [Obsolete]
@@ -234,16 +250,13 @@ namespace Server
             {
                 serverTheard.Suspend();
                 server.Stop();
-
-                lbStatus.Text = "Not Activated";
-                lbDetail.Caption = "Server stopped";
+                ServerStopped();
 
                 server = new TcpListener(host, port);
 
                 // 1. listen
                 server.Start();
-                lbStatus.Text = "Activated";
-                lbDetail.Caption = "Server started on " + server.LocalEndpoint;
+                ServerStarted();
 
             }
             catch (Exception ex)
