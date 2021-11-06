@@ -352,17 +352,14 @@ namespace Cilent
                 byte[] receiveDataByte = new byte[BUFFER_SIZE];
                 int length = stream.Read(receiveDataByte, 0, BUFFER_SIZE);
 
-                //folderBrowserDialog.ShowDialog();
-                //MessageBox.Show(folderBrowserDialog.SelectedPath);
-
                 saveFileDialog.ShowDialog();
                 MessageBox.Show(saveFileDialog.FileName);
+
                 if (saveFileDialog.FileName.Length != 0)
                 {
                     using (FileStream fs = new FileStream(saveFileDialog.FileName, FileMode.CreateNew, FileAccess.Write))
                     {
                         fs.Write(receiveDataByte, 0, length);
-                        //fs.Close();
                     }
                 }
 
@@ -425,7 +422,16 @@ namespace Cilent
         {
             if (e.Button == MouseButtons.Right)
             {
+                if(isDirectory(e.Node.Tag.ToString()))
+                {
+                    btnDownload.Enabled = false;
+                }
+                else
+                {
+                    btnDownload.Enabled = true;
+                }
                 popupMenu.ShowPopup(Cursor.Position);
+                
             }
         }
 
