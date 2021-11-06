@@ -33,6 +33,8 @@ namespace Cilent
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormFileInfo));
             this.panelControl1 = new DevExpress.XtraEditors.PanelControl();
+            this.txtType = new DevExpress.XtraEditors.TextEdit();
+            this.labelControl3 = new DevExpress.XtraEditors.LabelControl();
             this.ckHidden = new DevExpress.XtraEditors.CheckEdit();
             this.ckReadOnly = new DevExpress.XtraEditors.CheckEdit();
             this.labelControl2 = new DevExpress.XtraEditors.LabelControl();
@@ -47,10 +49,9 @@ namespace Cilent
             this.labelControl8 = new DevExpress.XtraEditors.LabelControl();
             this.labelControl5 = new DevExpress.XtraEditors.LabelControl();
             this.labelControl6 = new DevExpress.XtraEditors.LabelControl();
-            this.txtType = new DevExpress.XtraEditors.TextEdit();
-            this.labelControl3 = new DevExpress.XtraEditors.LabelControl();
             ((System.ComponentModel.ISupportInitialize)(this.panelControl1)).BeginInit();
             this.panelControl1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.txtType.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ckHidden.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ckReadOnly.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtDateCreated.Properties)).BeginInit();
@@ -58,7 +59,6 @@ namespace Cilent
             ((System.ComponentModel.ISupportInitialize)(this.txtPath.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtSize.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtName.Properties)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.txtType.Properties)).BeginInit();
             this.SuspendLayout();
             // 
             // panelControl1
@@ -85,6 +85,26 @@ namespace Cilent
             this.panelControl1.Name = "panelControl1";
             this.panelControl1.Size = new System.Drawing.Size(418, 401);
             this.panelControl1.TabIndex = 0;
+            // 
+            // txtType
+            // 
+            this.txtType.Location = new System.Drawing.Point(143, 165);
+            this.txtType.Margin = new System.Windows.Forms.Padding(8);
+            this.txtType.Name = "txtType";
+            this.txtType.Properties.Appearance.BackColor = System.Drawing.Color.White;
+            this.txtType.Properties.Appearance.Options.UseBackColor = true;
+            this.txtType.Properties.ReadOnly = true;
+            this.txtType.Size = new System.Drawing.Size(240, 22);
+            this.txtType.TabIndex = 30;
+            // 
+            // labelControl3
+            // 
+            this.labelControl3.Location = new System.Drawing.Point(32, 167);
+            this.labelControl3.Margin = new System.Windows.Forms.Padding(8);
+            this.labelControl3.Name = "labelControl3";
+            this.labelControl3.Size = new System.Drawing.Size(53, 16);
+            this.labelControl3.TabIndex = 29;
+            this.labelControl3.Text = "File type:";
             // 
             // ckHidden
             // 
@@ -230,26 +250,6 @@ namespace Cilent
             this.labelControl6.TabIndex = 18;
             this.labelControl6.Text = "Date Created:";
             // 
-            // txtType
-            // 
-            this.txtType.Location = new System.Drawing.Point(143, 165);
-            this.txtType.Margin = new System.Windows.Forms.Padding(8);
-            this.txtType.Name = "txtType";
-            this.txtType.Properties.Appearance.BackColor = System.Drawing.Color.White;
-            this.txtType.Properties.Appearance.Options.UseBackColor = true;
-            this.txtType.Properties.ReadOnly = true;
-            this.txtType.Size = new System.Drawing.Size(240, 22);
-            this.txtType.TabIndex = 30;
-            // 
-            // labelControl3
-            // 
-            this.labelControl3.Location = new System.Drawing.Point(32, 167);
-            this.labelControl3.Margin = new System.Windows.Forms.Padding(8);
-            this.labelControl3.Name = "labelControl3";
-            this.labelControl3.Size = new System.Drawing.Size(53, 16);
-            this.labelControl3.TabIndex = 29;
-            this.labelControl3.Text = "File type:";
-            // 
             // FormFileInfo
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 16F);
@@ -258,10 +258,12 @@ namespace Cilent
             this.Controls.Add(this.panelControl1);
             this.IconOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("FormFileInfo.IconOptions.SvgImage")));
             this.Name = "FormFileInfo";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "FormDetail";
             ((System.ComponentModel.ISupportInitialize)(this.panelControl1)).EndInit();
             this.panelControl1.ResumeLayout(false);
             this.panelControl1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.txtType.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.ckHidden.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.ckReadOnly.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtDateCreated.Properties)).EndInit();
@@ -269,7 +271,6 @@ namespace Cilent
             ((System.ComponentModel.ISupportInitialize)(this.txtPath.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtSize.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtName.Properties)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.txtType.Properties)).EndInit();
             this.ResumeLayout(false);
 
         }

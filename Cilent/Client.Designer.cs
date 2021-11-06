@@ -60,6 +60,7 @@ namespace Cilent
             this.resultPanel = new DevExpress.XtraEditors.PanelControl();
             this.directoryView = new DevExpress.XtraTreeList.TreeList();
             this.treeListColumn1 = new DevExpress.XtraTreeList.Columns.TreeListColumn();
+            this.imageCollection = new DevExpress.Utils.DPIAwareImageCollection(this.components);
             this.labelControl5 = new DevExpress.XtraEditors.LabelControl();
             this.cbxFilter = new DevExpress.XtraEditors.CheckedComboBoxEdit();
             this.btnRefreshConsole = new DevExpress.XtraEditors.SimpleButton();
@@ -72,7 +73,6 @@ namespace Cilent
             this.popupMenu = new DevExpress.XtraBars.PopupMenu(this.components);
             this.folderBrowserDialog = new DevExpress.XtraEditors.XtraFolderBrowserDialog(this.components);
             this.saveFileDialog = new DevExpress.XtraEditors.XtraSaveFileDialog(this.components);
-            this.imageCollection = new DevExpress.Utils.DPIAwareImageCollection(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.barManager1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.controlPanel)).BeginInit();
             this.controlPanel.SuspendLayout();
@@ -81,11 +81,11 @@ namespace Cilent
             ((System.ComponentModel.ISupportInitialize)(this.resultPanel)).BeginInit();
             this.resultPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.directoryView)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.imageCollection)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cbxFilter.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtDirectory.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.treeListLookUpEdit1TreeList)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.popupMenu)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.imageCollection)).BeginInit();
             this.SuspendLayout();
             // 
             // barManager1
@@ -377,6 +377,19 @@ namespace Cilent
             this.treeListColumn1.Visible = true;
             this.treeListColumn1.VisibleIndex = 0;
             // 
+            // imageCollection
+            // 
+            this.imageCollection.Images.AddRange(new DevExpress.Utils.DefaultImage[] {
+            new DevExpress.Utils.DefaultImage(new DevExpress.Utils.LocalImageLocator("folder2.png")),
+            new DevExpress.Utils.DefaultImage(new DevExpress.Utils.LocalImageLocator("file.png")),
+            new DevExpress.Utils.DefaultImage(new DevExpress.Utils.LocalImageLocator("document.png")),
+            new DevExpress.Utils.DefaultImage(new DevExpress.Utils.LocalImageLocator("image.png")),
+            new DevExpress.Utils.DefaultImage(new DevExpress.Utils.LocalImageLocator("sound-waves.png")),
+            new DevExpress.Utils.DefaultImage(new DevExpress.Utils.LocalImageLocator("video.png")),
+            new DevExpress.Utils.DefaultImage(new DevExpress.Utils.LocalImageLocator("zip.png"))});
+            this.imageCollection.Owner = this;
+            this.imageCollection.Stream = ((DevExpress.Utils.DPIAwareImageCollectionStreamer)(resources.GetObject("imageCollection.Stream")));
+            // 
             // labelControl5
             // 
             this.labelControl5.Location = new System.Drawing.Point(78, 60);
@@ -452,7 +465,7 @@ namespace Cilent
             // 
             // txtDirectory
             // 
-            this.txtDirectory.EditValue = "C:\\test";
+            this.txtDirectory.EditValue = "C:\\test2";
             this.txtDirectory.Location = new System.Drawing.Point(170, 26);
             this.txtDirectory.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.txtDirectory.Name = "txtDirectory";
@@ -492,19 +505,6 @@ namespace Cilent
             // 
             this.saveFileDialog.Title = "Save As";
             // 
-            // imageCollection
-            // 
-            this.imageCollection.Images.AddRange(new DevExpress.Utils.DefaultImage[] {
-            new DevExpress.Utils.DefaultImage(new DevExpress.Utils.LocalImageLocator("folder2.png")),
-            new DevExpress.Utils.DefaultImage(new DevExpress.Utils.LocalImageLocator("file.png")),
-            new DevExpress.Utils.DefaultImage(new DevExpress.Utils.LocalImageLocator("document.png")),
-            new DevExpress.Utils.DefaultImage(new DevExpress.Utils.LocalImageLocator("image.png")),
-            new DevExpress.Utils.DefaultImage(new DevExpress.Utils.LocalImageLocator("sound-waves.png")),
-            new DevExpress.Utils.DefaultImage(new DevExpress.Utils.LocalImageLocator("video.png")),
-            new DevExpress.Utils.DefaultImage(new DevExpress.Utils.LocalImageLocator("zip.png"))});
-            this.imageCollection.Owner = this;
-            this.imageCollection.Stream = ((DevExpress.Utils.DPIAwareImageCollectionStreamer)(resources.GetObject("imageCollection.Stream")));
-            // 
             // Client
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 16F);
@@ -531,11 +531,11 @@ namespace Cilent
             this.resultPanel.ResumeLayout(false);
             this.resultPanel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.directoryView)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.imageCollection)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.cbxFilter.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtDirectory.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.treeListLookUpEdit1TreeList)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.popupMenu)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.imageCollection)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
