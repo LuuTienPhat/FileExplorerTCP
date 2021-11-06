@@ -18,54 +18,29 @@ namespace Cilent
         public FormFileInfo(FileView fileView)
         {
             InitializeComponent();
-
-            this.Name = "";
+            this.Text = fileView.fileInfo.Name + " Properties";
             txtName.Text = fileView.fileInfo.Name;
             txtPath.Text = fileView.fileInfo.FullName;
-            txtSize.Text = fileView.fileInfo.Length.ToString();
-            //txtType.Text = fileView.fileInfo.Extension;
+            txtType.Text = fileView.fileInfo.Extension;
+            txtSize.Text = ConvertFileSize(fileView);
             txtDateModified.Text = fileView.fileInfo.LastWriteTime.ToString();
             txtDateCreated.Text = fileView.fileInfo.CreationTime.ToString();
+            if (fileView.fileInfo.IsReadOnly) ckReadOnly.CheckState = CheckState.Checked;
+            if (fileView.fileInfo.Attributes.HasFlag(FileAttributes.Hidden)) ckHidden.CheckState = CheckState.Checked;
         }
 
-        public FormFileInfo(DirectoryView directoryView)
+        private string ConvertFileSize(FileView fileView)
         {
-            InitializeComponent();
-            txtName.Text = directoryView.directoryInfo.Name;
-            txtPath.Text = directoryView.directoryInfo.FullName;
-            //txtType.Text = directoryView.directoryInfo.Extension;
-            txtDateModified.Text = directoryView.directoryInfo.LastWriteTime.ToString();
-            txtDateCreated.Text = directoryView.directoryInfo.CreationTime.ToString();
-        }
+            string[] sizes = { "B", "KB", "MB", "GB", "TB" };
+            double len = fileView.fileInfo.Length;
+            int order = 0;
+            while (len >= 1024 && order < sizes.Length - 1)
+            {
+                order++;
+                len = len / 1024;
+            }
 
-        private void FormDetail_Load(object sender, EventArgs e)
-        {
-
-        }
-
-        private void labelControl8_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void labelControl5_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void labelControl8_Click_1(object sender, EventArgs e)
-        {
-
-        }
-
-        private void txtSize_EditValueChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void checkEdit1_CheckedChanged(object sender, EventArgs e)
-        {
-
+            return string.Format("{0:0.##} {1}", len, sizes[order]);
         }
     }
 }
