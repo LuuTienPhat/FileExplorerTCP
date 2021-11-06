@@ -16,6 +16,7 @@ using SharedClass;
 using System.Threading;
 using DevExpress.XtraTreeList;
 using DevExpress.XtraTreeList.Nodes;
+using DevExpress.XtraTreeList.ViewInfo;
 
 namespace Cilent
 {
@@ -33,7 +34,7 @@ namespace Cilent
             connectFailed();
             //folderBrowserDialog.ShowDialog();
             //MessageBox.Show(folderBrowserDialog.SelectedPath);
-            
+
 
         }
 
@@ -72,18 +73,20 @@ namespace Cilent
 
         public void LoadDirectory(DirectoryView directoryCollection)
         {
-            TreeNode tds = this.directoryView.Nodes.Add(directoryCollection.directoryInfo.Name);
+            //TreeNode tds = this.directoryView.Nodes.Add(directoryCollection.directoryInfo.Name);
+
+            TreeListNode tds = directoryView.AppendNode(new object[] { directoryCollection.directoryInfo.Name }, null);
             tds.Tag = directoryCollection.directoryInfo.FullName;
             tds.StateImageIndex = 0;
             LoadFiles(directoryCollection, tds);
             LoadSubDirectories(directoryCollection, tds);
         }
 
-        private void LoadSubDirectories(DirectoryView parrentDirectory, TreeNode td)
+        private void LoadSubDirectories(DirectoryView parrentDirectory, TreeListNode td)
         {
             foreach (DirectoryView subdirectory in parrentDirectory.subDirectories)
             {
-                TreeNode tds = td.Nodes.Add(subdirectory.directoryInfo.Name);
+                TreeListNode tds = td.Nodes.Add(new object[] { subdirectory.directoryInfo.Name });
                 tds.Tag = subdirectory.directoryInfo.FullName;
                 tds.StateImageIndex = 0;
                 LoadFiles(subdirectory, tds);
@@ -91,11 +94,13 @@ namespace Cilent
             }
         }
 
-        private void LoadFiles(DirectoryView dir, TreeNode td)
+
+
+        private void LoadFiles(DirectoryView dir, TreeListNode td)
         {
             foreach (FileView file in dir.subFiles)
             {
-                TreeNode tds = td.Nodes.Add(file.fileInfo.Name);
+                TreeListNode tds = td.Nodes.Add(new object[] { file.fileInfo.Name });
                 tds.Tag = file.fileInfo.FullName;
                 assignIconToFile(file.fileInfo.FullName, tds);
             }
@@ -226,31 +231,6 @@ namespace Cilent
             return false;
         }
 
-        private void directoryView_MouseMove(object sender, MouseEventArgs e)
-        {
-            TreeNode theNode = this.directoryView.GetNodeAt(e.X, e.Y);
-            if (theNode != null && theNode.Tag != null)
-            {
-                if (theNode.Tag.ToString() != toolTip.GetToolTip(this.directoryView))
-                    toolTip.SetToolTip(this.directoryView, theNode.Tag.ToString());
-            }
-            else
-            {
-                toolTip.SetToolTip(this.directoryView, "");
-            }
-        }
-
-        private void directoryView_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
-        {
-            if (e.Button == MouseButtons.Right)
-            {
-                TreeNode theNode = this.directoryView.GetNodeAt(e.X, e.Y);
-                popupMenu.ShowPopup(Cursor.Position);
-
-
-            }
-        }
-
         private string getFilter()
         {
             List<object> filters = cbxFilter.Properties.GetItems().GetCheckedValues();
@@ -315,7 +295,7 @@ namespace Cilent
 
         private void btnViewInfo_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
         {
-            TreeNode node = this.directoryView.SelectedNode;
+            TreeListNode node = this.directoryView.FocusedNode;
             if (isDirectory(node.Tag.ToString()))
             {
                 DirectoryView directoryView = searchDirectoryView(directoryCollection, node.Tag.ToString());
@@ -326,7 +306,6 @@ namespace Cilent
                 FileView fileView = searchFileView(directoryCollection, node.Tag.ToString());
                 new FormFileInfo(fileView).Show();
             }
-            //new FormDetail(new FileInfo(node.Tag.ToString())).Show();
         }
 
         private FileView searchFileViewRecursive(DirectoryView collection, string path)
@@ -393,8 +372,7 @@ namespace Cilent
         {
             try
             {
-                TreeNode node = this.directoryView.SelectedNode;
-
+                TreeListNode node = this.directoryView.FocusedNode;
                 client = new TcpClient();
                 client.Connect(host, port);
                 Stream stream = client.GetStream();
@@ -412,7 +390,7 @@ namespace Cilent
 
                 saveFileDialog.ShowDialog();
                 MessageBox.Show(saveFileDialog.FileName);
-                if(saveFileDialog.FileName.Length != 0)
+                if (saveFileDialog.FileName.Length != 0)
                 {
                     using (FileStream fs = new FileStream(saveFileDialog.FileName, FileMode.CreateNew, FileAccess.Write))
                     {
@@ -438,7 +416,7 @@ namespace Cilent
         private static List<string> imageExtensions = new List<string>(new string[] { "jpg", "jpeg", "png", "bmp" });
         private static List<string> compressedExtensions = new List<string>(new string[] { "7z", "rar", "zip" });
 
-        private void assignIconToFile(string path, TreeNode tds)
+        private void assignIconToFile(string path, TreeListNode tds)
         {
             string fileType = path.Substring(path.LastIndexOf(".") + 1).ToLower();
 
@@ -474,6 +452,31 @@ namespace Cilent
                 return;
             }
 
+        }
+
+        private void directoryView_RowClick(object sender, RowClickEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right)
+            {
+                //TreeNode theNode = this.directoryView.GetNodeAt(e.X, e.Y);
+                popupMenu.ShowPopup(Cursor.Position);
+            }
+        }
+
+        private void directoryView_MouseMove(object sender, MouseEventArgs e)
+        {
+            TreeListNode theNode = this.directoryView.GetNodeAt(e.X, e.Y);
+            if (theNode != null && theNode.Tag != null)
+            {
+                if (theNode.Tag.ToString() != toolTip.GetToolTip(this.directoryView))
+                {
+                    toolTip.SetToolTip(this.directoryView, theNode.Tag.ToString());
+                }
+            }
+            else
+            {
+                toolTip.SetToolTip(this.directoryView, "");
+            }
         }
     }
 }

@@ -58,8 +58,8 @@ namespace Cilent
             this.labelControl1 = new DevExpress.XtraEditors.LabelControl();
             this.btnConnect = new DevExpress.XtraEditors.SimpleButton();
             this.resultPanel = new DevExpress.XtraEditors.PanelControl();
-            this.directoryView = new System.Windows.Forms.TreeView();
-            this.imageList1 = new System.Windows.Forms.ImageList(this.components);
+            this.directoryView = new DevExpress.XtraTreeList.TreeList();
+            this.treeListColumn1 = new DevExpress.XtraTreeList.Columns.TreeListColumn();
             this.labelControl5 = new DevExpress.XtraEditors.LabelControl();
             this.cbxFilter = new DevExpress.XtraEditors.CheckedComboBoxEdit();
             this.btnRefreshConsole = new DevExpress.XtraEditors.SimpleButton();
@@ -72,6 +72,7 @@ namespace Cilent
             this.popupMenu = new DevExpress.XtraBars.PopupMenu(this.components);
             this.folderBrowserDialog = new DevExpress.XtraEditors.XtraFolderBrowserDialog(this.components);
             this.saveFileDialog = new DevExpress.XtraEditors.XtraSaveFileDialog(this.components);
+            this.imageCollection = new DevExpress.Utils.DPIAwareImageCollection(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.barManager1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.controlPanel)).BeginInit();
             this.controlPanel.SuspendLayout();
@@ -79,10 +80,12 @@ namespace Cilent
             ((System.ComponentModel.ISupportInitialize)(this.txtHost.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.resultPanel)).BeginInit();
             this.resultPanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.directoryView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cbxFilter.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtDirectory.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.treeListLookUpEdit1TreeList)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.popupMenu)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.imageCollection)).BeginInit();
             this.SuspendLayout();
             // 
             // barManager1
@@ -348,25 +351,31 @@ namespace Cilent
             // 
             // directoryView
             // 
+            this.directoryView.Columns.AddRange(new DevExpress.XtraTreeList.Columns.TreeListColumn[] {
+            this.treeListColumn1});
             this.directoryView.Location = new System.Drawing.Point(78, 105);
+            this.directoryView.MenuManager = this.barManager1;
             this.directoryView.Name = "directoryView";
+            this.directoryView.OptionsBehavior.Editable = false;
+            this.directoryView.OptionsBehavior.ReadOnly = true;
+            this.directoryView.OptionsMenu.ShowExpandCollapseItems = false;
+            this.directoryView.OptionsView.ShowColumns = false;
+            this.directoryView.OptionsView.ShowHorzLines = false;
+            this.directoryView.OptionsView.ShowIndicator = false;
+            this.directoryView.OptionsView.ShowVertLines = false;
             this.directoryView.Size = new System.Drawing.Size(483, 241);
-            this.directoryView.StateImageList = this.imageList1;
-            this.directoryView.TabIndex = 40;
-            this.directoryView.NodeMouseClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.directoryView_NodeMouseClick);
+            this.directoryView.StateImageList = this.imageCollection;
+            this.directoryView.TabIndex = 41;
+            this.directoryView.RowClick += new DevExpress.XtraTreeList.RowClickEventHandler(this.directoryView_RowClick);
             this.directoryView.MouseMove += new System.Windows.Forms.MouseEventHandler(this.directoryView_MouseMove);
             // 
-            // imageList1
+            // treeListColumn1
             // 
-            this.imageList1.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageList1.ImageStream")));
-            this.imageList1.TransparentColor = System.Drawing.Color.Transparent;
-            this.imageList1.Images.SetKeyName(0, "folder2.png");
-            this.imageList1.Images.SetKeyName(1, "file.png");
-            this.imageList1.Images.SetKeyName(2, "document.png");
-            this.imageList1.Images.SetKeyName(3, "image.png");
-            this.imageList1.Images.SetKeyName(4, "sound-waves.png");
-            this.imageList1.Images.SetKeyName(5, "video.png");
-            this.imageList1.Images.SetKeyName(6, "zip.png");
+            this.treeListColumn1.Caption = "Name";
+            this.treeListColumn1.FieldName = "Name";
+            this.treeListColumn1.Name = "treeListColumn1";
+            this.treeListColumn1.Visible = true;
+            this.treeListColumn1.VisibleIndex = 0;
             // 
             // labelControl5
             // 
@@ -403,7 +412,7 @@ namespace Cilent
             // btnRefreshConsole
             // 
             this.btnRefreshConsole.ImageOptions.ImageToTextAlignment = DevExpress.XtraEditors.ImageAlignToText.LeftCenter;
-            this.btnRefreshConsole.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("htnRefreshConsole.ImageOptions.SvgImage")));
+            this.btnRefreshConsole.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("btnRefreshConsole.ImageOptions.SvgImage")));
             this.btnRefreshConsole.ImageOptions.SvgImageSize = new System.Drawing.Size(16, 16);
             this.btnRefreshConsole.Location = new System.Drawing.Point(568, 139);
             this.btnRefreshConsole.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
@@ -483,6 +492,19 @@ namespace Cilent
             // 
             this.saveFileDialog.Title = "Save As";
             // 
+            // imageCollection
+            // 
+            this.imageCollection.Images.AddRange(new DevExpress.Utils.DefaultImage[] {
+            new DevExpress.Utils.DefaultImage(new DevExpress.Utils.LocalImageLocator("folder2.png")),
+            new DevExpress.Utils.DefaultImage(new DevExpress.Utils.LocalImageLocator("file.png")),
+            new DevExpress.Utils.DefaultImage(new DevExpress.Utils.LocalImageLocator("document.png")),
+            new DevExpress.Utils.DefaultImage(new DevExpress.Utils.LocalImageLocator("image.png")),
+            new DevExpress.Utils.DefaultImage(new DevExpress.Utils.LocalImageLocator("sound-waves.png")),
+            new DevExpress.Utils.DefaultImage(new DevExpress.Utils.LocalImageLocator("video.png")),
+            new DevExpress.Utils.DefaultImage(new DevExpress.Utils.LocalImageLocator("zip.png"))});
+            this.imageCollection.Owner = this;
+            this.imageCollection.Stream = ((DevExpress.Utils.DPIAwareImageCollectionStreamer)(resources.GetObject("imageCollection.Stream")));
+            // 
             // Client
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 16F);
@@ -508,10 +530,12 @@ namespace Cilent
             ((System.ComponentModel.ISupportInitialize)(this.resultPanel)).EndInit();
             this.resultPanel.ResumeLayout(false);
             this.resultPanel.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.directoryView)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.cbxFilter.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtDirectory.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.treeListLookUpEdit1TreeList)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.popupMenu)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.imageCollection)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -554,7 +578,8 @@ namespace Cilent
         private DevExpress.XtraBars.BarButtonItem btnViewInfo;
         private DevExpress.XtraEditors.XtraFolderBrowserDialog folderBrowserDialog;
         private DevExpress.XtraEditors.XtraSaveFileDialog saveFileDialog;
-        private System.Windows.Forms.ImageList imageList1;
-        private System.Windows.Forms.TreeView directoryView;
+        private DevExpress.XtraTreeList.TreeList directoryView;
+        private DevExpress.XtraTreeList.Columns.TreeListColumn treeListColumn1;
+        private DevExpress.Utils.DPIAwareImageCollection imageCollection;
     }
 }
