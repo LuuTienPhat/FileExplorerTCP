@@ -353,7 +353,7 @@ namespace Server
             this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Name = "Server";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Server2";
+            this.Text = "Server";
             ((System.ComponentModel.ISupportInitialize)(this.connectPanel)).EndInit();
             this.connectPanel.ResumeLayout(false);
             this.connectPanel.PerformLayout();
