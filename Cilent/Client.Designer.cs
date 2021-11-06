@@ -32,9 +32,8 @@ namespace Cilent
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Client));
-            this.barManager1 = new DevExpress.XtraBars.BarManager(this.components);
+            this.barManager1 = new DevExpress.XtraBars.BarManager();
             this.bar1 = new DevExpress.XtraBars.Bar();
             this.btnReconnect = new DevExpress.XtraBars.BarButtonItem();
             this.btnExit = new DevExpress.XtraBars.BarButtonItem();
@@ -63,7 +62,7 @@ namespace Cilent
             this.resultPanel = new DevExpress.XtraEditors.PanelControl();
             this.directoryView = new DevExpress.XtraTreeList.TreeList();
             this.treeListColumn1 = new DevExpress.XtraTreeList.Columns.TreeListColumn();
-            this.imageCollection = new DevExpress.Utils.DPIAwareImageCollection(this.components);
+            this.imageCollection = new DevExpress.Utils.DPIAwareImageCollection();
             this.labelControl5 = new DevExpress.XtraEditors.LabelControl();
             this.cbxFilter = new DevExpress.XtraEditors.CheckedComboBoxEdit();
             this.btnRefreshConsole = new DevExpress.XtraEditors.SimpleButton();
@@ -72,9 +71,9 @@ namespace Cilent
             this.txtDirectory = new DevExpress.XtraEditors.TextEdit();
             this.labelControl4 = new DevExpress.XtraEditors.LabelControl();
             this.treeListLookUpEdit1TreeList = new DevExpress.XtraTreeList.TreeList();
-            this.toolTip = new System.Windows.Forms.ToolTip(this.components);
-            this.popupMenu = new DevExpress.XtraBars.PopupMenu(this.components);
-            this.saveFileDialog = new DevExpress.XtraEditors.XtraSaveFileDialog(this.components);
+            this.toolTip = new System.Windows.Forms.ToolTip();
+            this.popupMenu = new DevExpress.XtraBars.PopupMenu();
+            this.saveFileDialog = new DevExpress.XtraEditors.XtraSaveFileDialog();
             ((System.ComponentModel.ISupportInitialize)(this.barManager1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemProgressBar1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.controlPanel)).BeginInit();
@@ -541,7 +540,7 @@ namespace Cilent
             this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Name = "Client";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Client2";
+            this.Text = "Client";
             ((System.ComponentModel.ISupportInitialize)(this.barManager1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemProgressBar1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.controlPanel)).EndInit();
