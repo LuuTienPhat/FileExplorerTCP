@@ -55,8 +55,8 @@ namespace Server
             this.txtAddress = new DevExpress.XtraEditors.TextEdit();
             this.labelControl1 = new DevExpress.XtraEditors.LabelControl();
             this.clientPanel = new DevExpress.XtraEditors.PanelControl();
-            this.labelControl4 = new DevExpress.XtraEditors.LabelControl();
             this.clientList = new DevExpress.XtraEditors.ListBoxControl();
+            this.labelControl4 = new DevExpress.XtraEditors.LabelControl();
             ((System.ComponentModel.ISupportInitialize)(this.connectPanel)).BeginInit();
             this.connectPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.acceptAll.Properties)).BeginInit();
@@ -96,7 +96,7 @@ namespace Server
             this.connectPanel.Location = new System.Drawing.Point(0, 33);
             this.connectPanel.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.connectPanel.Name = "connectPanel";
-            this.connectPanel.Size = new System.Drawing.Size(372, 337);
+            this.connectPanel.Size = new System.Drawing.Size(379, 337);
             this.connectPanel.TabIndex = 1;
             // 
             // acceptAll
@@ -190,7 +190,7 @@ namespace Server
             this.barDockControlTop.Location = new System.Drawing.Point(0, 0);
             this.barDockControlTop.Manager = this.barManager1;
             this.barDockControlTop.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.barDockControlTop.Size = new System.Drawing.Size(372, 33);
+            this.barDockControlTop.Size = new System.Drawing.Size(379, 33);
             // 
             // barDockControlBottom
             // 
@@ -199,7 +199,7 @@ namespace Server
             this.barDockControlBottom.Location = new System.Drawing.Point(0, 370);
             this.barDockControlBottom.Manager = this.barManager1;
             this.barDockControlBottom.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.barDockControlBottom.Size = new System.Drawing.Size(372, 26);
+            this.barDockControlBottom.Size = new System.Drawing.Size(379, 26);
             // 
             // barDockControlLeft
             // 
@@ -214,7 +214,7 @@ namespace Server
             // 
             this.barDockControlRight.CausesValidation = false;
             this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
-            this.barDockControlRight.Location = new System.Drawing.Point(372, 33);
+            this.barDockControlRight.Location = new System.Drawing.Point(379, 33);
             this.barDockControlRight.Manager = this.barManager1;
             this.barDockControlRight.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.barDockControlRight.Size = new System.Drawing.Size(0, 337);
@@ -301,8 +301,15 @@ namespace Server
             this.clientPanel.Location = new System.Drawing.Point(0, 226);
             this.clientPanel.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.clientPanel.Name = "clientPanel";
-            this.clientPanel.Size = new System.Drawing.Size(372, 144);
+            this.clientPanel.Size = new System.Drawing.Size(379, 144);
             this.clientPanel.TabIndex = 6;
+            // 
+            // clientList
+            // 
+            this.clientList.Location = new System.Drawing.Point(114, 23);
+            this.clientList.Name = "clientList";
+            this.clientList.Size = new System.Drawing.Size(210, 98);
+            this.clientList.TabIndex = 14;
             // 
             // labelControl4
             // 
@@ -313,18 +320,11 @@ namespace Server
             this.labelControl4.TabIndex = 12;
             this.labelControl4.Text = "Client";
             // 
-            // clientList
-            // 
-            this.clientList.Location = new System.Drawing.Point(114, 23);
-            this.clientList.Name = "clientList";
-            this.clientList.Size = new System.Drawing.Size(210, 98);
-            this.clientList.TabIndex = 14;
-            // 
             // Server
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(372, 396);
+            this.ClientSize = new System.Drawing.Size(379, 396);
             this.Controls.Add(this.clientPanel);
             this.Controls.Add(this.connectPanel);
             this.Controls.Add(this.barDockControlLeft);
