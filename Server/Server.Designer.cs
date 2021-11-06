@@ -55,8 +55,8 @@ namespace Server
             this.txtAddress = new DevExpress.XtraEditors.TextEdit();
             this.labelControl1 = new DevExpress.XtraEditors.LabelControl();
             this.clientPanel = new DevExpress.XtraEditors.PanelControl();
-            this.clientList = new System.Windows.Forms.ListBox();
             this.labelControl4 = new DevExpress.XtraEditors.LabelControl();
+            this.clientList = new DevExpress.XtraEditors.ListBoxControl();
             ((System.ComponentModel.ISupportInitialize)(this.connectPanel)).BeginInit();
             this.connectPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.acceptAll.Properties)).BeginInit();
@@ -65,6 +65,7 @@ namespace Server
             ((System.ComponentModel.ISupportInitialize)(this.txtAddress.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.clientPanel)).BeginInit();
             this.clientPanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.clientList)).BeginInit();
             this.SuspendLayout();
             // 
             // btnStart
@@ -303,19 +304,6 @@ namespace Server
             this.clientPanel.Size = new System.Drawing.Size(372, 144);
             this.clientPanel.TabIndex = 6;
             // 
-            // clientList
-            // 
-            this.clientList.BackColor = System.Drawing.Color.White;
-            this.clientList.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.clientList.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(72)))), ((int)(((byte)(70)))), ((int)(((byte)(68)))));
-            this.clientList.FormattingEnabled = true;
-            this.clientList.ItemHeight = 16;
-            this.clientList.Location = new System.Drawing.Point(114, 23);
-            this.clientList.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.clientList.Name = "clientList";
-            this.clientList.Size = new System.Drawing.Size(211, 98);
-            this.clientList.TabIndex = 13;
-            // 
             // labelControl4
             // 
             this.labelControl4.Location = new System.Drawing.Point(48, 23);
@@ -324,6 +312,13 @@ namespace Server
             this.labelControl4.Size = new System.Drawing.Size(32, 16);
             this.labelControl4.TabIndex = 12;
             this.labelControl4.Text = "Client";
+            // 
+            // clientList
+            // 
+            this.clientList.Location = new System.Drawing.Point(114, 23);
+            this.clientList.Name = "clientList";
+            this.clientList.Size = new System.Drawing.Size(210, 98);
+            this.clientList.TabIndex = 14;
             // 
             // Server
             // 
@@ -351,6 +346,7 @@ namespace Server
             ((System.ComponentModel.ISupportInitialize)(this.clientPanel)).EndInit();
             this.clientPanel.ResumeLayout(false);
             this.clientPanel.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.clientList)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -380,6 +376,6 @@ namespace Server
         private DevExpress.XtraEditors.CheckEdit acceptAll;
         private DevExpress.XtraEditors.PanelControl clientPanel;
         private DevExpress.XtraEditors.LabelControl labelControl4;
-        private System.Windows.Forms.ListBox clientList;
+        private DevExpress.XtraEditors.ListBoxControl clientList;
     }
 }
