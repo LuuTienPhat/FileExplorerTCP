@@ -72,6 +72,9 @@ namespace Cilent
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
             this.popupMenu = new DevExpress.XtraBars.PopupMenu(this.components);
             this.saveFileDialog = new DevExpress.XtraEditors.XtraSaveFileDialog(this.components);
+            this.barButtonItem1 = new DevExpress.XtraBars.BarButtonItem();
+            this.progressBar = new DevExpress.XtraBars.BarEditItem();
+            this.repositoryItemProgressBar1 = new DevExpress.XtraEditors.Repository.RepositoryItemProgressBar();
             ((System.ComponentModel.ISupportInitialize)(this.barManager1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.controlPanel)).BeginInit();
             this.controlPanel.SuspendLayout();
@@ -85,6 +88,7 @@ namespace Cilent
             ((System.ComponentModel.ISupportInitialize)(this.txtDirectory.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.treeListLookUpEdit1TreeList)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.popupMenu)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemProgressBar1)).BeginInit();
             this.SuspendLayout();
             // 
             // barManager1
@@ -104,9 +108,13 @@ namespace Cilent
             this.lbDetail,
             this.btnDownload,
             this.barButtonItem2,
-            this.btnViewInfo});
+            this.btnViewInfo,
+            this.barButtonItem1,
+            this.progressBar});
             this.barManager1.MainMenu = this.bar1;
-            this.barManager1.MaxItemId = 7;
+            this.barManager1.MaxItemId = 9;
+            this.barManager1.RepositoryItems.AddRange(new DevExpress.XtraEditors.Repository.RepositoryItem[] {
+            this.repositoryItemProgressBar1});
             this.barManager1.StatusBar = this.bar2;
             // 
             // bar1
@@ -150,7 +158,8 @@ namespace Cilent
             this.bar2.DockRow = 0;
             this.bar2.DockStyle = DevExpress.XtraBars.BarDockStyle.Bottom;
             this.bar2.LinksPersistInfo.AddRange(new DevExpress.XtraBars.LinkPersistInfo[] {
-            new DevExpress.XtraBars.LinkPersistInfo(this.lbDetail)});
+            new DevExpress.XtraBars.LinkPersistInfo(this.lbDetail),
+            new DevExpress.XtraBars.LinkPersistInfo(DevExpress.XtraBars.BarLinkUserDefines.Width, this.progressBar, "", false, true, true, 176)});
             this.bar2.OptionsBar.AllowQuickCustomization = false;
             this.bar2.OptionsBar.DrawDragBorder = false;
             this.bar2.OptionsBar.UseWholeRow = true;
@@ -501,6 +510,23 @@ namespace Cilent
             this.saveFileDialog.InitialDirectory = "Desktop";
             this.saveFileDialog.Title = "Save As";
             // 
+            // barButtonItem1
+            // 
+            this.barButtonItem1.Caption = "barButtonItem1";
+            this.barButtonItem1.Id = 7;
+            this.barButtonItem1.Name = "barButtonItem1";
+            // 
+            // progressBar
+            // 
+            this.progressBar.Caption = "barEditItem1";
+            this.progressBar.Edit = this.repositoryItemProgressBar1;
+            this.progressBar.Id = 8;
+            this.progressBar.Name = "progressBar";
+            // 
+            // repositoryItemProgressBar1
+            // 
+            this.repositoryItemProgressBar1.Name = "repositoryItemProgressBar1";
+            // 
             // Client
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 16F);
@@ -532,6 +558,7 @@ namespace Cilent
             ((System.ComponentModel.ISupportInitialize)(this.txtDirectory.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.treeListLookUpEdit1TreeList)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.popupMenu)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemProgressBar1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -576,5 +603,8 @@ namespace Cilent
         private DevExpress.XtraTreeList.TreeList directoryView;
         private DevExpress.XtraTreeList.Columns.TreeListColumn treeListColumn1;
         private DevExpress.Utils.DPIAwareImageCollection imageCollection;
+        private DevExpress.XtraBars.BarEditItem progressBar;
+        private DevExpress.XtraEditors.Repository.RepositoryItemProgressBar repositoryItemProgressBar1;
+        private DevExpress.XtraBars.BarButtonItem barButtonItem1;
     }
 }

@@ -359,6 +359,7 @@ namespace Cilent
                 string saveFilePath = saveFileDialog.FileName;
 
                 // 3. receive
+                progressBar.EditValue = 0;
                 ReceiveFileFromServer(stream, saveFilePath);
 
                 // 4. Close
@@ -467,6 +468,7 @@ namespace Cilent
                                 byte[] data_to_send = CreateDataPacket(Encoding.UTF8.GetBytes("126"), Encoding.UTF8.GetBytes(Convert.ToString(current_file_pointer)));
                                 ns.Write(data_to_send, 0, data_to_send.Length);
                                 ns.Flush();
+                                progressBar.EditValue = (int)Math.Ceiling((double)current_file_pointer / (double)fs.Length * 100);
                             }
                             break;
                         case 127:
