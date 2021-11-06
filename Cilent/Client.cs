@@ -200,6 +200,7 @@ namespace Cilent
             lbStatus.Text = "Connected";
             lbDetail.Caption = "Connected to " + client.Client.RemoteEndPoint;
             resultPanel.Enabled = true;
+            progressBar.EditValue = 0;
         }
 
         private void connectFailed()
@@ -210,6 +211,7 @@ namespace Cilent
             resultPanel.Enabled = false;
             lbStatus.Text = "Not Connected";
             lbDetail.Caption = "";
+            progressBar.EditValue = 0;
         }
 
         private void btnConnect_Click(object sender, EventArgs e)
@@ -361,6 +363,7 @@ namespace Cilent
                 // 3. receive
                 progressBar.EditValue = 0;
                 ReceiveFileFromServer(stream, saveFilePath);
+                lbDetail.Caption = "Connected to " + client.Client.RemoteEndPoint;
 
                 // 4. Close
                 stream.Close();
@@ -468,7 +471,8 @@ namespace Cilent
                                 byte[] data_to_send = CreateDataPacket(Encoding.UTF8.GetBytes("126"), Encoding.UTF8.GetBytes(Convert.ToString(current_file_pointer)));
                                 ns.Write(data_to_send, 0, data_to_send.Length);
                                 ns.Flush();
-                                progressBar.EditValue = (int)Math.Ceiling((double)current_file_pointer / (double)fs.Length * 100);
+                                //lbDetail.Caption = "Download in progress: " + (int)Math.Ceiling((double)current_file_pointer / (double)fs.Length * 100) + " %";
+                                //progressBar.EditValue = (int)Math.Ceiling((double)current_file_pointer / (double)fs.Length * 100);
                             }
                             break;
                         case 127:
@@ -479,6 +483,8 @@ namespace Cilent
                                 byte[] data_to_send = CreateDataPacket(Encoding.UTF8.GetBytes("126"), Encoding.UTF8.GetBytes(Convert.ToString(current_file_pointer)));
                                 ns.Write(data_to_send, 0, data_to_send.Length);
                                 ns.Flush();
+                                lbDetail.Caption = "Download in progress: " + (int)Math.Ceiling((double)current_file_pointer / (double)fs.Length * 100) + " %";
+                                progressBar.EditValue = (int)Math.Ceiling((double)current_file_pointer / (double)fs.Length * 100);
                             }
                             break;
                         case 128:
