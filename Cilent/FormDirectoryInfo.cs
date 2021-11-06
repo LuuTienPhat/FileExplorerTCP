@@ -24,6 +24,7 @@ namespace Cilent
             this.Text = directoryView.directoryInfo.Name + " Properties";
             txtName.Text = directoryView.directoryInfo.Name;
             txtPath.Text = directoryView.directoryInfo.FullName;
+            txtSize.Text = FormFileInfo.ConvertFileSize(countSize(directoryView));
             txtDateModified.Text = directoryView.directoryInfo.LastWriteTime.ToString();
             txtDateCreated.Text = directoryView.directoryInfo.CreationTime.ToString();
             txtContain.Text = countFiles(directoryView).ToString() + " Files, " + countFolders(directoryView).ToString() + " Folders";
@@ -86,39 +87,41 @@ namespace Cilent
             return numberOfFiles;
         }
 
-        //private int countSizeRecursive(DirectoryView currentDirectory, int totalSize)
-        //{
-        //    if (currentDirectory.subFiles.Count() == 0) return totalSize;
-        //    else
-        //    {
-        //        totalSize += currentDirectory.subFiles.Count();
-        //        foreach (DirectoryView subDirectory in currentDirectory.subDirectories)
-        //        {
-        //            totalSize = countSizeRecursive(subDirectory, totalSize);
-        //        }
-        //    }
-        //    return totalSize;
-        //}
+        private double countSizeRecursive(DirectoryView currentDirectory, double totalSize)
+        {
+            if (currentDirectory.subFiles.Count() == 0) return totalSize;
+            else
+            {
+                foreach (FileView fileView in currentDirectory.subFiles)
+                {
+                    totalSize += fileView.fileInfo.Length;
+                }
 
-        //private int countSize(DirectoryView directoryView)
-        //{
-        //    long totalSize = 0;
+                foreach (DirectoryView subDirectory in currentDirectory.subDirectories)
+                {
+                    totalSize = countSizeRecursive(subDirectory, totalSize);
+                }
+            }
+            return totalSize;
+        }
 
-        //    if(directoryView.subFiles.Count() != 0)
-        //    {
-        //        foreach (FileView subFile in directoryView.subFiles)
-        //        {
-        //            totalSize += subFile.fileInfo.Length;
-        //        }
-        //    }
-        //    totalSize += directoryView.subFiles.Count();
+        private double countSize(DirectoryView directoryView)
+        {
+            double totalSize = 0;
 
-        //    foreach (DirectoryView subDirectory in directoryView.subDirectories)
-        //    {
-        //        totalSize = countSizeRecursive(subDirectory, totalSize);
-        //    }
+            foreach(FileView fileView in directoryView.subFiles)
+            {
+                totalSize += fileView.fileInfo.Length;
+            }
 
-        //    return totalSize;
-        //}
+            totalSize += directoryView.subFiles.Count();
+
+            foreach (DirectoryView subDirectory in directoryView.subDirectories)
+            {
+                totalSize = countSizeRecursive(subDirectory, totalSize);
+            }
+
+            return totalSize;
+        }
     }
 }
