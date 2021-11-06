@@ -71,18 +71,29 @@ namespace Server
                     
                     string[] requestSplit = receivedData.Split('*');
 
-                    List<string> filters = new List<string>();
-
-                    for (int i = 1; i < requestSplit.Length - 1; i++)
+                    if(requestSplit[0].Equals("download"))
                     {
-                        filters.Add(requestSplit[i]);
-                    }
-                    
-                    DirectoryView directoryCollection = LoadDirectory(requestSplit[requestSplit.Length - 1], filters);
-                    byte[] sendData = ObjectToByteArray(directoryCollection);
 
-                    // 4. send
-                    stream.Write(sendData, 0, sendData.Length);
+                        byte[] sendData = FileToByteArray(requestSplit[requestSplit.Length - 1]);
+
+                        // 4. send
+                        stream.Write(sendData, 0, sendData.Length);
+                    }
+                    else
+                    {
+                        List<string> filters = new List<string>();
+
+                        for (int i = 1; i < requestSplit.Length - 1; i++)
+                        {
+                            filters.Add(requestSplit[i]);
+                        }
+
+                        DirectoryView directoryCollection = LoadDirectory(requestSplit[requestSplit.Length - 1], filters);
+                        byte[] sendData = ObjectToByteArray(directoryCollection);
+
+                        // 4. send
+                        stream.Write(sendData, 0, sendData.Length);
+                    }
 
                     // 5. close
                     stream.Close();
@@ -155,13 +166,19 @@ namespace Server
         }
 
 
-        private static byte[] FileToByteArray(String path)
+        private byte[] FileToByteArray(string path)
         {
-            MemoryStream ms = new MemoryStream();
-            using (FileStream file = new FileStream(path, FileMode.Open, FileAccess.Read))
+            try
             {
-                file.CopyTo(ms);
-                return ms.ToArray();
+                Stream fileStream = File.OpenRead(path);
+                byte[] fileBuffer = new byte[fileStream.Length];
+                fileStream.Read(fileBuffer, 0, (int)fileStream.Length);
+                return fileBuffer;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString(), this.Name);
+                return new byte[BUFFER_SIZE];
             }
         }
 

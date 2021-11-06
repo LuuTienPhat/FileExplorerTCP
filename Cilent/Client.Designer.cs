@@ -58,18 +58,20 @@ namespace Cilent
             this.labelControl1 = new DevExpress.XtraEditors.LabelControl();
             this.btnConnect = new DevExpress.XtraEditors.SimpleButton();
             this.resultPanel = new DevExpress.XtraEditors.PanelControl();
-            this.labelControl5 = new DevExpress.XtraEditors.LabelControl();
-            this.cbxFilter = new DevExpress.XtraEditors.CheckedComboBoxEdit();
-            this.htnRefreshConsole = new DevExpress.XtraEditors.SimpleButton();
-            this.btnClearConsole = new DevExpress.XtraEditors.SimpleButton();
             this.directoryView = new System.Windows.Forms.TreeView();
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
+            this.labelControl5 = new DevExpress.XtraEditors.LabelControl();
+            this.cbxFilter = new DevExpress.XtraEditors.CheckedComboBoxEdit();
+            this.btnRefreshConsole = new DevExpress.XtraEditors.SimpleButton();
+            this.btnClearConsole = new DevExpress.XtraEditors.SimpleButton();
             this.btnShow = new DevExpress.XtraEditors.SimpleButton();
             this.txtDirectory = new DevExpress.XtraEditors.TextEdit();
             this.labelControl4 = new DevExpress.XtraEditors.LabelControl();
             this.treeListLookUpEdit1TreeList = new DevExpress.XtraTreeList.TreeList();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
             this.popupMenu = new DevExpress.XtraBars.PopupMenu(this.components);
+            this.folderBrowserDialog = new DevExpress.XtraEditors.XtraFolderBrowserDialog(this.components);
+            this.saveFileDialog = new DevExpress.XtraEditors.XtraSaveFileDialog(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.barManager1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.controlPanel)).BeginInit();
             this.controlPanel.SuspendLayout();
@@ -205,8 +207,9 @@ namespace Cilent
             // 
             this.btnDownload.Caption = "Download";
             this.btnDownload.Id = 4;
-            this.btnDownload.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("barButtonItem1.ImageOptions.SvgImage")));
+            this.btnDownload.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("btnDownload.ImageOptions.SvgImage")));
             this.btnDownload.Name = "btnDownload";
+            this.btnDownload.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.btnDownload_ItemClick);
             // 
             // barButtonItem2
             // 
@@ -218,7 +221,7 @@ namespace Cilent
             // 
             this.btnViewInfo.Caption = "Info";
             this.btnViewInfo.Id = 6;
-            this.btnViewInfo.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("barButtonItem4.ImageOptions.SvgImage")));
+            this.btnViewInfo.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("btnViewInfo.ImageOptions.SvgImage")));
             this.btnViewInfo.Name = "btnViewInfo";
             this.btnViewInfo.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.btnViewInfo_ItemClick);
             // 
@@ -328,11 +331,11 @@ namespace Cilent
             // 
             // resultPanel
             // 
+            this.resultPanel.Controls.Add(this.directoryView);
             this.resultPanel.Controls.Add(this.labelControl5);
             this.resultPanel.Controls.Add(this.cbxFilter);
-            this.resultPanel.Controls.Add(this.htnRefreshConsole);
+            this.resultPanel.Controls.Add(this.btnRefreshConsole);
             this.resultPanel.Controls.Add(this.btnClearConsole);
-            this.resultPanel.Controls.Add(this.directoryView);
             this.resultPanel.Controls.Add(this.btnShow);
             this.resultPanel.Controls.Add(this.txtDirectory);
             this.resultPanel.Controls.Add(this.labelControl4);
@@ -342,6 +345,28 @@ namespace Cilent
             this.resultPanel.Name = "resultPanel";
             this.resultPanel.Size = new System.Drawing.Size(638, 373);
             this.resultPanel.TabIndex = 10;
+            // 
+            // directoryView
+            // 
+            this.directoryView.Location = new System.Drawing.Point(78, 105);
+            this.directoryView.Name = "directoryView";
+            this.directoryView.Size = new System.Drawing.Size(483, 241);
+            this.directoryView.StateImageList = this.imageList1;
+            this.directoryView.TabIndex = 40;
+            this.directoryView.NodeMouseClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.directoryView_NodeMouseClick);
+            this.directoryView.MouseMove += new System.Windows.Forms.MouseEventHandler(this.directoryView_MouseMove);
+            // 
+            // imageList1
+            // 
+            this.imageList1.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageList1.ImageStream")));
+            this.imageList1.TransparentColor = System.Drawing.Color.Transparent;
+            this.imageList1.Images.SetKeyName(0, "folder2.png");
+            this.imageList1.Images.SetKeyName(1, "file.png");
+            this.imageList1.Images.SetKeyName(2, "document.png");
+            this.imageList1.Images.SetKeyName(3, "image.png");
+            this.imageList1.Images.SetKeyName(4, "sound-waves.png");
+            this.imageList1.Images.SetKeyName(5, "video.png");
+            this.imageList1.Images.SetKeyName(6, "zip.png");
             // 
             // labelControl5
             // 
@@ -375,19 +400,19 @@ namespace Cilent
             this.cbxFilter.Size = new System.Drawing.Size(257, 22);
             this.cbxFilter.TabIndex = 38;
             // 
-            // htnRefreshConsole
+            // btnRefreshConsole
             // 
-            this.htnRefreshConsole.ImageOptions.ImageToTextAlignment = DevExpress.XtraEditors.ImageAlignToText.LeftCenter;
-            this.htnRefreshConsole.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("htnRefreshConsole.ImageOptions.SvgImage")));
-            this.htnRefreshConsole.ImageOptions.SvgImageSize = new System.Drawing.Size(16, 16);
-            this.htnRefreshConsole.Location = new System.Drawing.Point(568, 139);
-            this.htnRefreshConsole.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.htnRefreshConsole.Name = "htnRefreshConsole";
-            this.htnRefreshConsole.PaintStyle = DevExpress.XtraEditors.Controls.PaintStyles.Light;
-            this.htnRefreshConsole.Size = new System.Drawing.Size(42, 30);
-            this.htnRefreshConsole.TabIndex = 37;
-            this.htnRefreshConsole.ToolTip = "Refresh Console";
-            this.htnRefreshConsole.Click += new System.EventHandler(this.btnRefreshConsole_Click);
+            this.btnRefreshConsole.ImageOptions.ImageToTextAlignment = DevExpress.XtraEditors.ImageAlignToText.LeftCenter;
+            this.btnRefreshConsole.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("htnRefreshConsole.ImageOptions.SvgImage")));
+            this.btnRefreshConsole.ImageOptions.SvgImageSize = new System.Drawing.Size(16, 16);
+            this.btnRefreshConsole.Location = new System.Drawing.Point(568, 139);
+            this.btnRefreshConsole.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.btnRefreshConsole.Name = "btnRefreshConsole";
+            this.btnRefreshConsole.PaintStyle = DevExpress.XtraEditors.Controls.PaintStyles.Light;
+            this.btnRefreshConsole.Size = new System.Drawing.Size(42, 30);
+            this.btnRefreshConsole.TabIndex = 37;
+            this.btnRefreshConsole.ToolTip = "Refresh Console";
+            this.btnRefreshConsole.Click += new System.EventHandler(this.btnRefreshConsole_Click);
             // 
             // btnClearConsole
             // 
@@ -402,35 +427,6 @@ namespace Cilent
             this.btnClearConsole.TabIndex = 36;
             this.btnClearConsole.ToolTip = "Clear Console";
             this.btnClearConsole.Click += new System.EventHandler(this.btnClearConsole_Click);
-            // 
-            // directoryView
-            // 
-            this.directoryView.BackColor = System.Drawing.Color.White;
-            this.directoryView.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.directoryView.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(72)))), ((int)(((byte)(70)))), ((int)(((byte)(68)))));
-            this.directoryView.Location = new System.Drawing.Point(78, 105);
-            this.directoryView.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.directoryView.Name = "directoryView";
-            this.directoryView.Size = new System.Drawing.Size(483, 244);
-            this.directoryView.StateImageList = this.imageList1;
-            this.directoryView.TabIndex = 35;
-            this.directoryView.NodeMouseClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.directoryView_NodeMouseClick);
-            this.directoryView.MouseMove += new System.Windows.Forms.MouseEventHandler(this.directoryView_MouseMove);
-            // 
-            // imageList1
-            // 
-            this.imageList1.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageList1.ImageStream")));
-            this.imageList1.TransparentColor = System.Drawing.Color.Transparent;
-            this.imageList1.Images.SetKeyName(0, "folder.png");
-            this.imageList1.Images.SetKeyName(1, "file.png");
-            this.imageList1.Images.SetKeyName(2, "document.png");
-            this.imageList1.Images.SetKeyName(3, "documents.png");
-            this.imageList1.Images.SetKeyName(4, "image.png");
-            this.imageList1.Images.SetKeyName(5, "sound.png");
-            this.imageList1.Images.SetKeyName(6, "sound-waves.png");
-            this.imageList1.Images.SetKeyName(7, "video.png");
-            this.imageList1.Images.SetKeyName(8, "calendar.png");
-            this.imageList1.Images.SetKeyName(9, "clock.png");
             // 
             // btnShow
             // 
@@ -478,6 +474,14 @@ namespace Cilent
             new DevExpress.XtraBars.LinkPersistInfo(this.btnViewInfo)});
             this.popupMenu.Manager = this.barManager1;
             this.popupMenu.Name = "popupMenu";
+            // 
+            // folderBrowserDialog
+            // 
+            this.folderBrowserDialog.SelectedPath = "xtraFolderBrowserDialog1";
+            // 
+            // saveFileDialog
+            // 
+            this.saveFileDialog.Title = "Save As";
             // 
             // Client
             // 
@@ -539,16 +543,18 @@ namespace Cilent
         private DevExpress.XtraEditors.TextEdit txtDirectory;
         private DevExpress.XtraEditors.LabelControl labelControl4;
         private DevExpress.XtraTreeList.TreeList treeListLookUpEdit1TreeList;
-        private System.Windows.Forms.TreeView directoryView;
         private System.Windows.Forms.ToolTip toolTip;
         private DevExpress.XtraBars.BarButtonItem btnDownload;
         private DevExpress.XtraBars.PopupMenu popupMenu;
-        private System.Windows.Forms.ImageList imageList1;
         private DevExpress.XtraEditors.SimpleButton btnClearConsole;
-        private DevExpress.XtraEditors.SimpleButton htnRefreshConsole;
+        private DevExpress.XtraEditors.SimpleButton btnRefreshConsole;
         private DevExpress.XtraEditors.LabelControl labelControl5;
         private DevExpress.XtraEditors.CheckedComboBoxEdit cbxFilter;
         private DevExpress.XtraBars.BarButtonItem barButtonItem2;
         private DevExpress.XtraBars.BarButtonItem btnViewInfo;
+        private DevExpress.XtraEditors.XtraFolderBrowserDialog folderBrowserDialog;
+        private DevExpress.XtraEditors.XtraSaveFileDialog saveFileDialog;
+        private System.Windows.Forms.ImageList imageList1;
+        private System.Windows.Forms.TreeView directoryView;
     }
 }

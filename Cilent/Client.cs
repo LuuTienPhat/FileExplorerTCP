@@ -14,6 +14,8 @@ using System.Xml.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using SharedClass;
 using System.Threading;
+using DevExpress.XtraTreeList;
+using DevExpress.XtraTreeList.Nodes;
 
 namespace Cilent
 {
@@ -29,6 +31,10 @@ namespace Cilent
         {
             InitializeComponent();
             connectFailed();
+            //folderBrowserDialog.ShowDialog();
+            //MessageBox.Show(folderBrowserDialog.SelectedPath);
+            
+
         }
 
         private void ConnectToServer()
@@ -78,8 +84,8 @@ namespace Cilent
             foreach (DirectoryView subdirectory in parrentDirectory.subDirectories)
             {
                 TreeNode tds = td.Nodes.Add(subdirectory.directoryInfo.Name);
-                tds.StateImageIndex = 0;
                 tds.Tag = subdirectory.directoryInfo.FullName;
+                tds.StateImageIndex = 0;
                 LoadFiles(subdirectory, tds);
                 LoadSubDirectories(subdirectory, tds);
             }
@@ -91,7 +97,7 @@ namespace Cilent
             {
                 TreeNode tds = td.Nodes.Add(file.fileInfo.Name);
                 tds.Tag = file.fileInfo.FullName;
-                tds.StateImageIndex = 1;
+                assignIconToFile(file.fileInfo.FullName, tds);
             }
         }
 
@@ -116,7 +122,7 @@ namespace Cilent
                 MessageBox.Show("Please enter directory!", this.Name);
                 return;
             }
-            else if(!isDirectory(directory))
+            else if (!isDirectory(directory))
             {
                 MessageBox.Show("The path is not directory!", this.Name);
                 return;
@@ -191,6 +197,8 @@ namespace Cilent
             txtDirectory.Enabled = directoryView.Enabled = true;
             lbStatus.Text = "Connected";
             lbDetail.Caption = "Connected to " + client.Client.RemoteEndPoint;
+            cbxFilter.Enabled = true;
+            btnClearConsole.Enabled = btnRefreshConsole.Enabled = true;
         }
 
         private void connectFailed()
@@ -201,6 +209,8 @@ namespace Cilent
             txtDirectory.Enabled = directoryView.Enabled = false;
             lbStatus.Text = "Not Connected";
             lbDetail.Caption = "";
+            cbxFilter.Enabled = false;
+            btnClearConsole.Enabled = btnRefreshConsole.Enabled = false;
         }
 
         private void btnConnect_Click(object sender, EventArgs e)
@@ -218,13 +228,13 @@ namespace Cilent
 
         private void directoryView_MouseMove(object sender, MouseEventArgs e)
         {
-            TreeNode theNode = this.directoryView.GetNodeAt(e.X, e.Y); 
+            TreeNode theNode = this.directoryView.GetNodeAt(e.X, e.Y);
             if (theNode != null && theNode.Tag != null)
             {
                 if (theNode.Tag.ToString() != toolTip.GetToolTip(this.directoryView))
                     toolTip.SetToolTip(this.directoryView, theNode.Tag.ToString());
             }
-            else 
+            else
             {
                 toolTip.SetToolTip(this.directoryView, "");
             }
@@ -306,7 +316,164 @@ namespace Cilent
         private void btnViewInfo_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
         {
             TreeNode node = this.directoryView.SelectedNode;
+            if (isDirectory(node.Tag.ToString()))
+            {
+                DirectoryView directoryView = searchDirectoryView(directoryCollection, node.Tag.ToString());
+                new FormDirectoryInfo(directoryView).Show();
+            }
+            else
+            {
+                FileView fileView = searchFileView(directoryCollection, node.Tag.ToString());
+                new FormFileInfo(fileView).Show();
+            }
             //new FormDetail(new FileInfo(node.Tag.ToString())).Show();
+        }
+
+        private FileView searchFileViewRecursive(DirectoryView collection, string path)
+        {
+            foreach (FileView file in collection.subFiles)
+            {
+                if (file.fileInfo.FullName.Equals(path)) return file;
+            }
+
+            foreach (DirectoryView directory in collection.subDirectories)
+            {
+                searchFileView(directory, path);
+            }
+            return new FileView();
+        }
+
+        private FileView searchFileView(DirectoryView collection, string path)
+        {
+            foreach (FileView file in collection.subFiles)
+            {
+                if (file.fileInfo.FullName.Equals(path)) return file;
+            }
+
+            foreach (DirectoryView directory in collection.subDirectories)
+            {
+                searchFileView(directory, path);
+            }
+            return new FileView();
+        }
+
+        //private void searchDirectoryViewRecursive(DirectoryView collection, string path)
+        //{
+        //    if (collection.directoryInfo.FullName.Equals(path)) return collection;
+        //    else
+        //    {
+        //        DirectoryView directoryView = null;
+
+        //        foreach (DirectoryView directory in collection.subDirectories)
+        //        {
+        //            if (directory.directoryInfo.FullName.Equals(path)) return directory;
+        //            searchDirectoryViewRecursive(directory, path);
+        //        }
+        //    }
+        //}
+
+        private DirectoryView searchDirectoryView(DirectoryView collection, string path)
+        {
+            if (collection.directoryInfo.FullName.Equals(path)) return collection;
+            else
+            {
+                DirectoryView directoryView = null;
+
+                foreach (DirectoryView directory in collection.subDirectories)
+                {
+                    if (directory.directoryInfo.FullName.Equals(path)) return directory;
+                    directoryView = searchDirectoryView(directory, path);
+                }
+
+                return directoryView;
+            }
+        }
+
+        private void btnDownload_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
+        {
+            try
+            {
+                TreeNode node = this.directoryView.SelectedNode;
+
+                client = new TcpClient();
+                client.Connect(host, port);
+                Stream stream = client.GetStream();
+
+                // 2. send
+                byte[] data = Encoding.ASCII.GetBytes("download*" + node.Tag.ToString());
+                stream.Write(data, 0, data.Length);
+
+                // 3. receive
+                byte[] receiveDataByte = new byte[BUFFER_SIZE];
+                int length = stream.Read(receiveDataByte, 0, BUFFER_SIZE);
+
+                //folderBrowserDialog.ShowDialog();
+                //MessageBox.Show(folderBrowserDialog.SelectedPath);
+
+                saveFileDialog.ShowDialog();
+                MessageBox.Show(saveFileDialog.FileName);
+                if(saveFileDialog.FileName.Length != 0)
+                {
+                    using (FileStream fs = new FileStream(saveFileDialog.FileName, FileMode.CreateNew, FileAccess.Write))
+                    {
+                        fs.Write(receiveDataByte, 0, length);
+                        //fs.Close();
+                    }
+                }
+
+                // 4. Close
+                stream.Close();
+                client.Close();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString(), this.Name);
+            }
+
+        }
+
+        private static List<string> soundExtensions = new List<string>(new string[] { "mp3", "m4p", "m4a", "flac" });
+        private static List<string> videoExtensions = new List<string>(new string[] { "mp4", "mkv", "webm", "flv" });
+        private static List<string> textExtensions = new List<string>(new string[] { "txt", "doc", "docx" });
+        private static List<string> imageExtensions = new List<string>(new string[] { "jpg", "jpeg", "png", "bmp" });
+        private static List<string> compressedExtensions = new List<string>(new string[] { "7z", "rar", "zip" });
+
+        private void assignIconToFile(string path, TreeNode tds)
+        {
+            string fileType = path.Substring(path.LastIndexOf(".") + 1).ToLower();
+
+            if (textExtensions.Contains(fileType))
+            {
+                tds.StateImageIndex = 2;
+                return;
+            }
+            else if (soundExtensions.Contains(fileType))
+            {
+                tds.StateImageIndex = 4;
+                return;
+            }
+            else if (imageExtensions.Contains(fileType))
+            {
+                tds.StateImageIndex = 3;
+                return;
+            }
+            else if (videoExtensions.Contains(fileType))
+            {
+                tds.StateImageIndex = 5;
+                return;
+            }
+
+            else if (compressedExtensions.Contains(fileType))
+            {
+                tds.StateImageIndex = 6;
+                return;
+            }
+            else
+            {
+                tds.StateImageIndex = 1;
+                return;
+            }
+
         }
     }
 }
