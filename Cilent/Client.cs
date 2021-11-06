@@ -32,10 +32,6 @@ namespace Cilent
         {
             InitializeComponent();
             connectFailed();
-            //folderBrowserDialog.ShowDialog();
-            //MessageBox.Show(folderBrowserDialog.SelectedPath);
-
-
         }
 
         private void ConnectToServer()
@@ -72,9 +68,7 @@ namespace Cilent
         }
 
         public void LoadDirectory(DirectoryView directoryCollection)
-        {
-            //TreeNode tds = this.directoryView.Nodes.Add(directoryCollection.directoryInfo.Name);
-
+        {   
             TreeListNode tds = directoryView.AppendNode(new object[] { directoryCollection.directoryInfo.Name }, null);
             tds.Tag = directoryCollection.directoryInfo.FullName;
             tds.StateImageIndex = 0;
@@ -200,9 +194,6 @@ namespace Cilent
             lbStatus.Text = "Connected";
             lbDetail.Caption = "Connected to " + client.Client.RemoteEndPoint;
             resultPanel.Enabled = true;
-            //txtDirectory.Enabled = directoryView.Enabled = true;
-            //cbxFilter.Enabled = true;
-            //btnClearConsole.Enabled = btnRefreshConsole.Enabled = true;
         }
 
         private void connectFailed()
@@ -211,11 +202,8 @@ namespace Cilent
             btnDisconnect.Enabled = btnReconnect.Enabled = btnShow.Enabled = false;
             txtHost.Enabled = txtPort.Enabled = true;
             resultPanel.Enabled = false;
-            //txtDirectory.Enabled = directoryView.Enabled = false;
             lbStatus.Text = "Not Connected";
             lbDetail.Caption = "";
-            //cbxFilter.Enabled = false;
-            //btnClearConsole.Enabled = btnRefreshConsole.Enabled = false;
         }
 
         private void btnConnect_Click(object sender, EventArgs e)
@@ -345,38 +333,6 @@ namespace Cilent
                 new FormFileInfo(fileView).Show();
             }
         }
-
-        //private FileView searchFileViewRecursive(DirectoryView collection, string path)
-        //{
-        //    foreach (FileView file in collection.subFiles)
-        //    {
-        //        if (file.fileInfo.FullName.Equals(path)) return file;
-        //    }
-
-        //    foreach (DirectoryView directory in collection.subDirectories)
-        //    {
-        //        searchFileView(directory, path);
-        //    }
-        //    return new FileView();
-        //}
-
-        
-
-        //private void searchDirectoryViewRecursive(DirectoryView collection, string path)
-        //{
-        //    if (collection.directoryInfo.FullName.Equals(path)) return collection;
-        //    else
-        //    {
-        //        DirectoryView directoryView = null;
-
-        //        foreach (DirectoryView directory in collection.subDirectories)
-        //        {
-        //            if (directory.directoryInfo.FullName.Equals(path)) return directory;
-        //            searchDirectoryViewRecursive(directory, path);
-        //        }
-        //    }
-        //}
-
         
 
         private void btnDownload_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
