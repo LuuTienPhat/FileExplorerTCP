@@ -74,7 +74,7 @@ namespace Cilent
         }
 
         public void LoadDirectory(DirectoryView directoryCollection)
-        {   
+        {
             TreeListNode tds = directoryView.AppendNode(new object[] { directoryCollection.directoryInfo.Name }, null);
             tds.Tag = directoryCollection.directoryInfo.FullName;
             tds.StateImageIndex = 0;
@@ -313,7 +313,7 @@ namespace Cilent
             if (collection.directoryInfo.FullName.Equals(path)) directoryView = collection;
             else
             {
-                if(collection.subDirectories.Count != 0)
+                if (collection.subDirectories.Count != 0)
                 {
                     foreach (DirectoryView directory in collection.subDirectories)
                     {
@@ -353,8 +353,13 @@ namespace Cilent
                 byte[] data = Encoding.ASCII.GetBytes("download*" + node.Tag.ToString());
                 stream.Write(data, 0, data.Length);
 
+                saveFileDialog.FileName = this.directoryView.GetFocusedDisplayText();
+                saveFileDialog.ShowDialog();
+
+                string saveFilePath = saveFileDialog.FileName;
+
                 // 3. receive
-                ProcessSocketRequest(stream);
+                ReceiveFileFromServer(stream, saveFilePath);
 
                 // 4. Close
                 stream.Close();
@@ -409,7 +414,7 @@ namespace Cilent
         {
             if (e.Button == MouseButtons.Right)
             {
-                if(isDirectory(e.Node.Tag.ToString()))
+                if (isDirectory(e.Node.Tag.ToString()))
                 {
                     btnDownload.Enabled = false;
                 }
@@ -418,7 +423,7 @@ namespace Cilent
                     btnDownload.Enabled = true;
                 }
                 popupMenu.ShowPopup(Cursor.Position);
-                
+
             }
         }
 
@@ -438,7 +443,10 @@ namespace Cilent
             }
         }
 
-        public void ProcessSocketRequest(NetworkStream ns)
+
+        #region The below code handles download function
+
+        public void ReceiveFileFromServer(NetworkStream ns, string saveFilePath)
         {
             FileStream fs = null;
             long current_file_pointer = 0;
@@ -454,7 +462,8 @@ namespace Cilent
                     {
                         case 125:
                             {
-                                fs = new FileStream(@"C:\test2\" + Encoding.UTF8.GetString(recv_data), FileMode.Truncate);
+                                //fs = new FileStream(@"C:\test2\" + Encoding.UTF8.GetString(recv_data), FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.None);
+                                fs = new FileStream(saveFilePath, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.None);
                                 byte[] data_to_send = CreateDataPacket(Encoding.UTF8.GetBytes("126"), Encoding.UTF8.GetBytes(Convert.ToString(current_file_pointer)));
                                 ns.Write(data_to_send, 0, data_to_send.Length);
                                 ns.Flush();
@@ -526,5 +535,7 @@ namespace Cilent
             ms.Write(data, 0, data.Length);
             return ms.ToArray();
         }
+
+        #endregion
     }
 }

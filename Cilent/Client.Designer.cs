@@ -71,7 +71,6 @@ namespace Cilent
             this.treeListLookUpEdit1TreeList = new DevExpress.XtraTreeList.TreeList();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
             this.popupMenu = new DevExpress.XtraBars.PopupMenu(this.components);
-            this.folderBrowserDialog = new DevExpress.XtraEditors.XtraFolderBrowserDialog(this.components);
             this.saveFileDialog = new DevExpress.XtraEditors.XtraSaveFileDialog(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.barManager1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.controlPanel)).BeginInit();
@@ -465,7 +464,7 @@ namespace Cilent
             // 
             // txtDirectory
             // 
-            this.txtDirectory.EditValue = "C:\\test2";
+            this.txtDirectory.EditValue = "C:\\test";
             this.txtDirectory.Location = new System.Drawing.Point(170, 26);
             this.txtDirectory.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.txtDirectory.Name = "txtDirectory";
@@ -497,12 +496,9 @@ namespace Cilent
             this.popupMenu.Manager = this.barManager1;
             this.popupMenu.Name = "popupMenu";
             // 
-            // folderBrowserDialog
-            // 
-            this.folderBrowserDialog.SelectedPath = "xtraFolderBrowserDialog1";
-            // 
             // saveFileDialog
             // 
+            this.saveFileDialog.InitialDirectory = "Desktop";
             this.saveFileDialog.Title = "Save As";
             // 
             // Client
@@ -576,7 +572,6 @@ namespace Cilent
         private DevExpress.XtraEditors.CheckedComboBoxEdit cbxFilter;
         private DevExpress.XtraBars.BarButtonItem barButtonItem2;
         private DevExpress.XtraBars.BarButtonItem btnViewInfo;
-        private DevExpress.XtraEditors.XtraFolderBrowserDialog folderBrowserDialog;
         private DevExpress.XtraEditors.XtraSaveFileDialog saveFileDialog;
         private DevExpress.XtraTreeList.TreeList directoryView;
         private DevExpress.XtraTreeList.Columns.TreeListColumn treeListColumn1;
