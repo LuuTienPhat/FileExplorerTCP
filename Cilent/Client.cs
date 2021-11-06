@@ -94,8 +94,6 @@ namespace Cilent
             }
         }
 
-
-
         private void LoadFiles(DirectoryView dir, TreeListNode td)
         {
             foreach (FileView file in dir.subFiles)
@@ -199,11 +197,12 @@ namespace Cilent
             btnConnect.Enabled = false;
             btnDisconnect.Enabled = btnReconnect.Enabled = btnShow.Enabled = true;
             txtHost.Enabled = txtPort.Enabled = false;
-            txtDirectory.Enabled = directoryView.Enabled = true;
             lbStatus.Text = "Connected";
             lbDetail.Caption = "Connected to " + client.Client.RemoteEndPoint;
-            cbxFilter.Enabled = true;
-            btnClearConsole.Enabled = btnRefreshConsole.Enabled = true;
+            resultPanel.Enabled = true;
+            //txtDirectory.Enabled = directoryView.Enabled = true;
+            //cbxFilter.Enabled = true;
+            //btnClearConsole.Enabled = btnRefreshConsole.Enabled = true;
         }
 
         private void connectFailed()
@@ -211,11 +210,12 @@ namespace Cilent
             btnConnect.Enabled = true;
             btnDisconnect.Enabled = btnReconnect.Enabled = btnShow.Enabled = false;
             txtHost.Enabled = txtPort.Enabled = true;
-            txtDirectory.Enabled = directoryView.Enabled = false;
+            resultPanel.Enabled = false;
+            //txtDirectory.Enabled = directoryView.Enabled = false;
             lbStatus.Text = "Not Connected";
             lbDetail.Caption = "";
-            cbxFilter.Enabled = false;
-            btnClearConsole.Enabled = btnRefreshConsole.Enabled = false;
+            //cbxFilter.Enabled = false;
+            //btnClearConsole.Enabled = btnRefreshConsole.Enabled = false;
         }
 
         private void btnConnect_Click(object sender, EventArgs e)
@@ -293,48 +293,74 @@ namespace Cilent
             return true;
         }
 
+        private void searchFileView(DirectoryView collection, ref FileView fileView, string path)
+        {
+            if (collection.subFiles.Count() != 0)
+            {
+                foreach (FileView file in collection.subFiles)
+                {
+                    if (file.fileInfo.FullName.Equals(path))
+                    {
+                        fileView = file;
+                    }
+                }
+            }
+            if (collection.subDirectories.Count != 0)
+            {
+                foreach (DirectoryView directory in collection.subDirectories)
+                {
+                    searchFileView(directory, ref fileView, path);
+                }
+            }
+        }
+
+        private void searchDirectoryView(DirectoryView collection, ref DirectoryView directoryView, string path)
+        {
+            if (collection.directoryInfo.FullName.Equals(path)) directoryView = collection;
+            else
+            {
+                if(collection.subDirectories.Count != 0)
+                {
+                    foreach (DirectoryView directory in collection.subDirectories)
+                    {
+                        searchDirectoryView(directory, ref directoryView, path);
+                    }
+                }
+            }
+        }
+
         private void btnViewInfo_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
         {
             TreeListNode node = this.directoryView.FocusedNode;
             if (isDirectory(node.Tag.ToString()))
             {
-                DirectoryView directoryView = searchDirectoryView(directoryCollection, node.Tag.ToString());
+                DirectoryView directoryView = null;
+                searchDirectoryView(directoryCollection, ref directoryView, node.Tag.ToString());
                 new FormDirectoryInfo(directoryView).Show();
             }
             else
             {
-                FileView fileView = searchFileView(directoryCollection, node.Tag.ToString());
+                FileView fileView = null;
+                searchFileView(directoryCollection, ref fileView, node.Tag.ToString());
                 new FormFileInfo(fileView).Show();
             }
         }
 
-        private FileView searchFileViewRecursive(DirectoryView collection, string path)
-        {
-            foreach (FileView file in collection.subFiles)
-            {
-                if (file.fileInfo.FullName.Equals(path)) return file;
-            }
+        //private FileView searchFileViewRecursive(DirectoryView collection, string path)
+        //{
+        //    foreach (FileView file in collection.subFiles)
+        //    {
+        //        if (file.fileInfo.FullName.Equals(path)) return file;
+        //    }
 
-            foreach (DirectoryView directory in collection.subDirectories)
-            {
-                searchFileView(directory, path);
-            }
-            return new FileView();
-        }
+        //    foreach (DirectoryView directory in collection.subDirectories)
+        //    {
+        //        searchFileView(directory, path);
+        //    }
+        //    return new FileView();
+        //}
 
-        private FileView searchFileView(DirectoryView collection, string path)
-        {
-            foreach (FileView file in collection.subFiles)
-            {
-                if (file.fileInfo.FullName.Equals(path)) return file;
-            }
-
-            foreach (DirectoryView directory in collection.subDirectories)
-            {
-                searchFileView(directory, path);
-            }
-            return new FileView();
-        }
+        
 
         //private void searchDirectoryViewRecursive(DirectoryView collection, string path)
         //{
@@ -351,22 +377,7 @@ namespace Cilent
         //    }
         //}
 
-        private DirectoryView searchDirectoryView(DirectoryView collection, string path)
-        {
-            if (collection.directoryInfo.FullName.Equals(path)) return collection;
-            else
-            {
-                DirectoryView directoryView = null;
-
-                foreach (DirectoryView directory in collection.subDirectories)
-                {
-                    if (directory.directoryInfo.FullName.Equals(path)) return directory;
-                    directoryView = searchDirectoryView(directory, path);
-                }
-
-                return directoryView;
-            }
-        }
+        
 
         private void btnDownload_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
         {
@@ -458,7 +469,6 @@ namespace Cilent
         {
             if (e.Button == MouseButtons.Right)
             {
-                //TreeNode theNode = this.directoryView.GetNodeAt(e.X, e.Y);
                 popupMenu.ShowPopup(Cursor.Position);
             }
         }
