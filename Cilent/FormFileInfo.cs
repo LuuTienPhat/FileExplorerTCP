@@ -22,25 +22,24 @@ namespace Cilent
             txtName.Text = fileView.fileInfo.Name;
             txtPath.Text = fileView.fileInfo.FullName;
             txtType.Text = fileView.fileInfo.Extension;
-            txtSize.Text = ConvertFileSize(fileView);
+            txtSize.Text = ConvertFileSize(fileView.fileInfo.Length);
             txtDateModified.Text = fileView.fileInfo.LastWriteTime.ToString();
             txtDateCreated.Text = fileView.fileInfo.CreationTime.ToString();
             if (fileView.fileInfo.IsReadOnly) ckReadOnly.CheckState = CheckState.Checked;
             if (fileView.fileInfo.Attributes.HasFlag(FileAttributes.Hidden)) ckHidden.CheckState = CheckState.Checked;
         }
 
-        private string ConvertFileSize(FileView fileView)
+        public static string ConvertFileSize(double length)
         {
             string[] sizes = { "B", "KB", "MB", "GB", "TB" };
-            double len = fileView.fileInfo.Length;
             int order = 0;
-            while (len >= 1024 && order < sizes.Length - 1)
+            while (length >= 1024 && order < sizes.Length - 1)
             {
                 order++;
-                len = len / 1024;
+                length = length / 1024;
             }
 
-            return string.Format("{0:0.##} {1}", len, sizes[order]);
+            return string.Format("{0:0.##} {1}", length, sizes[order]);
         }
     }
 }
