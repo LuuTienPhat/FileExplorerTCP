@@ -75,8 +75,9 @@ namespace Server
                     {
                         FileInfo fi = new FileInfo(requestSplit[requestSplit.Length - 1]);
 
-
+                        progressBar.EditValue = 0;
                         sendFile(client, fi.FullName, fi.Name);
+                        lbDetail.Caption = "Server started on " + server.LocalEndpoint;
 
                         //byte[] sendData = FileToByteArray(requestSplit[requestSplit.Length - 1]);
 
@@ -169,22 +170,6 @@ namespace Server
             }
         }
 
-
-        private byte[] FileToByteArray(string path)
-        {
-            try
-            {
-                Stream fileStream = File.OpenRead(path);
-                byte[] fileBuffer = new byte[fileStream.Length];
-                fileStream.Read(fileBuffer, 0, (int)fileStream.Length);
-                return fileBuffer;
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.ToString(), this.Name);
-                return new byte[BUFFER_SIZE];
-            }
-        }
 
         private void btnStart_Click(object sender, EventArgs e)
         {
@@ -368,7 +353,8 @@ namespace Server
                                 byte[] data_to_send = CreateDataPacket(Encoding.UTF8.GetBytes("127"), temp_buff);
                                 ns.Write(data_to_send, 0, data_to_send.Length);
                                 ns.Flush();
-                                //pb_upload.Value = (int)Math.Ceiling((double)recv_file_pointer / (double)fs.Length * 100);
+                                lbDetail.Caption = "Upload in progress: " + (int)Math.Ceiling((double)recv_file_pointer / (double)fs.Length * 100) + " %";
+                                progressBar.EditValue = (int)Math.Ceiling((double)recv_file_pointer / (double)fs.Length * 100);
                             }
                             else
                             {

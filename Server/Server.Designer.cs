@@ -43,6 +43,8 @@ namespace Server
             this.btnExit = new DevExpress.XtraBars.BarButtonItem();
             this.bar2 = new DevExpress.XtraBars.Bar();
             this.lbDetail = new DevExpress.XtraBars.BarStaticItem();
+            this.progressBar = new DevExpress.XtraBars.BarEditItem();
+            this.repositoryItemProgressBar1 = new DevExpress.XtraEditors.Repository.RepositoryItemProgressBar();
             this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
@@ -61,6 +63,7 @@ namespace Server
             this.connectPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.acceptAll.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.barManager1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemProgressBar1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtPort.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtAddress.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.clientPanel)).BeginInit();
@@ -123,9 +126,12 @@ namespace Server
             this.barManager1.Items.AddRange(new DevExpress.XtraBars.BarItem[] {
             this.btnRestart,
             this.btnExit,
-            this.lbDetail});
+            this.lbDetail,
+            this.progressBar});
             this.barManager1.MainMenu = this.bar1;
-            this.barManager1.MaxItemId = 4;
+            this.barManager1.MaxItemId = 13;
+            this.barManager1.RepositoryItems.AddRange(new DevExpress.XtraEditors.Repository.RepositoryItem[] {
+            this.repositoryItemProgressBar1});
             this.barManager1.StatusBar = this.bar2;
             // 
             // bar1
@@ -169,7 +175,8 @@ namespace Server
             this.bar2.DockRow = 0;
             this.bar2.DockStyle = DevExpress.XtraBars.BarDockStyle.Bottom;
             this.bar2.LinksPersistInfo.AddRange(new DevExpress.XtraBars.LinkPersistInfo[] {
-            new DevExpress.XtraBars.LinkPersistInfo(this.lbDetail)});
+            new DevExpress.XtraBars.LinkPersistInfo(this.lbDetail),
+            new DevExpress.XtraBars.LinkPersistInfo(DevExpress.XtraBars.BarLinkUserDefines.Width, this.progressBar, "", false, true, true, 76)});
             this.bar2.OptionsBar.AllowQuickCustomization = false;
             this.bar2.OptionsBar.DrawDragBorder = false;
             this.bar2.OptionsBar.UseWholeRow = true;
@@ -180,8 +187,18 @@ namespace Server
             this.lbDetail.AccessibleDescription = "";
             this.lbDetail.Id = 3;
             this.lbDetail.Name = "lbDetail";
-            this.lbDetail.Size = new System.Drawing.Size(200, 0);
-            this.lbDetail.Width = 200;
+            this.lbDetail.Size = new System.Drawing.Size(180, 0);
+            // 
+            // progressBar
+            // 
+            this.progressBar.Caption = "barEditItem1";
+            this.progressBar.Edit = this.repositoryItemProgressBar1;
+            this.progressBar.Id = 12;
+            this.progressBar.Name = "progressBar";
+            // 
+            // repositoryItemProgressBar1
+            // 
+            this.repositoryItemProgressBar1.Name = "repositoryItemProgressBar1";
             // 
             // barDockControlTop
             // 
@@ -341,6 +358,7 @@ namespace Server
             this.connectPanel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.acceptAll.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.barManager1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemProgressBar1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtPort.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtAddress.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.clientPanel)).EndInit();
@@ -377,5 +395,7 @@ namespace Server
         private DevExpress.XtraEditors.PanelControl clientPanel;
         private DevExpress.XtraEditors.LabelControl labelControl4;
         private DevExpress.XtraEditors.ListBoxControl clientList;
+        private DevExpress.XtraBars.BarEditItem progressBar;
+        private DevExpress.XtraEditors.Repository.RepositoryItemProgressBar repositoryItemProgressBar1;
     }
 }
