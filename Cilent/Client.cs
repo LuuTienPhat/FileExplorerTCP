@@ -28,6 +28,12 @@ namespace Cilent
         private const int BUFFER_SIZE = 999999999;
         public static DirectoryView directoryCollection = new DirectoryView();
 
+        private static List<string> soundExtensions = new List<string>(new string[] { "mp3", "m4p", "m4a", "flac" });
+        private static List<string> videoExtensions = new List<string>(new string[] { "mp4", "mkv", "webm", "flv" });
+        private static List<string> textExtensions = new List<string>(new string[] { "txt", "doc", "docx" });
+        private static List<string> imageExtensions = new List<string>(new string[] { "jpg", "jpeg", "png", "bmp" });
+        private static List<string> compressedExtensions = new List<string>(new string[] { "7z", "rar", "zip" });
+
         public Client()
         {
             InitializeComponent();
@@ -333,7 +339,6 @@ namespace Cilent
                 new FormFileInfo(fileView).Show();
             }
         }
-        
 
         private void btnDownload_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
         {
@@ -342,26 +347,14 @@ namespace Cilent
                 TreeListNode node = this.directoryView.FocusedNode;
                 client = new TcpClient();
                 client.Connect(host, port);
-                Stream stream = client.GetStream();
+                NetworkStream stream = client.GetStream();
 
                 // 2. send
                 byte[] data = Encoding.ASCII.GetBytes("download*" + node.Tag.ToString());
                 stream.Write(data, 0, data.Length);
 
                 // 3. receive
-                byte[] receiveDataByte = new byte[BUFFER_SIZE];
-                int length = stream.Read(receiveDataByte, 0, BUFFER_SIZE);
-
-                saveFileDialog.ShowDialog();
-                MessageBox.Show(saveFileDialog.FileName);
-
-                if (saveFileDialog.FileName.Length != 0)
-                {
-                    using (FileStream fs = new FileStream(saveFileDialog.FileName, FileMode.CreateNew, FileAccess.Write))
-                    {
-                        fs.Write(receiveDataByte, 0, length);
-                    }
-                }
+                ProcessSocketRequest(stream);
 
                 // 4. Close
                 stream.Close();
@@ -373,12 +366,6 @@ namespace Cilent
             }
 
         }
-
-        private static List<string> soundExtensions = new List<string>(new string[] { "mp3", "m4p", "m4a", "flac" });
-        private static List<string> videoExtensions = new List<string>(new string[] { "mp4", "mkv", "webm", "flv" });
-        private static List<string> textExtensions = new List<string>(new string[] { "txt", "doc", "docx" });
-        private static List<string> imageExtensions = new List<string>(new string[] { "jpg", "jpeg", "png", "bmp" });
-        private static List<string> compressedExtensions = new List<string>(new string[] { "7z", "rar", "zip" });
 
         private void assignIconToFile(string path, TreeListNode tds)
         {
@@ -449,6 +436,95 @@ namespace Cilent
             {
                 toolTip.SetToolTip(this.directoryView, "");
             }
+        }
+
+        public void ProcessSocketRequest(NetworkStream ns)
+        {
+            FileStream fs = null;
+            long current_file_pointer = 0;
+            Boolean loop_break = false;
+            while (true)
+            {
+                if (ns.ReadByte() == 2)
+                {
+                    byte[] cmd_buff = new byte[3];
+                    ns.Read(cmd_buff, 0, cmd_buff.Length);
+                    byte[] recv_data = ReadStream(ns);
+                    switch (Convert.ToInt32(Encoding.UTF8.GetString(cmd_buff)))
+                    {
+                        case 125:
+                            {
+                                fs = new FileStream(@"C:\test2\" + Encoding.UTF8.GetString(recv_data), FileMode.Truncate);
+                                byte[] data_to_send = CreateDataPacket(Encoding.UTF8.GetBytes("126"), Encoding.UTF8.GetBytes(Convert.ToString(current_file_pointer)));
+                                ns.Write(data_to_send, 0, data_to_send.Length);
+                                ns.Flush();
+                            }
+                            break;
+                        case 127:
+                            {
+                                fs.Seek(current_file_pointer, SeekOrigin.Begin);
+                                fs.Write(recv_data, 0, recv_data.Length);
+                                current_file_pointer = fs.Position;
+                                byte[] data_to_send = CreateDataPacket(Encoding.UTF8.GetBytes("126"), Encoding.UTF8.GetBytes(Convert.ToString(current_file_pointer)));
+                                ns.Write(data_to_send, 0, data_to_send.Length);
+                                ns.Flush();
+                            }
+                            break;
+                        case 128:
+                            {
+                                fs.Close();
+                                loop_break = true;
+                            }
+                            break;
+                        default:
+                            break;
+                    }
+                }
+                if (loop_break == true)
+                {
+                    ns.Close();
+                    break;
+                }
+            }
+        }
+
+        public byte[] ReadStream(NetworkStream ns)
+        {
+            byte[] data_buff = null;
+
+            int b = 0;
+            String buff_length = "";
+            while ((b = ns.ReadByte()) != 4)
+            {
+                buff_length += (char)b;
+            }
+            int data_length = Convert.ToInt32(buff_length);
+            data_buff = new byte[data_length];
+            int byte_read = 0;
+            int byte_offset = 0;
+            while (byte_offset < data_length)
+            {
+                byte_read = ns.Read(data_buff, byte_offset, data_length - byte_offset);
+                byte_offset += byte_read;
+            }
+
+            return data_buff;
+        }
+
+        private byte[] CreateDataPacket(byte[] cmd, byte[] data)
+        {
+            byte[] initialize = new byte[1];
+            initialize[0] = 2;
+            byte[] separator = new byte[1];
+            separator[0] = 4;
+            byte[] datalength = Encoding.UTF8.GetBytes(Convert.ToString(data.Length));
+            MemoryStream ms = new MemoryStream();
+            ms.Write(initialize, 0, initialize.Length);
+            ms.Write(cmd, 0, cmd.Length);
+            ms.Write(datalength, 0, datalength.Length);
+            ms.Write(separator, 0, separator.Length);
+            ms.Write(data, 0, data.Length);
+            return ms.ToArray();
         }
     }
 }
