@@ -285,7 +285,6 @@ namespace Server
         private static List<string> textExtensions = new List<string>(new string[] { ".txt", ".doc", ".docx" });
         private static List<string> imageExtensions = new List<string>(new string[] { ".jpg", ".jpeg", ".png", ".bmp" });
         private static List<string> compressedExtensions = new List<string>(new string[] { ".7z", ".rar", ".zip" });
-        private static List<string> programExtensions = new List<string>(new string[] { ".exe", ".msi" });
 
         public bool isEndWith(string fileType, string fileExtension)
         {
@@ -317,12 +316,6 @@ namespace Server
                     break;
                 case "compressed":
                     if (compressedExtensions.Contains(fileExtension.ToLower()))
-                    {
-                        return true;
-                    }
-                    break;
-                case "program":
-                    if (programExtensions.Contains(fileExtension.ToLower()))
                     {
                         return true;
                     }
