@@ -39,6 +39,7 @@ namespace Cilent
         {
             InitializeComponent();
             connectFailed();
+            GC.Collect();
         }
 
         private void ConnectToServer()
@@ -137,6 +138,7 @@ namespace Cilent
                 client = new TcpClient();
                 client.Connect(host, port);
                 Stream stream = client.GetStream();
+                client.ReceiveTimeout = 10000;
 
                 // 2. send
                 byte[] data = Encoding.ASCII.GetBytes(getFilter() + directory);
@@ -157,6 +159,7 @@ namespace Cilent
                 // 4. Close
                 stream.Close();
                 client.Close();
+                GC.Collect();
 
                 // 5. Reconnect
                 //ConnectToServer();
@@ -165,6 +168,7 @@ namespace Cilent
             catch (Exception ex)
             {
                 MessageBox.Show(ex.ToString(), this.Name);
+                connectFailed();
             }
         }
 

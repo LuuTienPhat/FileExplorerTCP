@@ -34,6 +34,7 @@ namespace Server
         {
             InitializeComponent();
             ServerStopped();
+            GC.Collect();
         }
 
         private static byte[] ObjectToByteArray(object obj)
@@ -49,9 +50,10 @@ namespace Server
 
         private void StartServer()
         {
-            try
+
+            while (true)
             {
-                while (true)
+                try
                 {
                     // 1. accept
                     TcpClient client = server.AcceptTcpClient();
@@ -85,7 +87,7 @@ namespace Server
 
                             progressBar.EditValue = 0;
                             sendFile(stream, fs, fi);
-                            lbDetail.Caption = "Server started on " + server.LocalEndpoint;
+                            lbDetail.Caption = "Listening on " + server.LocalEndpoint;
                         }
                         else
                         {
@@ -107,12 +109,15 @@ namespace Server
                         stream.Close();
                         client.Close();
                     }
+
                 }
+                catch (Exception ex)
+                {
+                    //MessageBox.Show(ex.ToString(), this.Name);
+                }
+                GC.Collect();
             }
-            catch(Exception ex)
-            {
-                MessageBox.Show(ex.ToString(), this.Name);
-            }
+
         }
 
         public void ServerStopped()
@@ -246,9 +251,19 @@ namespace Server
         [Obsolete]
         private void btnStop_Click(object sender, EventArgs e)
         {
-            serverTheard.Suspend();
-            server.Stop();
-            ServerStopped();
+            try
+            {
+                if (serverTheard.IsAlive)
+                {
+                    serverTheard.Suspend();
+                }
+                server.Stop();
+                ServerStopped();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+            }
         }
 
         [Obsolete]
@@ -256,7 +271,10 @@ namespace Server
         {
             try
             {
-                serverTheard.Suspend();
+                if (serverTheard.IsAlive)
+                {
+                    serverTheard.Suspend();
+                }
                 server.Stop();
                 ServerStopped();
 
@@ -272,7 +290,7 @@ namespace Server
             {
                 MessageBox.Show(ex.ToString(), this.Name);
             }
-            
+
         }
 
         private void acceptAll_CheckedChanged(object sender, EventArgs e)
