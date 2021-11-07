@@ -17,6 +17,7 @@ using System.Threading;
 using DevExpress.XtraTreeList;
 using DevExpress.XtraTreeList.Nodes;
 using DevExpress.XtraTreeList.ViewInfo;
+using DevExpress.Utils;
 
 namespace Cilent
 {
@@ -212,6 +213,7 @@ namespace Cilent
             lbStatus.Text = "Not Connected";
             lbDetail.Caption = "";
             progressBar.EditValue = 0;
+            directoryView.Nodes.Clear();
         }
 
         private void btnConnect_Click(object sender, EventArgs e)
@@ -344,36 +346,55 @@ namespace Cilent
 
         private void btnDownload_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
         {
+            progressBar.EditValue = 0;
             try
             {
                 TreeListNode node = this.directoryView.FocusedNode;
-                client = new TcpClient();
-                client.Connect(host, port);
-                NetworkStream stream = client.GetStream();
+                if (!isDirectory(node.Tag.ToString()))
+                {
+                    saveFileDialog.FileName = this.directoryView.GetFocusedDisplayText();
+                    DialogResult dialogResult = saveFileDialog.ShowDialog();
 
-                // 2. send
-                byte[] data = Encoding.ASCII.GetBytes("download*" + node.Tag.ToString());
-                stream.Write(data, 0, data.Length);
+                    if (dialogResult == DialogResult.OK)
+                    {
+                        string saveFilePath = saveFileDialog.FileName;
+                        Thread t = new Thread(() =>
+                        {
+                            // 2. send
+                            client = new TcpClient();
+                            client.Connect(host, port);
+                            NetworkStream stream = client.GetStream();
+                            byte[] data = Encoding.ASCII.GetBytes("download*" + node.Tag.ToString());
+                            stream.Write(data, 0, data.Length);
 
-                saveFileDialog.FileName = this.directoryView.GetFocusedDisplayText();
-                saveFileDialog.ShowDialog();
+                            byte[] _buffer = new byte[99999];
+                            int length = stream.Read(_buffer, 0, _buffer.Length);
+                            long fileLength = long.Parse(Encoding.UTF8.GetString(_buffer, 0, length));
 
-                string saveFilePath = saveFileDialog.FileName;
+                            // 3. receive
+                            ReceiveFileFromServer(stream, saveFilePath, fileLength);
 
-                // 3. receive
-                progressBar.EditValue = 0;
-                ReceiveFileFromServer(stream, saveFilePath);
-                lbDetail.Caption = "Connected to " + client.Client.RemoteEndPoint;
+                            // 4. Close
+                            stream.Close();
+                            client.Close();
 
-                // 4. Close
-                stream.Close();
-                client.Close();
+                            this.Invoke((MethodInvoker)delegate
+                            {
+                                client = new TcpClient();
+                                client.Connect(host, port);
+                                lbDetail.Caption = "Connected to " + client.Client.RemoteEndPoint;
+                                client.Close();
+                            });
+
+                        });
+                        t.Start();
+                    }
+                }
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.ToString(), this.Name);
             }
-
         }
 
         private void assignIconToFile(string path, TreeListNode tds)
@@ -434,23 +455,24 @@ namespace Cilent
         private void directoryView_MouseMove(object sender, MouseEventArgs e)
         {
             TreeListNode theNode = this.directoryView.GetNodeAt(e.X, e.Y);
-            if (theNode != null && theNode.Tag != null)
-            {
-                if (theNode.Tag.ToString() != toolTip.GetToolTip(this.directoryView))
-                {
-                    toolTip.SetToolTip(this.directoryView, theNode.Tag.ToString());
-                }
-            }
-            else
-            {
-                toolTip.SetToolTip(this.directoryView, "");
-            }
+            this.directoryView.SetFocusedNode(theNode);
+            //if (theNode != null && theNode.Tag != null)
+            //{
+            //    if (theNode.Tag.ToString() != toolTip.GetToolTip(this.directoryView))
+            //    {
+            //        toolTip.SetToolTip(this.directoryView, theNode.Tag.ToString());
+            //    }
+            //}
+            //else
+            //{
+            //    toolTip.SetToolTip(this.directoryView, "");
+            //}
         }
 
 
         #region The below code handles download function
 
-        public void ReceiveFileFromServer(NetworkStream ns, string saveFilePath)
+        public void ReceiveFileFromServer(NetworkStream ns, string saveFilePath, long fileLength)
         {
             FileStream fs = null;
             long current_file_pointer = 0;
@@ -471,8 +493,6 @@ namespace Cilent
                                 byte[] data_to_send = CreateDataPacket(Encoding.UTF8.GetBytes("126"), Encoding.UTF8.GetBytes(Convert.ToString(current_file_pointer)));
                                 ns.Write(data_to_send, 0, data_to_send.Length);
                                 ns.Flush();
-                                //lbDetail.Caption = "Download in progress: " + (int)Math.Ceiling((double)current_file_pointer / (double)fs.Length * 100) + " %";
-                                //progressBar.EditValue = (int)Math.Ceiling((double)current_file_pointer / (double)fs.Length * 100);
                             }
                             break;
                         case 127:
@@ -483,8 +503,11 @@ namespace Cilent
                                 byte[] data_to_send = CreateDataPacket(Encoding.UTF8.GetBytes("126"), Encoding.UTF8.GetBytes(Convert.ToString(current_file_pointer)));
                                 ns.Write(data_to_send, 0, data_to_send.Length);
                                 ns.Flush();
-                                lbDetail.Caption = "Download in progress: " + (int)Math.Ceiling((double)current_file_pointer / (double)fs.Length * 100) + " %";
-                                progressBar.EditValue = (int)Math.Ceiling((double)current_file_pointer / (double)fs.Length * 100);
+                                this.Invoke((MethodInvoker)delegate
+                                {
+                                    lbDetail.Caption = "Downloading: " + (int)Math.Ceiling((double)current_file_pointer / (double)fileLength * 100) + " %";
+                                    progressBar.EditValue = (int)Math.Ceiling((double)current_file_pointer / (double)fileLength * 100);
+                                });
                             }
                             break;
                         case 128:
@@ -545,5 +568,25 @@ namespace Cilent
         }
 
         #endregion
+
+        private void toolTip_GetActiveObjectInfo(object sender, DevExpress.Utils.ToolTipControllerGetActiveObjectInfoEventArgs e)
+        {
+            if (e.SelectedControl.Name == "directoryView")
+            {
+                DevExpress.Utils.SuperToolTip superToolTip = new DevExpress.Utils.SuperToolTip();
+                DevExpress.Utils.ToolTipItem toolTipItem = new DevExpress.Utils.ToolTipItem();
+                superToolTip.Items.Add(toolTipItem);
+                ToolTipControlInfo myInfo = new DevExpress.Utils.ToolTipControlInfo();
+                TreeListHitInfo hi = directoryView.CalcHitInfo(e.ControlMousePosition);
+                if (hi.Node != null && hi.Column != null)
+                {
+                    string value = hi.Node.Id.ToString() + hi.Column.FieldName;
+                    myInfo.Text = hi.Node.Tag.ToString();
+                    myInfo.Object = value;
+                }
+
+                e.Info = myInfo;
+            }
+        }
     }
 }

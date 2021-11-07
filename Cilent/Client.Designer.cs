@@ -32,8 +32,9 @@ namespace Cilent
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Client));
-            this.barManager1 = new DevExpress.XtraBars.BarManager();
+            this.barManager1 = new DevExpress.XtraBars.BarManager(this.components);
             this.bar1 = new DevExpress.XtraBars.Bar();
             this.btnReconnect = new DevExpress.XtraBars.BarButtonItem();
             this.btnExit = new DevExpress.XtraBars.BarButtonItem();
@@ -62,7 +63,7 @@ namespace Cilent
             this.resultPanel = new DevExpress.XtraEditors.PanelControl();
             this.directoryView = new DevExpress.XtraTreeList.TreeList();
             this.treeListColumn1 = new DevExpress.XtraTreeList.Columns.TreeListColumn();
-            this.imageCollection = new DevExpress.Utils.DPIAwareImageCollection();
+            this.imageCollection = new DevExpress.Utils.DPIAwareImageCollection(this.components);
             this.labelControl5 = new DevExpress.XtraEditors.LabelControl();
             this.cbxFilter = new DevExpress.XtraEditors.CheckedComboBoxEdit();
             this.btnRefreshConsole = new DevExpress.XtraEditors.SimpleButton();
@@ -71,9 +72,9 @@ namespace Cilent
             this.txtDirectory = new DevExpress.XtraEditors.TextEdit();
             this.labelControl4 = new DevExpress.XtraEditors.LabelControl();
             this.treeListLookUpEdit1TreeList = new DevExpress.XtraTreeList.TreeList();
-            this.toolTip = new System.Windows.Forms.ToolTip();
-            this.popupMenu = new DevExpress.XtraBars.PopupMenu();
-            this.saveFileDialog = new DevExpress.XtraEditors.XtraSaveFileDialog();
+            this.popupMenu = new DevExpress.XtraBars.PopupMenu(this.components);
+            this.saveFileDialog = new DevExpress.XtraEditors.XtraSaveFileDialog(this.components);
+            this.toolTip = new DevExpress.Utils.ToolTipController(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.barManager1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemProgressBar1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.controlPanel)).BeginInit();
@@ -114,6 +115,7 @@ namespace Cilent
             this.barManager1.MaxItemId = 9;
             this.barManager1.RepositoryItems.AddRange(new DevExpress.XtraEditors.Repository.RepositoryItem[] {
             this.repositoryItemProgressBar1});
+            this.barManager1.ShowScreenTipsInToolbars = false;
             this.barManager1.StatusBar = this.bar2;
             // 
             // bar1
@@ -169,6 +171,7 @@ namespace Cilent
             this.lbDetail.Id = 3;
             this.lbDetail.Name = "lbDetail";
             this.lbDetail.Size = new System.Drawing.Size(250, 0);
+            this.lbDetail.Width = 250;
             // 
             // progressBar
             // 
@@ -381,6 +384,7 @@ namespace Cilent
             this.directoryView.Name = "directoryView";
             this.directoryView.OptionsBehavior.Editable = false;
             this.directoryView.OptionsBehavior.ReadOnly = true;
+            this.directoryView.OptionsBehavior.ShowToolTips = false;
             this.directoryView.OptionsMenu.ShowExpandCollapseItems = false;
             this.directoryView.OptionsView.ShowColumns = false;
             this.directoryView.OptionsView.ShowHorzLines = false;
@@ -389,6 +393,7 @@ namespace Cilent
             this.directoryView.Size = new System.Drawing.Size(483, 241);
             this.directoryView.StateImageList = this.imageCollection;
             this.directoryView.TabIndex = 41;
+            this.directoryView.ToolTipController = this.toolTip;
             this.directoryView.RowClick += new DevExpress.XtraTreeList.RowClickEventHandler(this.directoryView_RowClick);
             this.directoryView.MouseMove += new System.Windows.Forms.MouseEventHandler(this.directoryView_MouseMove);
             // 
@@ -525,6 +530,10 @@ namespace Cilent
             this.saveFileDialog.InitialDirectory = "Desktop";
             this.saveFileDialog.Title = "Save As";
             // 
+            // toolTip
+            // 
+            this.toolTip.GetActiveObjectInfo += new DevExpress.Utils.ToolTipControllerGetActiveObjectInfoEventHandler(this.toolTip_GetActiveObjectInfo);
+            // 
             // Client
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 16F);
@@ -588,7 +597,6 @@ namespace Cilent
         private DevExpress.XtraEditors.TextEdit txtDirectory;
         private DevExpress.XtraEditors.LabelControl labelControl4;
         private DevExpress.XtraTreeList.TreeList treeListLookUpEdit1TreeList;
-        private System.Windows.Forms.ToolTip toolTip;
         private DevExpress.XtraBars.BarButtonItem btnDownload;
         private DevExpress.XtraBars.PopupMenu popupMenu;
         private DevExpress.XtraEditors.SimpleButton btnClearConsole;
@@ -604,5 +612,6 @@ namespace Cilent
         private DevExpress.XtraBars.BarEditItem progressBar;
         private DevExpress.XtraEditors.Repository.RepositoryItemProgressBar repositoryItemProgressBar1;
         private DevExpress.XtraBars.BarButtonItem barButtonItem1;
+        private DevExpress.Utils.ToolTipController toolTip;
     }
 }
