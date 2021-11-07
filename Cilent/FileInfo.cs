@@ -13,9 +13,9 @@ using SharedClass;
 
 namespace Cilent
 {
-    public partial class FormFileInfo : DevExpress.XtraEditors.XtraForm
+    public partial class FileInfo : DevExpress.XtraEditors.XtraForm
     {
-        public FormFileInfo(FileView fileView)
+        public FileInfo(FileView fileView)
         {
             InitializeComponent();
             this.Text = fileView.fileInfo.Name + " Properties";

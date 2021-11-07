@@ -1,7 +1,7 @@
 ﻿
 namespace Cilent
 {
-    partial class FormFileInfo
+    partial class FileInfo
     {
         /// <summary>
         /// Required designer variable.
@@ -31,7 +31,7 @@ namespace Cilent
 
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormFileInfo));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FileInfo));
             this.panelControl1 = new DevExpress.XtraEditors.PanelControl();
             this.txtType = new DevExpress.XtraEditors.TextEdit();
             this.labelControl3 = new DevExpress.XtraEditors.LabelControl();
