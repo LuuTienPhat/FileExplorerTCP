@@ -338,13 +338,13 @@ namespace Cilent
             {
                 DirectoryView directoryView = null;
                 searchDirectoryView(directoryCollection, ref directoryView, node.Tag.ToString());
-                new FormDirectoryInfo(directoryView).Show();
+                new DirectoryInfo(directoryView).Show();
             }
             else
             {
                 FileView fileView = null;
                 searchFileView(directoryCollection, ref fileView, node.Tag.ToString());
-                new FormFileInfo(fileView).Show();
+                new FileInfo(fileView).Show();
             }
         }
 
