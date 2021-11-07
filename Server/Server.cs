@@ -33,7 +33,7 @@ namespace Server
         public Server()
         {
             InitializeComponent();
-            btnRestart.Enabled = btnStop.Enabled = clientPanel.Enabled = false;
+            ServerStopped();
         }
 
         private static byte[] ObjectToByteArray(object obj)
@@ -49,61 +49,69 @@ namespace Server
 
         private void StartServer()
         {
-            while (true)
+            try
             {
-                // 1. accept
-                TcpClient client = server.AcceptTcpClient();
-                this.Invoke((MethodInvoker)delegate
+                while (true)
                 {
-                    clientList.Items.Add(client.Client.RemoteEndPoint);
-                });
-
-                Stream stream = client.GetStream();
-
-                // 2. receive
-                byte[] receivedDataByte = new byte[BUFFER_SIZE];
-                int length = stream.Read(receivedDataByte, 0, BUFFER_SIZE);
-
-                // 3. handle
-                if (length != 0)
-                {
-                    string receivedData = Encoding.ASCII.GetString(receivedDataByte, 0, length);
-
-                    string[] requestSplit = receivedData.Split('*');
-
-                    if (requestSplit[0].Equals("download"))
+                    // 1. accept
+                    TcpClient client = server.AcceptTcpClient();
+                    this.Invoke((MethodInvoker)delegate
                     {
-                        FileInfo fi = new FileInfo(requestSplit[requestSplit.Length - 1]);
+                        clientList.Items.Add(client.Client.RemoteEndPoint);
+                    });
 
-                        progressBar.EditValue = 0;
-                        sendFile(client, fi.FullName, fi.Name);
-                        lbDetail.Caption = "Server started on " + server.LocalEndpoint;
+                    NetworkStream stream = client.GetStream();
 
-                        //byte[] sendData = FileToByteArray(requestSplit[requestSplit.Length - 1]);
+                    // 2. receive
+                    byte[] receivedDataByte = new byte[BUFFER_SIZE];
+                    int length = stream.Read(receivedDataByte, 0, BUFFER_SIZE);
 
-                        // 4. send
-                        //stream.Write(sendData, 0, sendData.Length);
-                    }
-                    else
+                    // 3. handle
+                    if (length != 0)
                     {
-                        List<string> filters = new List<string>();
+                        string receivedData = Encoding.ASCII.GetString(receivedDataByte, 0, length);
 
-                        for (int i = 1; i < requestSplit.Length - 1; i++)
+                        string[] requestSplit = receivedData.Split('*');
+
+                        if (requestSplit[0].Equals("download"))
                         {
-                            filters.Add(requestSplit[i]);
+                            FileInfo fi = new FileInfo(requestSplit[requestSplit.Length - 1]);
+                            FileStream fs = new FileStream(fi.FullName, FileMode.Open, FileAccess.Read, FileShare.Read);
+
+                            //4. send
+                            byte[] fileLength = Encoding.UTF8.GetBytes(fs.Length.ToString());
+                            stream.Write(fileLength, 0, fileLength.Length);
+                            stream.Flush();
+
+                            progressBar.EditValue = 0;
+                            sendFile(stream, fs, fi);
+                            lbDetail.Caption = "Server started on " + server.LocalEndpoint;
+                        }
+                        else
+                        {
+                            List<string> filters = new List<string>();
+
+                            for (int i = 1; i < requestSplit.Length - 1; i++)
+                            {
+                                filters.Add(requestSplit[i]);
+                            }
+
+                            DirectoryView directoryCollection = LoadDirectory(requestSplit[requestSplit.Length - 1], filters);
+                            byte[] sendData = ObjectToByteArray(directoryCollection);
+
+                            // 4. send
+                            stream.Write(sendData, 0, sendData.Length);
                         }
 
-                        DirectoryView directoryCollection = LoadDirectory(requestSplit[requestSplit.Length - 1], filters);
-                        byte[] sendData = ObjectToByteArray(directoryCollection);
-
-                        // 4. send
-                        stream.Write(sendData, 0, sendData.Length);
+                        // 5. close
+                        stream.Close();
+                        client.Close();
                     }
-
-                    // 5. close
-                    stream.Close();
-                    client.Close();
                 }
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show(ex.ToString(), this.Name);
             }
         }
 
@@ -255,7 +263,8 @@ namespace Server
                 server = new TcpListener(host, port);
 
                 // 1. listen
-                server.Start();
+                serverTheard = new Thread(StartServer);
+                serverTheard.Start();
                 ServerStarted();
 
             }
@@ -263,10 +272,7 @@ namespace Server
             {
                 MessageBox.Show(ex.ToString(), this.Name);
             }
-
-
-            serverTheard = new Thread(StartServer);
-            serverTheard.Start();
+            
         }
 
         private void acceptAll_CheckedChanged(object sender, EventArgs e)
@@ -335,14 +341,12 @@ namespace Server
             return false;
         }
 
-        public void sendFile(TcpClient client, string filePath, string fileName)
+        public void sendFile(NetworkStream ns, FileStream fs, FileInfo fi)
         {
-
-            FileStream fs = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read);
+            //FileStream fs = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read);
             //TcpClient client = new TcpClient("127.0.0.1", 6868);
-
-            NetworkStream ns = client.GetStream();
-            byte[] data_tosend = CreateDataPacket(Encoding.UTF8.GetBytes("125"), Encoding.UTF8.GetBytes(fileName));
+            //NetworkStream ns = client.GetStream();
+            byte[] data_tosend = CreateDataPacket(Encoding.UTF8.GetBytes("125"), Encoding.UTF8.GetBytes(fi.Name));
             ns.Write(data_tosend, 0, data_tosend.Length);
             ns.Flush();
             Boolean loop_break = false;
@@ -366,8 +370,11 @@ namespace Server
                                 byte[] data_to_send = CreateDataPacket(Encoding.UTF8.GetBytes("127"), temp_buff);
                                 ns.Write(data_to_send, 0, data_to_send.Length);
                                 ns.Flush();
-                                lbDetail.Caption = "Upload in progress: " + (int)Math.Ceiling((double)recv_file_pointer / (double)fs.Length * 100) + " %";
-                                progressBar.EditValue = (int)Math.Ceiling((double)recv_file_pointer / (double)fs.Length * 100);
+                                this.Invoke((MethodInvoker)delegate
+                                {
+                                    lbDetail.Caption = "Uploading: " + (int)Math.Ceiling((double)recv_file_pointer / (double)fs.Length * 100) + " %";
+                                    progressBar.EditValue = (int)Math.Ceiling((double)recv_file_pointer / (double)fs.Length * 100);
+                                });
                             }
                             else
                             {
