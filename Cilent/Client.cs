@@ -1,29 +1,22 @@
-﻿using DevExpress.XtraEditors;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Net.Sockets;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Xml.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using SharedClass;
 using System.Threading;
 using DevExpress.XtraTreeList;
 using DevExpress.XtraTreeList.Nodes;
-using DevExpress.XtraTreeList.ViewInfo;
 using DevExpress.Utils;
 
 namespace Cilent
 {
     public partial class Client : DevExpress.XtraEditors.XtraForm
     {
-        private static String host;
+        private static string host;
         private static int port;
         private static TcpClient client;
         private const int BUFFER_SIZE = 999999999;
@@ -39,7 +32,6 @@ namespace Cilent
         {
             InitializeComponent();
             connectFailed();
-            GC.Collect();
         }
 
         private void ConnectToServer()
@@ -60,20 +52,31 @@ namespace Cilent
             }
         }
 
-        private void btnDisconnect_Click(object sender, EventArgs e)
+        private void connectSuccessfully()
         {
-            try
-            {
-                client.Close();
-                connectFailed();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-                connectSuccessfully();
-            }
-
+            btnConnect.Enabled = false;
+            btnDisconnect.Enabled = btnReconnect.Enabled = btnShow.Enabled = true;
+            txtHost.Enabled = txtPort.Enabled = false;
+            lbStatus.Text = "Connected";
+            lbDetail.Caption = "Connected to " + client.Client.RemoteEndPoint;
+            resultPanel.Enabled = true;
+            progressBar.EditValue = 0;
         }
+
+        private void connectFailed()
+        {
+            btnConnect.Enabled = true;
+            btnDisconnect.Enabled = btnReconnect.Enabled = btnShow.Enabled = false;
+            txtHost.Enabled = txtPort.Enabled = true;
+            resultPanel.Enabled = false;
+            lbStatus.Text = "Not Connected";
+            lbDetail.Caption = "";
+            progressBar.EditValue = 0;
+            directoryView.Nodes.Clear();
+        }
+
+
+        #region Directory Handle
 
         public void LoadDirectory(DirectoryView directoryCollection)
         {
@@ -106,15 +109,47 @@ namespace Cilent
             }
         }
 
-        private object ByteArrayToObject(byte[] arrBytes)
+        private void assignIconToFile(string path, TreeListNode tds)
         {
-            MemoryStream memStream = new MemoryStream();
-            BinaryFormatter binForm = new BinaryFormatter();
-            memStream.Write(arrBytes, 0, arrBytes.Length);
-            memStream.Seek(0, SeekOrigin.Begin);
-            object obj = (object)binForm.Deserialize(memStream);
-            return obj;
+            string fileType = path.Substring(path.LastIndexOf(".") + 1).ToLower();
+
+            if (textExtensions.Contains(fileType))
+            {
+                tds.StateImageIndex = 2;
+                return;
+            }
+            else if (soundExtensions.Contains(fileType))
+            {
+                tds.StateImageIndex = 4;
+                return;
+            }
+            else if (imageExtensions.Contains(fileType))
+            {
+                tds.StateImageIndex = 3;
+                return;
+            }
+            else if (videoExtensions.Contains(fileType))
+            {
+                tds.StateImageIndex = 5;
+                return;
+            }
+
+            else if (compressedExtensions.Contains(fileType))
+            {
+                tds.StateImageIndex = 6;
+                return;
+            }
+            else
+            {
+                tds.StateImageIndex = 1;
+                return;
+            }
+
         }
+
+        #endregion
+
+        #region Butttons
 
         //btnShow
         private void btnShow_Click(object sender, EventArgs e)
@@ -185,41 +220,21 @@ namespace Cilent
             try
             {
                 client.Close();
+                connectFailed();
+
                 client = new TcpClient();
                 client.Connect(host, port);
-
-                Thread t = new Thread(connectSuccessfully);
+                connectSuccessfully();
+                client.Close();
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.ToString(), this.Name);
+                MessageBox.Show(ex.Message, this.Name);
                 connectFailed();
             }
         }
 
-        private void connectSuccessfully()
-        {
-            btnConnect.Enabled = false;
-            btnDisconnect.Enabled = btnReconnect.Enabled = btnShow.Enabled = true;
-            txtHost.Enabled = txtPort.Enabled = false;
-            lbStatus.Text = "Connected";
-            lbDetail.Caption = "Connected to " + client.Client.RemoteEndPoint;
-            resultPanel.Enabled = true;
-            progressBar.EditValue = 0;
-        }
-
-        private void connectFailed()
-        {
-            btnConnect.Enabled = true;
-            btnDisconnect.Enabled = btnReconnect.Enabled = btnShow.Enabled = false;
-            txtHost.Enabled = txtPort.Enabled = true;
-            resultPanel.Enabled = false;
-            lbStatus.Text = "Not Connected";
-            lbDetail.Caption = "";
-            progressBar.EditValue = 0;
-            directoryView.Nodes.Clear();
-        }
-
+        //btnConnect
         private void btnConnect_Click(object sender, EventArgs e)
         {
             host = txtHost.Text;
@@ -227,110 +242,23 @@ namespace Cilent
             ConnectToServer();
         }
 
-        private bool isCollectionEmpty(DirectoryView directoryCollection)
+        //btnDisconnect
+        private void btnDisconnect_Click(object sender, EventArgs e)
         {
-            if (directoryCollection.directoryInfo == null) return true;
-            return false;
-        }
-
-        private string getFilter()
-        {
-            List<object> filters = cbxFilter.Properties.GetItems().GetCheckedValues();
-            string requestWithFileTypeFilter = "filtered";
-
-            foreach (string filter in filters)
+            try
             {
-                if (filter.Contains("all"))
-                {
-                    requestWithFileTypeFilter = requestWithFileTypeFilter + "*" + "all";
-                    break;
-                }
-                else
-                {
-                    if (filter.Contains("folder"))
-                    {
-                        requestWithFileTypeFilter = requestWithFileTypeFilter + "*" + "folder";
-                        break;
-                    }
-
-                    if (filter.Contains("sound"))
-                    {
-                        requestWithFileTypeFilter = requestWithFileTypeFilter + "*" + "sound";
-                    }
-                    if (filter.Contains("video"))
-                    {
-                        requestWithFileTypeFilter = requestWithFileTypeFilter + "*" + "video";
-                    }
-                    if (filter.Contains("text"))
-                    {
-                        requestWithFileTypeFilter = requestWithFileTypeFilter + "*" + "text";
-                    }
-                    if (filter.Contains("image"))
-                    {
-                        requestWithFileTypeFilter = requestWithFileTypeFilter + "*" + "image";
-                    }
-                    if (filter.Contains("compressed"))
-                    {
-                        requestWithFileTypeFilter = requestWithFileTypeFilter + "*" + "compressed";
-                    }
-                }
+                client.Close();
+                connectFailed();
             }
-            return requestWithFileTypeFilter + "*";
-        }
-
-        private void btnClearConsole_Click(object sender, EventArgs e)
-        {
-            this.directoryView.Nodes.Clear();
-        }
-
-        private void btnRefreshConsole_Click(object sender, EventArgs e)
-        {
-            this.directoryView.Nodes.Clear();
-            LoadDirectory(directoryCollection);
-        }
-
-        private bool isDirectory(string path)
-        {
-            if (Path.HasExtension(path)) return false;
-            return true;
-        }
-
-        private void searchFileView(DirectoryView collection, ref FileView fileView, string path)
-        {
-            if (collection.subFiles.Count() != 0)
+            catch (Exception ex)
             {
-                foreach (FileView file in collection.subFiles)
-                {
-                    if (file.fileInfo.FullName.Equals(path))
-                    {
-                        fileView = file;
-                    }
-                }
+                MessageBox.Show(ex.Message);
+                connectSuccessfully();
             }
-            if (collection.subDirectories.Count != 0)
-            {
-                foreach (DirectoryView directory in collection.subDirectories)
-                {
-                    searchFileView(directory, ref fileView, path);
-                }
-            }
+
         }
 
-        private void searchDirectoryView(DirectoryView collection, ref DirectoryView directoryView, string path)
-        {
-            if (collection.directoryInfo.FullName.Equals(path)) directoryView = collection;
-            else
-            {
-                if (collection.subDirectories.Count != 0)
-                {
-                    foreach (DirectoryView directory in collection.subDirectories)
-                    {
-                        searchDirectoryView(directory, ref directoryView, path);
-                    }
-                }
-            }
-        }
-
+        //btnViewInfo
         private void btnViewInfo_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
         {
             TreeListNode node = this.directoryView.FocusedNode;
@@ -348,6 +276,7 @@ namespace Cilent
             }
         }
 
+        //btnDownload
         private void btnDownload_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
         {
             progressBar.EditValue = 0;
@@ -401,42 +330,128 @@ namespace Cilent
             }
         }
 
-        private void assignIconToFile(string path, TreeListNode tds)
+        //btnClearConsole
+        private void btnClearConsole_Click(object sender, EventArgs e)
         {
-            string fileType = path.Substring(path.LastIndexOf(".") + 1).ToLower();
+            this.directoryView.Nodes.Clear();
+        }
 
-            if (textExtensions.Contains(fileType))
-            {
-                tds.StateImageIndex = 2;
-                return;
-            }
-            else if (soundExtensions.Contains(fileType))
-            {
-                tds.StateImageIndex = 4;
-                return;
-            }
-            else if (imageExtensions.Contains(fileType))
-            {
-                tds.StateImageIndex = 3;
-                return;
-            }
-            else if (videoExtensions.Contains(fileType))
-            {
-                tds.StateImageIndex = 5;
-                return;
-            }
+        //btnRefreshConsole
+        private void btnRefreshConsole_Click(object sender, EventArgs e)
+        {
+            this.directoryView.Nodes.Clear();
+            LoadDirectory(directoryCollection);
+        }
 
-            else if (compressedExtensions.Contains(fileType))
+        #endregion
+
+        #region Utilities
+
+        private object ByteArrayToObject(byte[] arrBytes)
+        {
+            MemoryStream memStream = new MemoryStream();
+            BinaryFormatter binForm = new BinaryFormatter();
+            memStream.Write(arrBytes, 0, arrBytes.Length);
+            memStream.Seek(0, SeekOrigin.Begin);
+            object obj = (object)binForm.Deserialize(memStream);
+            return obj;
+        }
+
+        private bool isCollectionEmpty(DirectoryView directoryCollection)
+        {
+            if (directoryCollection.directoryInfo == null) return true;
+            return false;
+        }
+
+        private string getFilter()
+        {
+            List<object> filters = cbxFilter.Properties.GetItems().GetCheckedValues();
+            string requestWithFileTypeFilter = "filtered";
+
+            foreach (string filter in filters)
             {
-                tds.StateImageIndex = 6;
-                return;
+                if (filter.Contains("all"))
+                {
+                    requestWithFileTypeFilter = requestWithFileTypeFilter + "*" + "all";
+                    break;
+                }
+                else
+                {
+                    if (filter.Contains("folder"))
+                    {
+                        requestWithFileTypeFilter = requestWithFileTypeFilter + "*" + "folder";
+                        break;
+                    }
+
+                    if (filter.Contains("sound"))
+                    {
+                        requestWithFileTypeFilter = requestWithFileTypeFilter + "*" + "sound";
+                    }
+                    if (filter.Contains("video"))
+                    {
+                        requestWithFileTypeFilter = requestWithFileTypeFilter + "*" + "video";
+                    }
+                    if (filter.Contains("text"))
+                    {
+                        requestWithFileTypeFilter = requestWithFileTypeFilter + "*" + "text";
+                    }
+                    if (filter.Contains("image"))
+                    {
+                        requestWithFileTypeFilter = requestWithFileTypeFilter + "*" + "image";
+                    }
+                    if (filter.Contains("compressed"))
+                    {
+                        requestWithFileTypeFilter = requestWithFileTypeFilter + "*" + "compressed";
+                    }
+                }
             }
+            return requestWithFileTypeFilter + "*";
+        }
+       
+        private bool isDirectory(string path)
+        {
+            if (Path.HasExtension(path)) return false;
+            return true;
+        }
+
+        #endregion
+
+        #region Directory View
+
+        private void searchFileView(DirectoryView collection, ref FileView fileView, string path)
+        {
+            if (collection.subFiles.Count() != 0)
+            {
+                foreach (FileView file in collection.subFiles)
+                {
+                    if (file.fileInfo.FullName.Equals(path))
+                    {
+                        fileView = file;
+                    }
+                }
+            }
+            if (collection.subDirectories.Count != 0)
+            {
+                foreach (DirectoryView directory in collection.subDirectories)
+                {
+                    searchFileView(directory, ref fileView, path);
+                }
+            }
+        }
+
+        private void searchDirectoryView(DirectoryView collection, ref DirectoryView directoryView, string path)
+        {
+            if (collection.directoryInfo.FullName.Equals(path)) directoryView = collection;
             else
             {
-                tds.StateImageIndex = 1;
-                return;
+                if (collection.subDirectories.Count != 0)
+                {
+                    foreach (DirectoryView directory in collection.subDirectories)
+                    {
+                        searchDirectoryView(directory, ref directoryView, path);
+                    }
+                }
             }
-
         }
 
         private void directoryView_RowClick(object sender, RowClickEventArgs e)
@@ -473,8 +488,29 @@ namespace Cilent
             //}
         }
 
+        private void toolTip_GetActiveObjectInfo(object sender, DevExpress.Utils.ToolTipControllerGetActiveObjectInfoEventArgs e)
+        {
+            if (e.SelectedControl.Name == "directoryView")
+            {
+                DevExpress.Utils.SuperToolTip superToolTip = new DevExpress.Utils.SuperToolTip();
+                DevExpress.Utils.ToolTipItem toolTipItem = new DevExpress.Utils.ToolTipItem();
+                superToolTip.Items.Add(toolTipItem);
+                ToolTipControlInfo myInfo = new DevExpress.Utils.ToolTipControlInfo();
+                TreeListHitInfo hi = directoryView.CalcHitInfo(e.ControlMousePosition);
+                if (hi.Node != null && hi.Column != null)
+                {
+                    string value = hi.Node.Id.ToString() + hi.Column.FieldName;
+                    myInfo.Text = hi.Node.Tag.ToString();
+                    myInfo.Object = value;
+                }
 
-        #region The below code handles download function
+                e.Info = myInfo;
+            }
+        }
+
+        #endregion
+
+        #region Download File Function
 
         public void ReceiveFileFromServer(NetworkStream ns, string saveFilePath, long fileLength)
         {
@@ -572,25 +608,6 @@ namespace Cilent
         }
 
         #endregion
-
-        private void toolTip_GetActiveObjectInfo(object sender, DevExpress.Utils.ToolTipControllerGetActiveObjectInfoEventArgs e)
-        {
-            if (e.SelectedControl.Name == "directoryView")
-            {
-                DevExpress.Utils.SuperToolTip superToolTip = new DevExpress.Utils.SuperToolTip();
-                DevExpress.Utils.ToolTipItem toolTipItem = new DevExpress.Utils.ToolTipItem();
-                superToolTip.Items.Add(toolTipItem);
-                ToolTipControlInfo myInfo = new DevExpress.Utils.ToolTipControlInfo();
-                TreeListHitInfo hi = directoryView.CalcHitInfo(e.ControlMousePosition);
-                if (hi.Node != null && hi.Column != null)
-                {
-                    string value = hi.Node.Id.ToString() + hi.Column.FieldName;
-                    myInfo.Text = hi.Node.Tag.ToString();
-                    myInfo.Object = value;
-                }
-
-                e.Info = myInfo;
-            }
-        }
+       
     }
 }

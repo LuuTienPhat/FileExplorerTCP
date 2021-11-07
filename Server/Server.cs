@@ -1,28 +1,18 @@
-﻿using DevExpress.XtraEditors;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.IO;
-using System.Xml.Serialization;
 using SharedClass;
-using System.Net.NetworkInformation;
 
 namespace Server
 {
     public partial class Server : DevExpress.XtraEditors.XtraForm
     {
-        //public static ManualResetEvent allDone = new ManualResetEvent(false);
-
         private static int port;
         private static String address;
         private static TcpListener server;
@@ -30,22 +20,16 @@ namespace Server
         private static Thread serverTheard;
         private static IPAddress host;
 
+        private static List<string> soundExtensions = new List<string>(new string[] { ".mp3", ".m4p", ".m4a", ".flac" });
+        private static List<string> videoExtensions = new List<string>(new string[] { ".mp4", ".mkv", ".webm", ".flv" });
+        private static List<string> textExtensions = new List<string>(new string[] { ".txt", ".doc", ".docx" });
+        private static List<string> imageExtensions = new List<string>(new string[] { ".jpg", ".jpeg", ".png", ".bmp" });
+        private static List<string> compressedExtensions = new List<string>(new string[] { ".7z", ".rar", ".zip" });
+
         public Server()
         {
             InitializeComponent();
             ServerStopped();
-            GC.Collect();
-        }
-
-        private static byte[] ObjectToByteArray(object obj)
-        {
-            if (obj == null) return null;
-            BinaryFormatter bf = new BinaryFormatter();
-            using (MemoryStream ms = new MemoryStream())
-            {
-                bf.Serialize(ms, obj);
-                return ms.ToArray();
-            }
         }
 
         private void StartServer()
@@ -104,11 +88,12 @@ namespace Server
                             // 4. send
                             stream.Write(sendData, 0, sendData.Length);
                         }
-
-                        // 5. close
-                        stream.Close();
-                        client.Close();
                     }
+
+                    // 5. close
+                    stream.Close();
+                    client.Close();
+                    GC.Collect();
 
                 }
                 catch (Exception ex)
@@ -146,6 +131,19 @@ namespace Server
             progressBar.EditValue = 0;
             clientPanel.Enabled = true;
         }
+
+        private static byte[] ObjectToByteArray(object obj)
+        {
+            if (obj == null) return null;
+            BinaryFormatter bf = new BinaryFormatter();
+            using (MemoryStream ms = new MemoryStream())
+            {
+                bf.Serialize(ms, obj);
+                return ms.ToArray();
+            }
+        }
+
+        #region Directory Handle
 
         public DirectoryView LoadDirectory(String receiveDirectory, List<string> filters)
         {
@@ -210,114 +208,6 @@ namespace Server
             }
         }
 
-
-        private void btnStart_Click(object sender, EventArgs e)
-        {
-            if (acceptAll.Checked)
-            {
-                host = IPAddress.Any;
-            }
-            else
-            {
-                address = txtAddress.Text;
-                host = IPAddress.Parse(address);
-            }
-            port = int.Parse(txtPort.Text);
-
-            try
-            {
-                server = new TcpListener(host, port);
-
-                // 1. listen
-                server.Start();
-                ServerStarted();
-
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.ToString(), this.Name);
-                ServerStopped();
-            }
-
-
-            serverTheard = new Thread(StartServer);
-            serverTheard.Start();
-        }
-
-        private void btnExit_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
-        {
-            this.Dispose();
-            Environment.Exit(Environment.ExitCode);
-        }
-
-        [Obsolete]
-        private void btnStop_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                if (serverTheard.IsAlive)
-                {
-                    serverTheard.Suspend();
-                }
-                server.Stop();
-                ServerStopped();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.ToString());
-            }
-        }
-
-        [Obsolete]
-        private void btnRestart_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
-        {
-            try
-            {
-
-                if (serverTheard.IsAlive)
-                {
-                    serverTheard.Suspend();
-                }
-                server.Stop();
-                ServerStopped();
-
-
-                server = new TcpListener(host, port);
-                // 1. listen
-                server.Start();
-                ServerStarted();
-
-                serverTheard = new Thread(StartServer);
-                serverTheard.Start();
-
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.ToString(), this.Name);
-                ServerStopped();
-            }
-
-        }
-
-        private void acceptAll_CheckedChanged(object sender, EventArgs e)
-        {
-            switch (acceptAll.Checked)
-            {
-                case true:
-                    txtAddress.Enabled = false;
-                    break;
-                case false:
-                    txtAddress.Enabled = true;
-                    break;
-            }
-        }
-
-        private static List<string> soundExtensions = new List<string>(new string[] { ".mp3", ".m4p", ".m4a", ".flac" });
-        private static List<string> videoExtensions = new List<string>(new string[] { ".mp4", ".mkv", ".webm", ".flv" });
-        private static List<string> textExtensions = new List<string>(new string[] { ".txt", ".doc", ".docx" });
-        private static List<string> imageExtensions = new List<string>(new string[] { ".jpg", ".jpeg", ".png", ".bmp" });
-        private static List<string> compressedExtensions = new List<string>(new string[] { ".7z", ".rar", ".zip" });
-
         public bool isEndWith(string fileType, string fileExtension)
         {
             switch (fileType)
@@ -364,6 +254,123 @@ namespace Server
 
             return false;
         }
+
+        #endregion
+
+        #region Buttons
+
+        //btnStart
+        private void btnStart_Click(object sender, EventArgs e)
+        {
+            if (acceptAll.Checked)
+            {
+                host = IPAddress.Any;
+            }
+            else
+            {
+                address = txtAddress.Text;
+                host = IPAddress.Parse(address);
+            }
+            port = int.Parse(txtPort.Text);
+
+            try
+            {
+                server = new TcpListener(host, port);
+
+                // 1. listen
+                server.Start();
+                ServerStarted();
+                GC.Collect();
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString(), this.Name);
+                ServerStopped();
+            }
+
+
+            serverTheard = new Thread(StartServer);
+            serverTheard.Start();
+            GC.Collect();
+        }
+
+        //btnExit
+        private void btnExit_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
+        {
+            this.Dispose();
+            Environment.Exit(Environment.ExitCode);
+        }
+
+        //btnStop
+        [Obsolete]
+        private void btnStop_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (serverTheard.IsAlive)
+                {
+                    serverTheard.Suspend();
+                }
+                server.Stop();
+                ServerStopped();
+                GC.Collect();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+            }
+        }
+
+        //btnRestart
+        [Obsolete]
+        private void btnRestart_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
+        {
+            try
+            {
+
+                if (serverTheard.IsAlive)
+                {
+                    serverTheard.Suspend();
+                }
+                server.Stop();
+                ServerStopped();
+
+
+                server = new TcpListener(host, port);
+                // 1. listen
+                server.Start();
+                ServerStarted();
+
+                serverTheard = new Thread(StartServer);
+                serverTheard.Start();
+                GC.Collect();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString(), this.Name);
+                ServerStopped();
+            }
+
+        }
+
+        //acceptAll
+        private void acceptAll_CheckedChanged(object sender, EventArgs e)
+        {
+            switch (acceptAll.Checked)
+            {
+                case true:
+                    txtAddress.Enabled = false;
+                    break;
+                case false:
+                    txtAddress.Enabled = true;
+                    break;
+            }
+        }
+
+        #endregion
+
+        #region Upload File
 
         public void sendFile(NetworkStream ns, FileStream fs, FileInfo fi)
         {
@@ -418,9 +425,9 @@ namespace Server
                     ns.Close();
                     break;
                 }
-
             }
         }
+        
         public byte[] ReadStream(NetworkStream ns)
         {
             byte[] data_buff = null;
@@ -443,6 +450,7 @@ namespace Server
 
             return data_buff;
         }
+        
         private byte[] CreateDataPacket(byte[] cmd, byte[] data)
         {
             byte[] initialize = new byte[1];
@@ -458,5 +466,7 @@ namespace Server
             ms.Write(data, 0, data.Length);
             return ms.ToArray();
         }
+
+        #endregion
     }
 }
