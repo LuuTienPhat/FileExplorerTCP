@@ -64,6 +64,7 @@ namespace Cilent
             this.directoryView = new DevExpress.XtraTreeList.TreeList();
             this.treeListColumn1 = new DevExpress.XtraTreeList.Columns.TreeListColumn();
             this.imageCollection = new DevExpress.Utils.DPIAwareImageCollection(this.components);
+            this.toolTip = new DevExpress.Utils.ToolTipController(this.components);
             this.labelControl5 = new DevExpress.XtraEditors.LabelControl();
             this.cbxFilter = new DevExpress.XtraEditors.CheckedComboBoxEdit();
             this.btnRefreshConsole = new DevExpress.XtraEditors.SimpleButton();
@@ -74,7 +75,6 @@ namespace Cilent
             this.treeListLookUpEdit1TreeList = new DevExpress.XtraTreeList.TreeList();
             this.popupMenu = new DevExpress.XtraBars.PopupMenu(this.components);
             this.saveFileDialog = new DevExpress.XtraEditors.XtraSaveFileDialog(this.components);
-            this.toolTip = new DevExpress.Utils.ToolTipController(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.barManager1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemProgressBar1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.controlPanel)).BeginInit();
@@ -414,9 +414,14 @@ namespace Cilent
             new DevExpress.Utils.DefaultImage(new DevExpress.Utils.LocalImageLocator("image.png")),
             new DevExpress.Utils.DefaultImage(new DevExpress.Utils.LocalImageLocator("sound-waves.png")),
             new DevExpress.Utils.DefaultImage(new DevExpress.Utils.LocalImageLocator("video.png")),
-            new DevExpress.Utils.DefaultImage(new DevExpress.Utils.LocalImageLocator("zip.png"))});
+            new DevExpress.Utils.DefaultImage(new DevExpress.Utils.LocalImageLocator("zip.png")),
+            new DevExpress.Utils.DefaultImage(new DevExpress.Utils.LocalImageLocator("notfFound.png"))});
             this.imageCollection.Owner = this;
             this.imageCollection.Stream = ((DevExpress.Utils.DPIAwareImageCollectionStreamer)(resources.GetObject("imageCollection.Stream")));
+            // 
+            // toolTip
+            // 
+            this.toolTip.GetActiveObjectInfo += new DevExpress.Utils.ToolTipControllerGetActiveObjectInfoEventHandler(this.toolTip_GetActiveObjectInfo);
             // 
             // labelControl5
             // 
@@ -529,10 +534,6 @@ namespace Cilent
             // 
             this.saveFileDialog.InitialDirectory = "Desktop";
             this.saveFileDialog.Title = "Save As";
-            // 
-            // toolTip
-            // 
-            this.toolTip.GetActiveObjectInfo += new DevExpress.Utils.ToolTipControllerGetActiveObjectInfoEventHandler(this.toolTip_GetActiveObjectInfo);
             // 
             // Client
             // 

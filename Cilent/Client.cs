@@ -187,7 +187,9 @@ namespace Cilent
 
                 if (isCollectionEmpty(directoryCollection))
                 {
-                    this.directoryView.Nodes.Add("Not Found");
+                    TreeListNode tds = directoryView.AppendNode(new object[] { "Directory not found on Server!" }, null);
+                    tds.Tag = "Directory not found on Server!";
+                    tds.StateImageIndex = 7;
                 }
                 else LoadDirectory(directoryCollection);
 
