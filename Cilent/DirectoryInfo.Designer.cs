@@ -1,7 +1,7 @@
 ﻿
 namespace Cilent
 {
-    partial class FormDirectoryInfo
+    partial class DirectoryInfo
     {
         /// <summary>
         /// Required designer variable.
@@ -30,7 +30,7 @@ namespace Cilent
 
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormDirectoryInfo));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(DirectoryInfo));
             this.panelControl1 = new DevExpress.XtraEditors.PanelControl();
             this.ckHidden = new DevExpress.XtraEditors.CheckEdit();
             this.ckReadOnly = new DevExpress.XtraEditors.CheckEdit();

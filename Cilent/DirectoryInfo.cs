@@ -13,18 +13,18 @@ using System.IO;
 
 namespace Cilent
 {
-    public partial class FormDirectoryInfo : DevExpress.XtraEditors.XtraForm
+    public partial class DirectoryInfo : DevExpress.XtraEditors.XtraForm
     {
 
 
-        public FormDirectoryInfo(DirectoryView directoryView)
+        public DirectoryInfo(DirectoryView directoryView)
         {
             InitializeComponent();
 
             this.Text = directoryView.directoryInfo.Name + " Properties";
             txtName.Text = directoryView.directoryInfo.Name;
             txtPath.Text = directoryView.directoryInfo.FullName;
-            txtSize.Text = FormFileInfo.ConvertFileSize(countSize(directoryView));
+            txtSize.Text = FileInfo.ConvertFileSize(countSize(directoryView));
             txtDateModified.Text = directoryView.directoryInfo.LastWriteTime.ToString();
             txtDateCreated.Text = directoryView.directoryInfo.CreationTime.ToString();
             txtContain.Text = countFiles(directoryView).ToString() + " Files, " + countFolders(directoryView).ToString() + " Folders";
