@@ -132,6 +132,8 @@ namespace Server
 
             if (acceptAll.Checked) txtAddress.Enabled = false;
             else txtAddress.Enabled = true;
+
+            clientList.Items.Clear();
         }
 
         public void ServerStarted()
@@ -271,6 +273,7 @@ namespace Server
         {
             try
             {
+
                 if (serverTheard.IsAlive)
                 {
                     serverTheard.Suspend();
@@ -278,17 +281,20 @@ namespace Server
                 server.Stop();
                 ServerStopped();
 
-                server = new TcpListener(host, port);
 
+                server = new TcpListener(host, port);
                 // 1. listen
+                server.Start();
+                ServerStarted();
+
                 serverTheard = new Thread(StartServer);
                 serverTheard.Start();
-                ServerStarted();
 
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.ToString(), this.Name);
+                ServerStopped();
             }
 
         }
