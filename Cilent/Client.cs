@@ -11,6 +11,7 @@ using System.Threading;
 using DevExpress.XtraTreeList;
 using DevExpress.XtraTreeList.Nodes;
 using DevExpress.Utils;
+using DevExpress.XtraEditors;
 
 namespace Cilent
 {
@@ -48,7 +49,7 @@ namespace Cilent
             catch (Exception ex)
             {
                 connectFailed();
-                MessageBox.Show(ex.Message, this.Name);
+                XtraMessageBox.Show(ex.Message, this.Name, MessageBoxButtons.OK);
             }
         }
 

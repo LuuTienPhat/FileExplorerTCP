@@ -247,14 +247,17 @@ namespace Cilent
             this.labelControl6.TabIndex = 5;
             this.labelControl6.Text = "Date Created:";
             // 
-            // FormDirectoryInfo
+            // DirectoryInfo
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(418, 396);
             this.Controls.Add(this.panelControl1);
-            this.IconOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("FormDirectoryInfo.IconOptions.SvgImage")));
-            this.Name = "FormDirectoryInfo";
+            this.FormBorderEffect = DevExpress.XtraEditors.FormBorderEffect.Shadow;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.IconOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("DirectoryInfo.IconOptions.SvgImage")));
+            this.MaximizeBox = false;
+            this.Name = "DirectoryInfo";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "FormDetail";
             ((System.ComponentModel.ISupportInitialize)(this.panelControl1)).EndInit();
